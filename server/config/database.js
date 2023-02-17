@@ -2,7 +2,9 @@
 require('dotenv').config(); //have access to environment variable
 const mysql = require('mysql2-async').default;  //mysql
 
-//conection to database
+/**
+ * CREATE DATABASE
+ */
 const db = new mysql({
   host: process.env.HOST,
   user: process.env.USER,
