@@ -6,9 +6,11 @@ var cookieParser = require('cookie-parser'); //to parse cookies
 //routes import
 const authRouter = require("./routes/auth");
 
+
 //initialization
 const port = process.env.PORT;
 const app = express();
+
 
 // middleware
 app.use(express.json({ limit: "30mb", extended: true }));

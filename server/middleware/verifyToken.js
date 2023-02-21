@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { TOKEN_KEY, TOKEN_EXPIRY } = process.env;
 
 const verifyToken = (req, res, next) => {
-    const token = req.cookies.trowbox_token;
+    const token = req.cookies.trowbox_token || req.query || req.body || req.header['trowbox_token'];
     
     //CHECK IF THE TOKEN EXIST
     if (!token) {
