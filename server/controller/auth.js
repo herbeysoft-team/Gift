@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const { TOKEN_KEY, TOKEN_EXPIRY } = process.env;
 var bcrypt = require("bcryptjs");
 const db = require("../config/database");
+const generateSMS = require('../utilities/generateSMS')
+const { sendOTP, verifyOTP } = require('../utilities/sendOTP')
 
 
 
@@ -107,8 +109,6 @@ exports.login = async (req, res) => {
     console.log(error);
     
   }
-
-
 }
 
 
@@ -123,3 +123,42 @@ exports.logout = async (req, res) => {
 }
 
 
+/**
+ * POST - http://localhost:8000/api/v1/auth/verify
+ * phone_no - Get the phone number (unique)
+ * otp - Get the otp
+ * 
+ */
+exports.verify =async(req, res) => {
+  try {
+      let  { phone_no, otp } = req.body;
+
+     const validOTP = await verifyOTP({phone_no, otp});
+     res.status(200).json({valid: validOTP});
+  } catch (error) {
+      res.status(400).send(error.message);
+  }
+}
+
+/**
+ * POST - http://localhost:8000/api/v1/auth/otp
+ * phone_no - Get the phone number (unique)
+ * message - the message to be sent 
+ * duration: the time the otp will take to expire
+ * 
+ */
+exports.otp = async(req, res) => {
+  try {
+      const { phone_no, message, duration } = req.body;
+
+      const createdOTP = await sendOTP({
+          phone_no,
+          message,
+          duration
+      });
+      console.log(createdOTP)
+      res.status(200).json(createdOTP);
+  } catch (error) {
+      res.status(400).send(error.message);
+  }
+}
