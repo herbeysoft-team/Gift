@@ -91,7 +91,7 @@ exports.login = async (req, res) => {
     
 
     if(!passwordMatch){
-      throw Error("Invalid Password Entered!")
+      return res.status(404).json({ message: "Password in incorrect" });
     }
 
     //CREATE USER TOKEN

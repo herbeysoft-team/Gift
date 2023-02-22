@@ -4,10 +4,7 @@ const { hashData, verifyHashData } = require("./hashData");
 const generateOTP = require("./generateOTP");
 
 /*VERIFY OTP */
-const verifyOTP = async ({phone_no, otp}) => {
-
-  console.log(phone_no, otp);
-
+const verifyOTP = async ({ phone_no, otp }) => {
   try {
     if (!(phone_no && otp)) {
       throw Error("Provide values for phone number and otp");
@@ -25,7 +22,7 @@ const verifyOTP = async ({phone_no, otp}) => {
     }
 
     const { expiredAt } = matchedOTPRecord[0];
-   
+
     //CHECK FOR EXPIRED CODDE
     if (expiredAt < Date.now()) {
       //CLEAR ANY OLD RECORD
@@ -36,7 +33,6 @@ const verifyOTP = async ({phone_no, otp}) => {
     const hashedOTP = matchedOTPRecord[0].otp;
     const validOTP = await verifyHashData(otp, hashedOTP);
     return validOTP;
-    
   } catch (error) {
     throw error;
   }
@@ -93,12 +89,12 @@ const deleteOTP = async (phone_no) => {
 const sendVerificationOTPPhone = async (phone_no) => {
   try {
     //CHECK IF THE USER EXISTS
-    const oldUser = await db.getall(
+    const userExist = await db.getall(
       "SELECT * FROM userProfile WHERE phone_no = ?",
       [phone_no]
     );
 
-    if(!oldUser){
+    if (!userExist) {
       throw Error("There's no account for the provided phone number");
     }
 
@@ -106,24 +102,22 @@ const sendVerificationOTPPhone = async (phone_no) => {
       phone_no,
       message: "Verify your account",
       duration: 1,
-    }
+    };
 
     const createdOTP = await sendOTP(otpDetails);
     return createdOTP;
-
   } catch (error) {
-    
+    throw error;
   }
-}
+};
 
 /*VERIFY USER OTP*/
-const verifyUserPhone = async ({phone_no, otp}) => {
-  console.log(phone_no, otp)
+const verifyUserPhone = async ({ phone_no, otp }) => {
   try {
-    //CHECK IF THE USER EXISTS
-    const validOTP = await verifyOTP({phone_no, otp});
-    if(!validOTP){
-       throw Error("Invalid code passed. Check your inbox");
+    //CHECK IF THE OTP VALID
+    const validOTP = await verifyOTP({ phone_no, otp });
+    if (!validOTP) {
+      throw Error("Invalid code passed. Check your inbox");
     }
 
     //NOW UPDATE USER RECORD AFTER SUCCESSFUL VERIFICATION
@@ -135,7 +129,68 @@ const verifyUserPhone = async ({phone_no, otp}) => {
 
     return updateUserVerified;
   } catch (error) {
-     throw Error(error.message)
+    throw error;
   }
-}
-module.exports = { sendOTP, verifyOTP, deleteOTP, sendVerificationOTPPhone, verifyUserPhone };
+};
+
+/*SEND PASSWORD REST TO PHONE*/
+const sendPasswordResetOTPPhone = async (phone_no) => {
+  try {
+    //CHECK IF THE USER EXISTS
+    const userExist = await db.getrow(
+      "SELECT * FROM userProfile WHERE phone_no = ?",
+      [phone_no]
+    );
+
+    if (!userExist) {
+      throw Error("There's no account for the provided phone number");
+    }
+
+    if (!userExist.verified) {
+      throw Error("Phone number hasn't been verified yet. Check your inbox");
+    }
+
+    const otpDetails = {
+      phone_no,
+      message: "Reset your account",
+      duration: 1,
+    };
+
+    const createdOTP = await sendOTP(otpDetails);
+    return createdOTP;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/*RESET USER PASSWORD */
+const resetUserPassword = async ({phone_no, otp, newPassword}) => {
+  try {
+    //CHECK IF THE OTP VALID
+    const validOTP = await verifyOTP({ phone_no, otp });
+    if (!validOTP) {
+      throw Error("Invalid code passed. Check your inbox");
+    }
+
+    //NOW UPDATE USER RECORD
+    const hashedNewPassword = await hashData(newPassword);
+    const updateUserPassword = await db.update(
+      "UPDATE userprofile SET password = ? WHERE phone_no = ?",
+      [hashedNewPassword, phone_no]
+    );
+
+    await deleteOTP(phone_no);
+    return updateUserPassword;
+  } catch (error) {
+    throw error;
+  }
+};
+module.exports = {
+  sendOTP,
+  verifyOTP,
+  deleteOTP,
+  sendVerificationOTPPhone,
+  verifyUserPhone,
+  sendPasswordResetOTPPhone,
+  resetUserPassword,
+};
