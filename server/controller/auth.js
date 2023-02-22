@@ -14,7 +14,6 @@ const {
   resetUserPassword,
 } = require("../utilities/sendOTP");
 
-
 /**
  * POST - http://localhost:8000/api/v1/auth/signup
  * fullname - Get firstname lastname
@@ -59,7 +58,6 @@ exports.signup = async (req, res) => {
   }
 };
 
-
 /**
  * POST - http://localhost:8000/api/v1/auth/login
  * phone_no - Get the phone number (unique)
@@ -85,12 +83,9 @@ exports.login = async (req, res) => {
     }
 
     if (!userExist.verified) {
-      return res
-        .status(404)
-        .json({
-          message:
-            "Phone Number hasn't be verified yet. Please check your inbox",
-        });
+      return res.status(404).json({
+        message: "Phone Number hasn't be verified yet. Please check your inbox",
+      });
     }
     //IF USER EXIST
     const hashedPassword = userExist.password;
@@ -124,7 +119,6 @@ exports.login = async (req, res) => {
   }
 };
 
-
 /**
  * POST - http://localhost:8000/api/v1/auth/logout
  */
@@ -137,7 +131,6 @@ exports.logout = async (req, res) => {
     .status(200)
     .json("User has been logged out.");
 };
-
 
 /**
  * POST - http://localhost:8000/api/v1/auth/verify
@@ -155,7 +148,6 @@ exports.verify = async (req, res) => {
     res.status(400).send(error.message);
   }
 };
-
 
 /**
  * POST - http://localhost:8000/api/v1/auth/otp
@@ -180,7 +172,6 @@ exports.otp = async (req, res) => {
   }
 };
 
-
 /**
  * POST - http://localhost:8000/api/v1/auth/passwordreset
  * phone_no - Get the phone number (unique)
@@ -197,7 +188,6 @@ exports.passwordreset = async (req, res) => {
     res.status(400).send(error.message);
   }
 };
-
 
 /**
  * POST - http://localhost:8000/api/v1/auth/reset
@@ -218,7 +208,6 @@ exports.reset = async (req, res) => {
   }
 };
 
-
 /**
  * POST - http://localhost:8000/api/v1/auth/verifyphoneotp
  * phone_no - Get the phone number (unique)
@@ -236,7 +225,6 @@ exports.verifyphoneotp = async (req, res) => {
     res.status(400).send(error.message);
   }
 };
-
 
 /**
  * POST - http://localhost:8000/api/v1/auth/phoneotp

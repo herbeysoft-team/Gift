@@ -164,7 +164,7 @@ const sendPasswordResetOTPPhone = async (phone_no) => {
 };
 
 /*RESET USER PASSWORD */
-const resetUserPassword = async ({phone_no, otp, newPassword}) => {
+const resetUserPassword = async ({ phone_no, otp, newPassword }) => {
   try {
     //CHECK IF THE OTP VALID
     const validOTP = await verifyOTP({ phone_no, otp });

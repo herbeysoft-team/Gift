@@ -1,6 +1,5 @@
-
-require('dotenv').config(); //have access to environment variable
-const mysql = require('mysql2-async').default;  //mysql
+require("dotenv").config(); //have access to environment variable
+const mysql = require("mysql2-async").default; //mysql
 
 /**
  * CREATE DATABASE
@@ -10,15 +9,13 @@ const db = new mysql({
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DATABASE,
-  timezone:"Z"
+  timezone: "Z",
+});
 
-})
-
-if(db){
+if (db) {
   console.log("database connection successful");
-} else{
+} else {
   console.log("database connection not successful");
 }
 
-
-module.exports = db
+module.exports = db;

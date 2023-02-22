@@ -1,11 +1,12 @@
-require('dotenv').config(); //have access to environment variable
+require("dotenv").config(); //have access to environment variable
 const jwt = require("jsonwebtoken");
 const { TOKEN_KEY, TOKEN_EXPIRY } = process.env;
 
 const createToken = async (
-    tokenData, 
-    tokenKey = TOKEN_KEY, 
-    expiresIn = TOKEN_EXPIRY) => {
+  tokenData,
+  tokenKey = TOKEN_KEY,
+  expiresIn = TOKEN_EXPIRY
+) => {
   try {
     const token = jwt.sign(tokenData, tokenKey, {
       expiresIn,

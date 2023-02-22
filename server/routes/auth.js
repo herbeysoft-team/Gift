@@ -1,8 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const verifyToken = require("../middleware/verifyToken");
-const { signup, login, logout, verify, otp, passwordreset, reset, verifyphoneotp, phoneotp } = require("../controller/auth");
-
+const {
+  signup,
+  login,
+  logout,
+  verify,
+  otp,
+  passwordreset,
+  reset,
+  verifyphoneotp,
+  phoneotp,
+} = require("../controller/auth");
 
 /**SIGN UP */
 router.post("/signup", signup);
@@ -26,10 +35,9 @@ router.post("/phoneotp", phoneotp);
 router.post("/verifyphoneotp", verifyphoneotp);
 
 /**PASSWORD RESET REQUEST */
-router.post("/passwordreset", passwordreset );
+router.post("/passwordreset", passwordreset);
 
 /**PASSWORD RESET */
 router.post("/reset", reset);
-
 
 module.exports = router;
