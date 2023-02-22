@@ -85,4 +85,31 @@ const deleteOTP = async (phone_no) => {
     throw error;
   }
 };
-module.exports = { sendOTP, verifyOTP, deleteOTP };
+
+/*SEND OTP  TO A PHONE NUMBER FOR VERIFICATION */
+const sendVerificationOTPPhone = async (phone_no) => {
+  try {
+    //CHECK IF THE USER EXISTS
+    const oldUser = await db.getall(
+      "SELECT * FROM userProfile WHERE phone_no = ?",
+      [phone_no]
+    );
+
+    if(!oldUser){
+      throw Error("There's no account for the provided phone number");
+    }
+
+    const otpDetails = {
+      phone_no,
+      message: "Verify your account",
+      duration: 1,
+    }
+
+    const createdOTP = await sendOTP(otpDetails);
+    return createdOTP;
+
+  } catch (error) {
+    
+  }
+}
+module.exports = { sendOTP, verifyOTP, deleteOTP, sendVerificationOTPPhone };
