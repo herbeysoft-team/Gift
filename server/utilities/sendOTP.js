@@ -112,4 +112,20 @@ const sendVerificationOTPPhone = async (phone_no) => {
     
   }
 }
-module.exports = { sendOTP, verifyOTP, deleteOTP, sendVerificationOTPPhone };
+
+/*VERIFY USER OTP*/
+const verifyUserPhone = async (phone_no, otp) => {
+  try {
+    //CHECK IF THE USER EXISTS
+    const validOTP = await verifyOTP({phone_no, otp});
+    if(!validOTP){
+       throw Error("Invalid code passed. Check your inbox");
+    }
+
+    await deleteOTP(phone_no);
+    return;
+  } catch (error) {
+    
+  }
+}
+module.exports = { sendOTP, verifyOTP, deleteOTP, sendVerificationOTPPhone, verifyUserPhone };
