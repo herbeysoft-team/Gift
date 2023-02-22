@@ -4,10 +4,13 @@ const { hashData, verifyHashData } = require("./hashData");
 const generateOTP = require("./generateOTP");
 
 /*VERIFY OTP */
-const verifyOTP = async ({ phone_no, otp }) => {
+const verifyOTP = async ({phone_no, otp}) => {
+
+  console.log(phone_no, otp);
+
   try {
     if (!(phone_no && otp)) {
-      throw Error("Provide values for phone numebr and otp");
+      throw Error("Provide values for phone number and otp");
     }
 
     //ENSURE OTP RECORD EXISTS
@@ -114,7 +117,8 @@ const sendVerificationOTPPhone = async (phone_no) => {
 }
 
 /*VERIFY USER OTP*/
-const verifyUserPhone = async (phone_no, otp) => {
+const verifyUserPhone = async ({phone_no, otp}) => {
+  console.log(phone_no, otp)
   try {
     //CHECK IF THE USER EXISTS
     const validOTP = await verifyOTP({phone_no, otp});
@@ -122,10 +126,16 @@ const verifyUserPhone = async (phone_no, otp) => {
        throw Error("Invalid code passed. Check your inbox");
     }
 
+    //NOW UPDATE USER RECORD AFTER SUCCESSFUL VERIFICATION
+    const updateUserVerified = await db.update(
+      "UPDATE userprofile SET verified = ? WHERE phone_no = ?",
+      [1, phone_no]
+    );
     await deleteOTP(phone_no);
-    return;
+
+    return updateUserVerified;
   } catch (error) {
-    
+     throw Error(error.message)
   }
 }
 module.exports = { sendOTP, verifyOTP, deleteOTP, sendVerificationOTPPhone, verifyUserPhone };

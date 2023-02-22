@@ -5,7 +5,7 @@ const { TOKEN_KEY, TOKEN_EXPIRY } = process.env;
 var bcrypt = require("bcryptjs");
 const db = require("../config/database");
 const generateSMS = require('../utilities/generateSMS')
-const { sendOTP, verifyOTP } = require('../utilities/sendOTP')
+const { sendOTP, verifyOTP, sendVerificationOTPPhone } = require('../utilities/sendOTP')
 
 
 
@@ -42,9 +42,10 @@ exports.signup = async (req, res) => {
       [fullname, username, phone_no, city, hashedPassword, gender]
     );
     if(result){
+    const otp = await sendVerificationOTPPhone(phone_no);
     res
       .status(201)
-      .json({ result, info: "User has been created Successfully" });
+      .json({ result, info: "User has been created Successfully", otp });
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
@@ -79,6 +80,9 @@ exports.login = async (req, res) => {
       return res.status(404).json({ message: "user does not exist" });
     }
 
+    if(!userExist.verified){
+      return res.status(404).json({ message: "Phone Number hasn't be verified yet. Please check your inbox" });
+    }
     //IF USER EXIST
     const hashedPassword  = userExist.password;
     

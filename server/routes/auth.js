@@ -38,10 +38,11 @@ router.post("/phoneotp", async(req, res) => {
 router.post("/verifyphoneotp", async(req, res) => {
     try {
         const { phone_no, otp } = req.body;
+        console.log(req.body);
         if(!phone_no && otp) throw Error("Empty otp details are not allowed");
 
-       await verifyUserPhone({phone_no, otp});
-       res.status(200).json({phone_no, verified: true})
+        const verifiedPhone = await verifyUserPhone({phone_no, otp});
+       res.status(200).json({phone_no, verified: true, verifiedPhone})
     } catch (error) {
         res.status(400).send(error.message);
     }
