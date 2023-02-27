@@ -65,6 +65,7 @@ exports.signup = async (req, res) => {
  *
  */
 exports.login = async (req, res) => {
+  console.log(req.body)
   try {
     //CHECK IF THE INPUT IS NOT EMPTY
     if (!(req.body.phone_no && req.body.password)) {
@@ -79,14 +80,14 @@ exports.login = async (req, res) => {
 
     //IF USER DOES NOT EXIST
     if (!userExist) {
-      return res.status(404).json({ message: "user does not exist" });
+      return res.status(404).json({ message: "user does not exist", code:"2"});
     }
 
-    if (!userExist.verified) {
-      return res.status(404).json({
-        message: "Phone Number hasn't be verified yet. Please check your inbox",
-      });
-    }
+    // if (!userExist.verified) {
+    //   return res.status(404).json({
+    //     message: "Phone Number hasn't be verified yet. Please check your inbox", code:"1"
+    //   });
+    // }
     //IF USER EXIST
     const hashedPassword = userExist.password;
 
@@ -97,7 +98,7 @@ exports.login = async (req, res) => {
     );
 
     if (!passwordMatch) {
-      return res.status(404).json({ message: "Password in incorrect" });
+      return res.status(404).json({ message: "Password in incorrect", code:"3" });
     }
 
     //CREATE USER TOKEN

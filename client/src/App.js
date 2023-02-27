@@ -24,7 +24,7 @@ const router = createBrowserRouter(
       element : <Reset></Reset>
     },
     {
-      path : '/verify',
+      path : '/verify/:phone_no',
       element : <Verify></Verify>
     },
     {

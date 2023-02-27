@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import toast from 'react-hot-toast'
 import {
   Box,
@@ -7,12 +8,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Logo from "../assets/logo.png";
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../context/features/authSlice";
 
 const initialState = {
-  phoneno: "",
+  phone_no: "",
   password: "",
 };
 
@@ -39,34 +42,47 @@ function Copyright(props) {
 
 const Login = () => {
   const [formValue, setFormValue] = useState(initialState);
-  const { phoneno, password } = formValue;
+  const { phone_no, password } = formValue;
+  const { loading, error } = useSelector((state) => ({ ...state.auth }));
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    loading && setIsLoading(loading);
+  }, [loading]);
+
+  useEffect(() => {
+    error && toast.error(error.message);
+  }, [error]);
+
+ 
+
+  /**Handle Submit Function */
   const handleSubmit = (e) => {
     e.preventDefault();
     const phoneRegex = /^\+(?:[0-9] ?){6,14}[0-9]$/;
     const passwordRegex = /^[A-Za-z0-9]{6,}$/;
 
-    if (!(phoneno && password)) {
+    if (!(phone_no && password)) {
       toast.error("Phone no & Password Required...!");
-    } else if(!phoneno){
+    } else if(!phone_no){
       toast.error("Phone no Required...!");
     }else if(!password){
       toast.error("Password Required...!");
-    }else if(phoneno.includes(" ")){
+    }else if(phone_no.includes(" ")){
       toast.error("Wrong Phone Number...!");
     }else if(password.includes(" ")){
       toast.error("Wrong Password...!");
     }else if(password.length < 6){
       toast.error("Password must be more than 6 charateers long");
-    }else if(!phoneRegex.test(phoneno)){
+    }else if(!phoneRegex.test(phone_no)){
       toast.error("Phone Number must be international format +23480XXX")
     }
     else if(!passwordRegex.test(password)){
       toast.error("Password must be Alphanumeric")
     }else{
-      console.log({phoneno, password})
-      navigate("/");
+     dispatch(login({ formValue, navigate, toast }));
     }
     }
 
@@ -122,9 +138,9 @@ const Login = () => {
             margin="normal"
             required
             fullWidth
-            id="phoneno"
+            id="phone_no"
             label="Phone Number"
-            name="phoneno"
+            name="phone_no"
             onChange={onInputChange}
             autoFocus
           />
