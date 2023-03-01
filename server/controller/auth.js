@@ -184,6 +184,7 @@ exports.passwordreset = async (req, res) => {
     if (!phone_no) throw Error("Phone number is required");
 
     const createPasswordResetOTP = await sendPasswordResetOTPPhone(phone_no);
+    console.log(createPasswordResetOTP)
     res.status(200).json(createPasswordResetOTP);
   } catch (error) {
     res.status(400).send(error.message);
@@ -197,6 +198,7 @@ exports.passwordreset = async (req, res) => {
  * newPassword - the new passowrd
  */
 exports.reset = async (req, res) => {
+  console.log(req.body)
   try {
     const { phone_no, otp, newPassword } = req.body;
     if (!(phone_no && otp && newPassword))
@@ -206,6 +208,7 @@ exports.reset = async (req, res) => {
     res.status(200).json({ phone_no, passwordreset: true });
   } catch (error) {
     res.status(400).send(error.message);
+    console.log(error.message)
   }
 };
 
@@ -233,6 +236,7 @@ exports.verifyphoneotp = async (req, res) => {
  *
  */
 exports.phoneotp = async (req, res) => {
+  
   try {
     const { phone_no } = req.body;
     if (!phone_no) throw Error("A Phone number is required");

@@ -13,6 +13,13 @@ API.interceptors.request.use((req) => {
     }
     return req;
   });
-  
+
+
+/**AUTHENTICATION API */  
 export const login = (formData) => API.post("/api/v1/auth/login", formData); //sign in for all users
 export const register = (formData) => API.post("/api/v1/auth/signup", formData); //register users
+export const logout = () => API.post("/api/v1/auth/logout"); //logout the user
+export const resendOTP = (formData) => API.post("/api/v1/auth/phoneotp", formData); //request for new OTP
+export const verify = (formData) => API.post("/api/v1/auth/verifyphoneotp", formData); //verify phone numbers with OTP
+export const resetPasswordOTP = (formData) => API.post("/api/v1/auth/passwordreset", formData); //request for OTP to reset passowrd
+export const resetPassword = (formData) => API.post("/api/v1/auth/reset", formData); //reset passowrd

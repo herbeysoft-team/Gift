@@ -12,7 +12,7 @@ import React, { useState, useEffect } from "react";
 import Logo from "../assets/logo.png";
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../context/features/authSlice";
+import { login, setUser } from "../context/features/authSlice";
 
 const initialState = {
   phone_no: "",
@@ -47,6 +47,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     loading && setIsLoading(loading);
@@ -83,6 +84,7 @@ const Login = () => {
       toast.error("Password must be Alphanumeric")
     }else{
      dispatch(login({ formValue, navigate, toast }));
+     dispatch(setUser());
     }
     }
 
@@ -181,6 +183,21 @@ const Login = () => {
           <span>
             <Link style={{ fontWeight: "bold", fontSize: "0.9rem", textDecoration:"none" }} to="/register">Register Here</Link>
           </span>
+        </Typography>
+        <Typography
+          variant="caption"
+          color="#d676af"
+          alignItems="center"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            mt: 1,
+            fontSize: "0.7rem",
+          }}
+        >
+          <Link to="/reset" style={{ fontSize: "0.7rem", textDecoration:"none" }}> Forget your passowrd</Link>
+          
         </Typography>
       </Box>
       <Copyright sx={{ mt: 1 }} />

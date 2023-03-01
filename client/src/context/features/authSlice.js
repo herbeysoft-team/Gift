@@ -10,12 +10,15 @@ export const login = createAsyncThunk(
         console.log({"AuthSlice": response.data.verified})
         if(response.data.verified === 1){
             toast.success("Login Successfully");
-            navigate('/pagenotfound')
+            navigate("/home")
         }
-        if(response.data.code === 1){
-            navigate("/verify");
-        }
-        return response.data[0];
+
+        if(response.data.verified === 0){
+          toast.success("Your Account is not verified");
+          navigate("/verify");
+      }
+        
+        return response.data;
       } catch (err) {
         return rejectWithValue(err.response.data);
       }
@@ -29,6 +32,68 @@ export const login = createAsyncThunk(
         const response = await api.register(formValue);
         toast.success("User Created Successfully");
         navigate("/a_user");
+        return response.data;
+      } catch (err) {
+        toast.error(err.response.data.message);
+        return rejectWithValue(err.response.data);
+      }
+    }
+  );
+
+  export const resendOTP = createAsyncThunk(
+    "auth/resendOTP",
+    async ({ formValue, toast }, { rejectWithValue }) => {
+      console.log(formValue)
+      try {
+        const response = await api.resendOTP(formValue);
+        toast.success("OTP has been sent");
+        return response.data;
+      } catch (err) {
+        toast.error(err.response.data.message);
+        return rejectWithValue(err.response.data);
+      }
+    }
+  );
+
+  export const verify = createAsyncThunk(
+    "auth/verify",
+    async ({ formValue, navigate, toast }, { rejectWithValue }) => {
+      console.log(formValue)
+      try {
+        const response = await api.verify(formValue);
+        toast.success("Account Verified. Please Login");
+        navigate("/")
+        return response.data;
+      } catch (err) {
+        toast.error(err.response.data.message);
+        return rejectWithValue(err.response.data);
+      }
+    }
+  );
+
+  export const resetPasswordOTP = createAsyncThunk(
+    "auth/resetPasswordOTP",
+    async ({ formValue, navigate, toast }, { rejectWithValue }) => {
+      console.log(formValue)
+      try {
+        const response = await api.resetPasswordOTP(formValue);
+        toast.success("A new OTP has been sent to you!");
+        navigate("/changePassword")
+        return response.data;
+      } catch (err) {
+        toast.error(err.response.data.message);
+        return rejectWithValue(err.response.data);
+      }
+    }
+  );
+
+  export const resetPassword = createAsyncThunk(
+    "auth/resetPassword",
+    async ({ formValue, navigate, toast }, { rejectWithValue }) => {
+      try {
+        const response = await api.resetPassword(formValue);
+        toast.success("Password changed successfully!");
+        navigate("/");
         return response.data;
       } catch (err) {
         toast.error(err.response.data.message);
@@ -60,7 +125,7 @@ export const login = createAsyncThunk(
       },
       [login.fulfilled]: (state, action) => {
         state.loading = false;
-        //localStorage.setItem("profile", JSON.stringify({ ...action.payload }));
+        localStorage.setItem("profile", JSON.stringify({ ...action.payload }));
         state.user = action.payload;
       },
       [login.rejected]: (state, action) => {
@@ -78,6 +143,44 @@ export const login = createAsyncThunk(
         state.loading = false;
         state.error = action.payload.message;
       },
+      [resendOTP.pending]: (state, action) => {
+        state.loading = true;
+      },
+      [resendOTP.rejected]: (state, action) => {
+        state.loading = false;
+        state.error = action.payload.message;
+      },
+      [verify.pending]: (state, action) => {
+        state.loading = true;
+      },
+      [verify.fulfilled]: (state, action) => {
+        state.loading = false;
+        localStorage.removeItem("profile");
+        state.user = null;
+      },
+      [verify.rejected]: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      },
+
+      [resetPasswordOTP.pending]: (state, action) => {
+        state.loading = true;
+      },
+      
+      [resetPasswordOTP.rejected]: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      },
+
+      [resetPassword.pending]: (state, action) => {
+        state.loading = true;
+      },
+      
+      [resetPassword.rejected]: (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      },
+      
       
     },
   });

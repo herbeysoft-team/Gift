@@ -7,12 +7,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Logo from "../assets/logo.png";
 import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
+import { resendOTP, verify } from "../context/features/authSlice";
 
 const initialState = {
-  phoneno: "",
   otp: "",
 };
 
@@ -38,41 +39,59 @@ function Copyright(props) {
 
 
 const Verify = () => {
+  const { user, loading, error } = useSelector((state) => ({
+    ...state.auth,
+  }));
   const [formValue, setFormValue] = useState(initialState);
-  const { phoneno, otp } = formValue;
+  const { otp } = formValue;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+
+  //GET THE CURRENT USER DATA
+  const currentUser = useMemo(()=> user, [user]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const phoneRegex = /^\+(?:[0-9] ?){6,14}[0-9]$/;
-    
 
-    if (!(phoneno && otp)) {
+    if (!( otp)) {
       toast.error("Phone no & otp Required...!");
-    } else if(!phoneno){
-      toast.error("Phone no Required...!");
-    }else if(!otp){
-      toast.error("OTP Required...!");
-    }else if(phoneno.includes(" ")){
-      toast.error("Wrong Phone Number...!");
     }else if(otp.includes(" ")){
       toast.error("Wrong OTP...!");
     }else if(otp.length < 4){
       toast.error("oTP number should be 4 digits");
-    }else if(!phoneRegex.test(phoneno)){
-      toast.error("Phone Number must be international format +23480XXX")
     }
     else{
-      console.log({phoneno, otp})
-      navigate("/");
+    //VERIFY HERE
+    dispatch(verify({ formValue:{
+      phone_no:currentUser?.phone_no,
+      otp,
+    }, navigate, toast }));
     }
     }
+  
+  //HANDLE RE-SENDING OTP
+  const handleSendOTP = (e) => {
+      e.preventDefault();
+      dispatch(resendOTP({ formValue:{
+        phone_no:currentUser?.phone_no
+      }, toast }));
+
+  }
 
   const onInputChange = (e) => {
     let { name, value } = e.target;
     setFormValue({ ...formValue, [name]: value });
     
   };
+
+  useEffect(() => {
+    loading && setIsLoading(loading);
+  }, [loading]);
+
+  useEffect(() => {
+    error && toast.error(error.message);
+  }, [error]);
 
   return (
     <Container maxWidth="xs" component="div">
@@ -115,17 +134,20 @@ const Verify = () => {
           paddingY: 5,
         }}
       >
+        <Typography variant="caption"
+          color="#d676af"
+          alignItems="center"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            fontSize: "0.9rem",
+            fontWeight: "bold",
+            textAlign:"center"
+          }}>
+              OTP has been sent to {currentUser?.phone_no}
+        </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="phoneno"
-            label="Phone Number"
-            name="phoneno"
-            onChange={onInputChange}
-            autoFocus
-          />
           <TextField
             margin="normal"
             required
@@ -164,6 +186,21 @@ const Verify = () => {
             <Link style={{ fontWeight: "bold", fontSize: "0.9rem", textDecoration:"none" }} to="/">Login Here</Link>
           </span>
         </Typography>
+        <Button
+          variant="outline"
+          
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            fontSize: "0.7rem",
+            fontStyle: "bold",
+            color: "#d676af",
+          }}
+          onClick={handleSendOTP}
+        >
+           Resend OTP
+          
+        </Button>
       </Box>
       <Copyright sx={{ mt: 1 }} />
     </Container>

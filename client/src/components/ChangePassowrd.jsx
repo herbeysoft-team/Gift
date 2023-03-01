@@ -7,9 +7,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Logo from "../assets/logo.png";
 import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
+import { resetPassword } from "../context/features/authSlice";
 
 const initialState = {
   phoneno: "",
@@ -38,10 +40,15 @@ function Copyright(props) {
 }
 
 
-const ChangePassword = () => {
+const ChangePasswrd = () => {
   const [formValue, setFormValue] = useState(initialState);
   const { phoneno, otp, newpassword } = formValue;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const { loading, error } = useSelector((state) => ({
+    ...state.auth,
+  }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -70,8 +77,12 @@ const ChangePassword = () => {
     else if(!passwordRegex.test(newpassword)){
       toast.error("Password must be Alphanumeric")
     }else{
-      console.log({phoneno, newpassword, otp})
-      navigate("/");
+      //CHANGE YOUR PASSWORD
+      dispatch(resetPassword({ formValue:{
+        phone_no:phoneno,
+        otp,
+        newPassword:newpassword
+      }, navigate, toast }));
     }
     }
 
@@ -81,6 +92,13 @@ const ChangePassword = () => {
     
   };
 
+  useEffect(() => {
+    loading && setIsLoading(loading);
+  }, [loading]);
+
+  useEffect(() => {
+    error && toast.error(error.message);
+  }, [error]);
   return (
     <Container maxWidth="xs" component="div">
       <Box
@@ -188,4 +206,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default ChangePasswrd;

@@ -7,9 +7,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../assets/logo.png";
 import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
+import { resetPasswordOTP } from "../context/features/authSlice";
+
 
 const initialState = {
   phoneno: "",
@@ -36,28 +39,33 @@ function Copyright(props) {
 }
 
 
-const Login = () => {
+const Reset = () => {
   const [formValue, setFormValue] = useState(initialState);
   const { phoneno } = formValue;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const { loading, error } = useSelector((state) => ({
+    ...state.auth,
+  }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const phoneRegex = /^\+(?:[0-9] ?){6,14}[0-9]$/;
 
     if (!(phoneno)) {
-      toast.error("Phone no & Password Required...!");
-    } else if(!phoneno){
       toast.error("Phone no Required...!");
-    }else if(phoneno.includes(" ")){
+    } else if(phoneno.includes(" ")){
       toast.error("Wrong Phone Number...!");
     }else if(!phoneRegex.test(phoneno)){
       toast.error("Phone Number must be international format +23480XXX")
     }
     else{
-      console.log({phoneno})
-      navigate("/");
-    }
+      //GET NEW OTP TO RESET YOUR PASSWORD
+      dispatch(resetPasswordOTP({ formValue:{
+        phone_no:phoneno
+      }, navigate, toast }));
+      }
     }
 
   const onInputChange = (e) => {
@@ -65,6 +73,15 @@ const Login = () => {
     setFormValue({ ...formValue, [name]: value });
     
   };
+
+  useEffect(() => {
+    loading && setIsLoading(loading);
+  }, [loading]);
+
+  useEffect(() => {
+    error && toast.error(error.message);
+  }, [error]);
+
 
   return (
     <Container maxWidth="xs" component="div">
@@ -145,10 +162,25 @@ const Login = () => {
             <Link style={{ fontWeight: "bold", fontSize: "0.9rem", textDecoration:"none" }} to="/register">Register Here</Link>
           </span>
         </Typography>
+        <Typography
+          variant="caption"
+          color="#d676af"
+          alignItems="center"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            mt: 1,
+            fontSize: "0.7rem",
+          }}
+        >
+          <Link to="/changePassword" style={{ fontSize: "0.7rem", textDecoration:"none" }}> Change Password Here</Link>
+          
+        </Typography>
       </Box>
       <Copyright sx={{ mt: 1 }} />
     </Container>
   );
 };
 
-export default Login;
+export default Reset;

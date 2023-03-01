@@ -20,11 +20,15 @@ const router = createBrowserRouter(
       element : <Login></Login>
     },
     {
+      path : '/home',
+      element : <><h1>HomePage</h1></>
+    },
+    {
       path : '/reset',
       element : <Reset></Reset>
     },
     {
-      path : '/verify/:phone_no',
+      path : '/verify',
       element : <Verify></Verify>
     },
     {
