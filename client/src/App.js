@@ -10,19 +10,27 @@ import Verify from "./components/Verify";
 import Reset from "./components/Reset";
 import ChangePassowrd from "./components/ChangePassowrd";
 import PageNotFound from "./components/PageNotFound";
+import Layout from "./components/Layout";
 
+/**Import the pages */
+import Home from "./pages/Home";
 
 /**root routes */
 const router = createBrowserRouter(
   [
     {
       path : '/',
-      element : <Login></Login>
+      element : <Layout/>,
+      children:[{
+        path:"/",
+        element: <Home/>,
+    }]
     },
     {
-      path : '/home',
-      element : <><h1>HomePage</h1></>
+      path : '/login',
+      element : <Login></Login>
     },
+    
     {
       path : '/reset',
       element : <Reset></Reset>

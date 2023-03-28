@@ -7,7 +7,6 @@ export const login = createAsyncThunk(
         
         try {
         const response = await api.login(formValue);
-        console.log({"AuthSlice": response.data.verified})
         if(response.data.verified === 1){
             toast.success("Login Successfully");
             navigate("/home")
@@ -31,7 +30,7 @@ export const login = createAsyncThunk(
       try {
         const response = await api.register(formValue);
         toast.success("User Created Successfully");
-        navigate("/a_user");
+        navigate("/");
         return response.data;
       } catch (err) {
         toast.error(err.response.data.message);
@@ -43,7 +42,6 @@ export const login = createAsyncThunk(
   export const resendOTP = createAsyncThunk(
     "auth/resendOTP",
     async ({ formValue, toast }, { rejectWithValue }) => {
-      console.log(formValue)
       try {
         const response = await api.resendOTP(formValue);
         toast.success("OTP has been sent");
@@ -58,7 +56,6 @@ export const login = createAsyncThunk(
   export const verify = createAsyncThunk(
     "auth/verify",
     async ({ formValue, navigate, toast }, { rejectWithValue }) => {
-      console.log(formValue)
       try {
         const response = await api.verify(formValue);
         toast.success("Account Verified. Please Login");
@@ -74,7 +71,6 @@ export const login = createAsyncThunk(
   export const resetPasswordOTP = createAsyncThunk(
     "auth/resetPasswordOTP",
     async ({ formValue, navigate, toast }, { rejectWithValue }) => {
-      console.log(formValue)
       try {
         const response = await api.resetPasswordOTP(formValue);
         toast.success("A new OTP has been sent to you!");

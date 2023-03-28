@@ -25,7 +25,6 @@ const {
  */
 exports.signup = async (req, res) => {
   let { fullname, city, gender, password, phone_no, username } = req.body;
-
   //TRIM THE PHONE NUMBER, USERNAME & PASSSWORD
   phone_no = phone_no.trim();
   username = username.trim();
@@ -50,7 +49,7 @@ exports.signup = async (req, res) => {
       const otp = await sendVerificationOTPPhone(phone_no);
       res
         .status(201)
-        .json({ result, info: "User has been created Successfully", otp });
+        .json({ result, message: "User has been created Successfully", otp });
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
@@ -65,7 +64,6 @@ exports.signup = async (req, res) => {
  *
  */
 exports.login = async (req, res) => {
-  console.log(req.body)
   try {
     //CHECK IF THE INPUT IS NOT EMPTY
     if (!(req.body.phone_no && req.body.password)) {
@@ -198,7 +196,6 @@ exports.passwordreset = async (req, res) => {
  * newPassword - the new passowrd
  */
 exports.reset = async (req, res) => {
-  console.log(req.body)
   try {
     const { phone_no, otp, newPassword } = req.body;
     if (!(phone_no && otp && newPassword))

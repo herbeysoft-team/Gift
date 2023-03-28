@@ -11,6 +11,8 @@ import {
 import React, { useState } from "react";
 import Logo from "../assets/logo.png";
 import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from "react-redux";
+import { register } from "../context/features/authSlice";
 
 const initialState = {
   fullname:"",
@@ -47,6 +49,8 @@ const Register = () => {
   const [formValue, setFormValue] = useState(initialState);
   const { phoneno, password, fullname, city, gender, username } = formValue;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -71,10 +75,17 @@ const Register = () => {
     else if(!passwordRegex.test(password)){
       toast.error("Password must be Alphanumeric")
     }else{
-      console.log({phoneno, password, city, fullname, username, gender})
-      navigate("/");
+      //REGISTER YOUR ACCOUNT
+      dispatch(register({formValue:{
+        fullname,
+        username,
+        phone_no : phoneno,
+        city,
+        gender,
+        password
+      }, navigate, toast}));
     }
-    }
+  }
 
   const onInputChange = (e) => {
     let { name, value } = e.target;

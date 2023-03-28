@@ -5,6 +5,9 @@ const bodyParser = require("body-parser"); //to parse the body of HTTP request
 var cookieParser = require('cookie-parser'); //to parse cookies
 //routes import
 const authRouter = require("./routes/auth");
+const categoryRouter = require("./routes/category");
+const subcategoryRouter  = require("./routes/subcategory");
+const itemRouter = require("./routes/item");
 
 
 //initialization
@@ -12,7 +15,6 @@ const port = process.env.PORT;
 const app = express();
 
 
-// middleware
 //middlewares
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Credentials", true);
@@ -31,5 +33,8 @@ app.disable('x-powered-by'); //less hackers know your stack
 
 //routes
 app.use("/api/v1/auth/", authRouter);
+app.use("/api/v1/category/", categoryRouter);
+app.use("/api/v1/subcategory/", subcategoryRouter);
+app.use("/api/v1/item/", itemRouter);
 
 app.listen(port, () => console.log(`App Running on port ${port}`));
