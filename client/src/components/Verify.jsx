@@ -183,7 +183,7 @@ const Verify = () => {
         >
           Already Verified{" "}
           <span>
-            <Link style={{ fontWeight: "bold", fontSize: "0.9rem", textDecoration:"none" }} to="/">Login Here</Link>
+            <Link style={{ fontWeight: "bold", fontSize: "0.9rem", textDecoration:"none" }} to="/login">Login Here</Link>
           </span>
         </Typography>
         <Button

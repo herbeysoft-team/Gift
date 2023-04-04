@@ -107,11 +107,8 @@ exports.login = async (req, res) => {
     const { password, ...others } = userExist;
 
     res
-      .cookie("trowbox_token", token, {
-        httpOnly: true,
-      })
       .status(200)
-      .json(others);
+      .json({token, others});
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);

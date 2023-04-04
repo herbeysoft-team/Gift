@@ -84,7 +84,6 @@ const Login = () => {
       toast.error("Password must be Alphanumeric")
     }else{
      dispatch(login({ formValue, navigate, toast }));
-     dispatch(setUser());
     }
     }
 

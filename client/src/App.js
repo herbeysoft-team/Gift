@@ -12,6 +12,7 @@ import ChangePassowrd from "./components/ChangePassowrd";
 import PageNotFound from "./components/PageNotFound";
 import Layout from "./components/Layout";
 
+
 /**Import the pages */
 import Home from "./pages/Home";
 
@@ -88,6 +89,12 @@ function App() {
           },
         },
       },
+      MuiListItemButton: {
+        defaultProps: {
+          disableTouchRipple: true,
+        },
+      },
+      
     },
 })
   return (

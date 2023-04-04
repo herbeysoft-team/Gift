@@ -4,15 +4,14 @@ import * as api from "../api";
 export const login = createAsyncThunk(
     "auth/login",
     async ({ formValue, navigate, toast }, { rejectWithValue }) => {
-        
         try {
         const response = await api.login(formValue);
-        if(response.data.verified === 1){
+        if(response.data.others.verified === 1){
             toast.success("Login Successfully");
-            navigate("/home")
+            navigate("/")
         }
 
-        if(response.data.verified === 0){
+        if(response.data.others.verified === 0){
           toast.success("Your Account is not verified");
           navigate("/verify");
       }
@@ -122,7 +121,7 @@ export const login = createAsyncThunk(
       [login.fulfilled]: (state, action) => {
         state.loading = false;
         localStorage.setItem("profile", JSON.stringify({ ...action.payload }));
-        state.user = action.payload;
+        state.user = action.payload.token;
       },
       [login.rejected]: (state, action) => {
         state.loading = false;

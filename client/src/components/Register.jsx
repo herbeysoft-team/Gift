@@ -234,7 +234,7 @@ const Register = () => {
         >
           Already Register?{" "}
           <span>
-            <Link style={{ fontWeight: "bold", fontSize: "0.9rem", textDecoration:"none" }} to="/">Login Now</Link>
+            <Link style={{ fontWeight: "bold", fontSize: "0.9rem", textDecoration:"none" }} to="/login">Login Now</Link>
           </span>
         </Typography>
       </Box>
