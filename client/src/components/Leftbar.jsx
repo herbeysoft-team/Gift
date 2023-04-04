@@ -5,9 +5,7 @@ import {
   Avatar,
   styled,
   Button,
-  Stack,
   Divider,
-  Container,
 } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 
@@ -26,10 +24,9 @@ const FollowButton = styled(Button)(({ theme }) => ({
 const Leftbar = () => {
   return (
     <Box
-      flex={2}
+      flex={1.5}
       p={2}
       height="100vh"
-      boxShadow={1}
       sx={{ display: { xs: "none", sm: "block" } }}
     >
       <Box position="fixed">

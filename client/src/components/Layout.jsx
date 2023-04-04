@@ -10,7 +10,7 @@ const Layout = () => {
   return (
     <Box>
       <Navbar/>
-      <Stack direction="row" spacing={2} justifyContent="space-between" >
+      <Stack direction="row" justifyContent="space-between" >
         <Rightbar/>
         <Outlet/>
         <LeftBar/>
