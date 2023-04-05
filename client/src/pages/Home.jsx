@@ -4,12 +4,12 @@ import Post from "../components/Post";
 import Gift from "../assets/gift.png";
 import MobileNavBar from "../components/MobileNavBar";
 import ButtomNav from "../components/ButtomNav";
-
+import Logo from "../assets/logo.png";
 
 const Home = () => {
   return (
     <Box flex={3}>
-      <MobileNavBar/>
+      <MobileNavBar logo={Logo} title={"Home"}/>
       {/* The Gift Box Button */}
       <Box
         p={2}

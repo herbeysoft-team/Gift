@@ -2,9 +2,8 @@ import React from 'react'
 import { Box,Typography, AppBar, Badge } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import EmailIcon from "@mui/icons-material/Email";
-import Logo from "../assets/logo.png";
 
-const MobileNavBar = () => {
+const MobileNavBar = ({logo, title}) => {
   return (
     <AppBar
         position="sticky"
@@ -20,9 +19,9 @@ const MobileNavBar = () => {
         }}
       >
         <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
-          <img src={Logo} alt="logo" />
+          <img src={logo} alt="logo" />
           <Typography variant="h6" color="primary">
-            Home
+            {title}
           </Typography>
         </Box>
         <Box display="flex" flexDirection="row" alignItems="center" gap={1}>

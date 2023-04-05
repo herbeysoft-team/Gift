@@ -27,7 +27,8 @@ const Post = () => {
         <CardMedia
           component="img"
           height="10%"
-          image="https://images.pexels.com/photos/4534200/pexels-photo-4534200.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          fit="cover"
+          image="https://th.bing.com/th/id/OIP.iPkt7kskdztbDzNLHx3BOgHaEi?pid=ImgDet&w=1200&h=736&rs=1"
           alt="Paella dish"
         />
         <IconButton
@@ -49,7 +50,7 @@ const Post = () => {
           </IconButton>
         }
         title="Wizkid's Birthday"
-        sx={{ borderBottom: "1px solid gray" }}
+        sx={{ borderBottom: "0.5px solid lightgray" }}
       />
 
       <CardActions disableSpacing>
