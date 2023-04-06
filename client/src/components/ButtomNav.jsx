@@ -4,9 +4,11 @@ import Home from "../assets/Home.png";
 import Shopping from "../assets/shopping-bag.png";
 import Logo from "../assets/logo.png";
 import Profile from "../assets/profile.png";
+import { useNavigate } from "react-router-dom";
 
 const ButtomNav = () => {
   const [value, setValue] = useState(0);
+  const navigate = useNavigate();
   return (
     <Paper
       sx={{
@@ -24,13 +26,13 @@ const ButtomNav = () => {
         onChange={(event, newValue) => {
           setValue(newValue);
           if (newValue === 0) {
-            //Navigate to somewhere
+            navigate("/home");
           } else if (newValue === 1) {
-            //Navigate to somewhere
+            navigate("/home/shop");
           } else if (newValue === 2) {
-            //Navigate to somewhere
+            navigate("/home/trowbox");
           } else if (newValue === 3) {
-            //Navigate to somewhere
+            navigate("/home/profile/2");
           }
         }}
       >
