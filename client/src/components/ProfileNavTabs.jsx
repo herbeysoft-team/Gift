@@ -58,12 +58,16 @@ export default function ProfileNavTabs() {
   return (
     <Box sx={{ bgcolor: 'background.paper', width: "100%" }}>
         <Tabs
+          centered
           value={value}
           onChange={handleChange}
           indicatorColor="secondary"
           textColor="inherit"
-          variant="fullWidth"
+          variant="fullwidth"
           aria-label="full width tabs example"
+          sx={{
+            "& button": {fontFamily:"Poppins", fontStyle:"normal", fontWeight:"bold"},
+          }}
         >
           <Tab label="Received" {...a11yProps(0)} />
           <Tab label="Sent" {...a11yProps(1)} />

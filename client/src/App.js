@@ -15,6 +15,8 @@ import Layout from "./components/Layout";
 /**Import the pages */
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import Shop from "./pages/Shop";
+import Trowbox from "./pages/Trowbox";
 
 /**root routes */
 const router = createBrowserRouter([
@@ -29,6 +31,14 @@ const router = createBrowserRouter([
       {
         path: "/home/profile/:id",
         element: <Profile />,
+      },
+      {
+        path: "/home/shop",
+        element: <Shop />,
+      },
+      {
+        path: "/home/trowbox",
+        element: <Trowbox />,
       },
     ],
   },

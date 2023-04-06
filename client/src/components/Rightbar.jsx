@@ -45,7 +45,7 @@ const Rightbar = () => {
       p={2}
       height="100vh"
     
-      sx={{ display: { xs: "none", sm: "block" } }}
+      sx={{ display: { xs: "none", sm: "none", md:"none", lg:"block"} }}
     >
       <Box position="fixed">
         <RightNav>

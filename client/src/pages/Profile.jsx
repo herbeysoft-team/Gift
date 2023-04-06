@@ -14,7 +14,6 @@ import Received from "../assets/Gift_Received.png";
 import Sent from "../assets/Gift_Sent.png";
 import DragHandleSharpIcon from "@mui/icons-material/DragHandleSharp";
 import ProfileNavTabs from "../components/ProfileNavTabs";
-import Caro from "../components/Caro";
 
 const CustomButton = styled(Button)(({ theme }) => ({
   color: "#fff",
@@ -243,8 +242,7 @@ const Profile = () => {
               display: "flex",
               flexDirection: "column",
           }}>
-            <Typography variant="subheading">Recent Gifts</Typography>
-            <Caro/>
+           
             <ProfileNavTabs />
              
 

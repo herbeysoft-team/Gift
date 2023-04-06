@@ -9,9 +9,15 @@ const ButtomNav = () => {
   const [value, setValue] = useState(0);
   return (
     <Paper
-      sx={{ position: "fixed", bottom: 0, left: 0, right: 0, paddingY:0.5, display: {md: "none" }}}
+      sx={{
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        paddingY: 0.5,
+        display: { lg: "none" },
+      }}
       elevation={3}
-      
     >
       <BottomNavigation
         value={value}
@@ -28,10 +34,22 @@ const ButtomNav = () => {
           }
         }}
       >
-        <BottomNavigationAction label="Home" icon={<img src={Home} alt="Home" width={32} height={32}/>} />
-        <BottomNavigationAction label="Gift Shop" icon={<img src={Shopping} alt="shop" width={32} height={32}/>} />
-        <BottomNavigationAction label="Trowbox" icon={<img src={Logo} alt="trowbox" width={32} height={32}/>} />
-        <BottomNavigationAction label="Profile" icon={<img src={Profile} alt="profile" width={32} height={32}/>} />
+        <BottomNavigationAction
+          label="Home"
+          icon={<img src={Home} alt="Home" width={32} height={32} />}
+        />
+        <BottomNavigationAction
+          label="Gift Shop"
+          icon={<img src={Shopping} alt="shop" width={32} height={32} />}
+        />
+        <BottomNavigationAction
+          label="Trowbox"
+          icon={<img src={Logo} alt="trowbox" width={32} height={32} />}
+        />
+        <BottomNavigationAction
+          label="Profile"
+          icon={<img src={Profile} alt="profile" width={32} height={32} />}
+        />
       </BottomNavigation>
     </Paper>
   );

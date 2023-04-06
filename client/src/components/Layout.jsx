@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import Rightbar from './Rightbar';
 import LeftBar from './Leftbar';
 import { Outlet } from 'react-router-dom';
+import ButtomNav from './ButtomNav';
 
 
 const Layout = () => {
@@ -15,6 +16,7 @@ const Layout = () => {
         <Outlet/>
         <LeftBar/>
       </Stack>
+      <ButtomNav/>
     </Box>
   )
 }
