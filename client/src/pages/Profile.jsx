@@ -229,25 +229,12 @@ const Profile = () => {
             setDrop(!drop);
           }}
         >
-          <DragHandleSharpIcon htmlColor="#fff"/>
+          <DragHandleSharpIcon htmlColor="#fff" />
         </ToggleButton>
       </Box>
-        
-      {/* Other part Start here */}
-          <Box
-            p={2}
-            sx={{
-              alignItems: "center",
-              justifyContent: "center",
-              display: "flex",
-              flexDirection: "column",
-          }}>
-           
-            <ProfileNavTabs />
-             
 
-          </Box>
-        
+      {/* Other part Start here */}
+      <ProfileNavTabs />
     </Box>
   );
 };

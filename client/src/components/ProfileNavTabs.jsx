@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -23,7 +22,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 1 }}>
-          <Typography>{children}</Typography>
+          <Typography component={"div"}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -51,19 +50,19 @@ export default function ProfileNavTabs() {
     setValue(newValue);
   };
 
-  const handleChangeIndex = (index) => {
-    setValue(index);
-  };
+  // const handleChangeIndex = (index) => {
+  //   setValue(index);
+  // };
 
   return (
-    <Box sx={{ bgcolor: 'background.paper', width: "100%" }}>
+    <Box p={2} sx={{ bgcolor: 'background.paper', width: "100%" }}>
         <Tabs
           centered
           value={value}
           onChange={handleChange}
           indicatorColor="secondary"
           textColor="inherit"
-          variant="fullwidth"
+          variant="fullWidth"
           aria-label="full width tabs example"
           sx={{
             "& button": {fontFamily:"Poppins", fontStyle:"normal", fontWeight:"bold"},
@@ -73,11 +72,11 @@ export default function ProfileNavTabs() {
           <Tab label="Sent" {...a11yProps(1)} />
           <Tab label="Wishlist" {...a11yProps(2)} />
         </Tabs>
-      <SwipeableViews
+      {/* <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleChangeIndex}
-      >
+      > */}
         <TabPanel value={value} index={0} dir={theme.direction}>
           <Recieved/>
         </TabPanel>
@@ -87,7 +86,7 @@ export default function ProfileNavTabs() {
         <TabPanel value={value} index={2} dir={theme.direction}>
           <Wishlist/>
         </TabPanel>
-      </SwipeableViews>
+      {/* </SwipeableViews> */}
     </Box>
   );
 }
