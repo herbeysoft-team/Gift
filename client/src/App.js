@@ -17,6 +17,7 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Shop from "./pages/Shop";
 import Trowbox from "./pages/Trowbox";
+import PostDetails from "./pages/PostDetails";
 
 /**root routes */
 const router = createBrowserRouter([
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "/home/trowbox",
         element: <Trowbox />,
+      },
+      {
+        path: "/home/postdetails/:id",
+        element: <PostDetails />,
       },
     ],
   },

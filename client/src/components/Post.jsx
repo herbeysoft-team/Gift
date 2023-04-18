@@ -26,10 +26,10 @@ const Post = () => {
       <Box sx={{ position: "relative" }}>
         <CardMedia
           component="img"
-          height="10%"
+          height="auto"
           fit="cover"
           image="https://th.bing.com/th/id/OIP.iPkt7kskdztbDzNLHx3BOgHaEi?pid=ImgDet&w=1200&h=736&rs=1"
-          alt="Paella dish"
+          alt="Post Image"
         />
         <IconButton
           aria-label="upvote"
