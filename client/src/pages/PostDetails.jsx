@@ -1,5 +1,8 @@
 import {
+  Avatar,
+  AvatarGroup,
   Box,
+  Button,
   CardMedia,
   Checkbox,
   Divider,
@@ -7,8 +10,10 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import MobileNavBar from "../components/MobileNavBar";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import Logo from "../assets/logo.png";
 import {
   CardGiftcard,
@@ -19,8 +24,16 @@ import {
   Star,
 } from "@mui/icons-material";
 import PostGift from "../components/PostGift";
+import PostComment from "../components/PostComment";
+import CommentBox from "../components/CommentBox";
 
 const PostDetails = () => {
+  const [gift, setGift] = useState(false);
+  const [btnName, setBtnName] = useState("SHOW GIFT ITEMS");
+  const [iconGift, setIconGift] = useState(<ArrowDropDownIcon />);
+  const [comment, setComment] = useState(false);
+  const [btnCommentName, setBtnCommentName] = useState("SHOW COMMENTS");
+  const [iconComment, setIconComment] = useState(<ArrowDropDownIcon />);
   return (
     <Box flex={3}>
       <MobileNavBar logo={Logo} title={"Post"} />
@@ -32,8 +45,12 @@ const PostDetails = () => {
           marginRight: 1,
           marginLeft: 1,
           marginBottom: 3,
+          top: 10,
+          left: 0,
+          right: 0,
           boxShadow: "2",
           borderRadius: "5",
+          zIndex: 2,
         }}
       >
         <Box sx={{ position: "relative", overflow: "hidden" }}>
@@ -99,7 +116,7 @@ const PostDetails = () => {
           flexDirection="row"
           alignItems="center"
           justifyContent="space-between"
-          sx={{ color: "white", borderRadius: 10, p: 1 }}
+          sx={{ backgroundColor: "white", p: 1, zIndex: 2 }}
         >
           <Box display="flex" flexDirection="column" alignItems="center">
             <Typography variant="caption" color="secondary">
@@ -137,36 +154,128 @@ const PostDetails = () => {
           </Box>
         </Box>
       </Box>
-      {/* The Gift for the post */}
-      <Box sx={{overflow:"scroll", maxHeight:"50%"}}>
-
-      
-      <Typography
-        variant="h6"
-        color="primary"
-        fontFamily="Poppins"
-        fontWeight="bold"
-        textAlign="center"
+      {/* Friennds who comment */}
+      <Box
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        gap={1}
+        px={1.5}
       >
-        GIFT ITEMS
-      </Typography>
-      <PostGift />
-      <PostGift />
-      <PostGift />
-      <PostGift />
-      <PostGift />
-      <PostGift />
-      <PostGift />
-      <PostGift />
-      <PostGift />
-      <PostGift />
-      <PostGift />
-      <PostGift />
-      <PostGift />
-      <PostGift />
-      <PostGift />
-      
+        <AvatarGroup max={4}>
+          <Avatar
+            alt="Remy Sharp"
+            src="https://material-ui.com/static/images/avatar/1.jpg"
+          />
+          <Avatar
+            alt="Travis Howard"
+            src="https://material-ui.com/static/images/avatar/2.jpg"
+          />
+          <Avatar
+            alt="Cindy Baker"
+            src="https://material-ui.com/static/images/avatar/3.jpg"
+          />
+          <Avatar alt="Agnes Walker" src="" />
+        </AvatarGroup>
+        <Typography
+          variant="body"
+          color="primary"
+          sx={{ fontFamily: "Poppins", fontWeight: "bold" }}
+        >
+          +345
+        </Typography>
+        <Typography
+          variant="caption"
+          color="primary"
+          sx={{ fontFamily: "Poppins", fontWeight: "medium" }}
+        >
+          Friends who comment
+        </Typography>
       </Box>
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="flex-start"
+        alignItems="self-start"
+        px={1.5}
+      >
+        {/* The Gift for the post */}
+        <Button
+          variant="text"
+          onClick={() => {
+            setGift(!gift);
+            if (!gift) {
+              setBtnName("HIDE GIFT ITEMS");
+              setIconGift(<ArrowDropDownIcon />);
+            } else {
+              setBtnName("SHOW GIFT ITEMS");
+              setIconGift(<ArrowDropUpIcon />);
+            }
+          }}
+          sx={{
+            color: "primary",
+            fontFamily: "Poppins",
+            fontWeight: "bold",
+            textAlign: "center",
+          }}
+          endIcon={iconGift}
+        >
+          {btnName}
+        </Button>
+        {gift ? (
+          <Box>
+            <PostGift />
+            <PostGift />
+            <PostGift />
+          </Box>
+        ) : null}
+
+        {/* The Comments for the post */}
+        <Button
+          variant="text"
+          onClick={() => {
+            setComment(!comment);
+            if (!comment) {
+              setBtnCommentName("HIDE COMMENTS");
+              setIconComment(<ArrowDropDownIcon />);
+            } else {
+              setBtnCommentName("SHOW COMMENTS");
+              setIconComment(<ArrowDropUpIcon />);
+            }
+          }}
+          sx={{
+            color: "primary",
+            fontFamily: "Poppins",
+            fontWeight: "bold",
+            textAlign: "center",
+          }}
+          endIcon={iconComment}
+        >
+          {btnCommentName}
+        </Button>
+        {comment ? (
+          <Box
+            sx={{
+              width: "100%",
+              px: 1,
+              py: 0.5,
+            }}
+          >
+            <PostComment />
+            <PostComment />
+            <PostComment />
+            <PostComment />
+            <PostComment />
+            <PostComment />
+            <PostComment />
+            <PostComment />
+            <PostComment />
+          </Box>
+        ) : null}
+        {/* Post Comment Box */}
+      <CommentBox/>
+      </Box>
+      
     </Box>
   );
 };
