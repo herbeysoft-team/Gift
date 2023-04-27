@@ -1,8 +1,8 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Fab, Typography } from "@mui/material";
 import React from "react";
 
 
-const Header = ({logo, title}) => {
+const Hero = ({logo, title}) => {
   return (
     <Box
       p={3}
@@ -22,7 +22,10 @@ const Header = ({logo, title}) => {
         WebkitBorderBottomRightRadius: 20,
       }}
     >
-      <img src={logo} alt="logo" width={70} height={70} />
+        <Fab color={"primary"} size="large" aria-label="add" elevation={2} >
+            <img src={logo} alt="logo" width={24} height={24} />
+        </Fab>
+      
 
       <Typography
         variant="h6"
@@ -35,4 +38,4 @@ const Header = ({logo, title}) => {
   );
 };
 
-export default Header;
+export default Hero;

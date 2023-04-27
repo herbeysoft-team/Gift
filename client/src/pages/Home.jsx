@@ -4,8 +4,10 @@ import Post from "../components/Post";
 import Gift from "../assets/gift.png";
 import MobileNavBar from "../components/MobileNavBar";
 import Logo from "../assets/logo.png";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <Box flex={3}>
       <MobileNavBar logo={Logo} title={"Home"}/>
@@ -22,7 +24,7 @@ const Home = () => {
           gap: 1,
         }}
       >
-        <Fab color={"primary"} size="large" aria-label="add">
+        <Fab color={"primary"} size="large" aria-label="add" onClick={()=> navigate("/home/trow")}>
           <img src={Gift} alt="logo" width={24} height={24} />
         </Fab>
         <Typography variant="body">Share the love!</Typography>

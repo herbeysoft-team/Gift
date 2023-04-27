@@ -18,7 +18,8 @@ import Profile from "./pages/Profile";
 import Shop from "./pages/Shop";
 import Trowbox from "./pages/Trowbox";
 import PostDetails from "./pages/PostDetails";
-
+import Notification from "./pages/Notification";
+import Trow from "./pages/Trow";
 /**root routes */
 const router = createBrowserRouter([
   {
@@ -44,6 +45,14 @@ const router = createBrowserRouter([
       {
         path: "/home/postdetails/:id",
         element: <PostDetails />,
+      },
+      {
+        path: "/home/notification",
+        element: <Notification />,
+      },
+      {
+        path: "/home/trow",
+        element: <Trow/>,
       },
     ],
   },
