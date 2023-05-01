@@ -26,10 +26,13 @@ const RightNav = styled(List)({
     paddingLeft: 44,
     paddingRight: 44,
   },
-  "& .MuiListItemText-root": {
-    fontSize: 30,
-    fontWeight: "bold",
+  "& .MuiListItemText-primary": {
+    fontSize: 16,
+    fontWeight: "normal",
     fontFamily: "Poppins",
+    minWidth: 0,
+    marginRight: 16,
+    color: "#ba68c8",
   },
   "& .MuiListItemIcon-root": {
     minWidth: 0,

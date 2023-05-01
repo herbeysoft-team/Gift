@@ -3,18 +3,10 @@ import * as api from "../api";
 
 export const getUserProfile = createAsyncThunk(
     "user/getUserProfile",
-    async ({ formValue, navigate, toast }, { rejectWithValue }) => {
+    
+    async (userId, { rejectWithValue }) => {
         try {
-        const response = await api.getUserProfile(formValue);
-        if(response.data.result.verified === 1){
-            toast.success("Login Successfully");
-            navigate("/home")
-        }
-
-        if(response.data.result.verified === 0){
-          toast.success("Your Account is not verified");
-          navigate("/verify");
-      }
+        const response = await api.getUserProfile(userId);
         
         return response.data;
       } catch (err) {

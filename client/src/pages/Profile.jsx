@@ -15,7 +15,8 @@ import Sent from "../assets/Gift_Sent.png";
 import DragHandleSharpIcon from "@mui/icons-material/DragHandleSharp";
 import ProfileNavTabs from "../components/ProfileNavTabs";
 import { useLocation } from "react-router-dom";
-import {  useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserProfile } from "../context/features/userSlice";
 
 const CustomButton = styled(Button)(({ theme }) => ({
   color: "#fff",
@@ -32,12 +33,27 @@ const CustomButton = styled(Button)(({ theme }) => ({
 }));
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  // const navigate = useNavigate();
   const [drop, setDrop] = useState(false);
   const { user } = useSelector((state) => ({ ...state.auth }));
+  const { userProfile } = useSelector((state) => ({ ...state.user }));
 
-  const userId = parseInt(useLocation().pathname.split("/")[3]);
+  const userId = useLocation().pathname.split("/")[3];
+  useEffect(() => {
+    if (userId) {
+      dispatch(getUserProfile(userId));
+    }
+  }, [userId, dispatch]);
 
- 
+  const handleFollow = () => {};
+
+  const handleUpdate = () => {};
+
+  const handleMessage = () => {};
+
+  const handleContact = () => {};
+
   return (
     <Box flex={3}>
       <MobileNavBar logo={ProfilePic} title={"Profile"} />
@@ -57,7 +73,7 @@ const Profile = () => {
       >
         <Avatar
           alt="PP"
-          src=""
+          src={userProfile?.profilePic}
           sx={{ bgcolor: deepPurple[500], width: 64, height: 64 }}
         />
         <Typography
@@ -69,19 +85,19 @@ const Profile = () => {
             fontFamily: "Poppins",
           }}
         >
-          Maria Lawal
+          {userProfile?.fullname}
         </Typography>
         <Typography
           variant="subheading"
           sx={{ color: "white", fontSize: 16, fontFamily: "Poppins", mt: -2 }}
         >
-          @maria_lawal
+          {`@${userProfile?.username}`}
         </Typography>
         <Typography
           variant="subheading"
           sx={{ color: "white", fontSize: 16, fontFamily: "Poppins", mt: 0 }}
         >
-          Bauchi, Nigeria
+          {userProfile?.city}
         </Typography>
         {/* Profile Info Boxes Here  */}
         <Box
@@ -225,8 +241,16 @@ const Profile = () => {
             gap: 2,
           }}
         >
-          <CustomButton>Follow</CustomButton>
-          <CustomButton>Message</CustomButton>
+          {user?.result?.id === userProfile?.id ? (
+            <CustomButton onClick={handleUpdate}>Update</CustomButton>
+          ) : (
+            <CustomButton onClick={handleFollow}>Follow</CustomButton>
+          )}
+          {user?.result?.id === userProfile?.id ? (
+            <CustomButton onClick={handleContact}>Contact</CustomButton>
+          ) : (
+            <CustomButton onClick={handleMessage}>Message</CustomButton>
+          )}
         </Box>
         {/* Drop Down Button */}
         <ToggleButton

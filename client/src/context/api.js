@@ -25,4 +25,4 @@ export const resetPassword = (formData) => API.post("/api/v1/auth/reset", formDa
 
 
 /**USER API */
-export const getUserProfile= (id) => API.get("/api/v1/user/getuserprofile", id); //get user profile
+export const getUserProfile= (userId) => API.post(`/api/v1/user/getuserprofile/${userId}`); //get user profile

@@ -12,7 +12,7 @@ const Home = () => {
   const { user } = useSelector((state) => ({ ...state.auth }));
 
   useEffect(()=>{
-    console.log(user?.result?.id)
+    
   },[user]);
 
   return (
