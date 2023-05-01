@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createTheme, ThemeProvider, CssBaseline } from "@mui/material";
 import { Toaster } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { setUser } from "./context/features/authSlice";
 
 /**Import the components */
 import Login from "./components/Login";
@@ -20,6 +22,7 @@ import Trowbox from "./pages/Trowbox";
 import PostDetails from "./pages/PostDetails";
 import Notification from "./pages/Notification";
 import Trow from "./pages/Trow";
+
 /**root routes */
 const router = createBrowserRouter([
   {
@@ -84,6 +87,12 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("profile"));
+  useEffect(() => {
+    dispatch(setUser(user));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   /**create a theme */
   const theme = createTheme({
     spacing: 10,

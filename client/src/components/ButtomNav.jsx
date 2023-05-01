@@ -5,10 +5,12 @@ import Shopping from "../assets/shopping-bag.png";
 import Logo from "../assets/logo.png";
 import Profile from "../assets/profile.png";
 import { useNavigate } from "react-router-dom";
+import {  useSelector } from "react-redux";
 
 const ButtomNav = () => {
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
+  const { user } = useSelector((state) => ({ ...state.auth }));
   return (
     <Paper
       sx={{
@@ -32,7 +34,7 @@ const ButtomNav = () => {
           } else if (newValue === 2) {
             navigate("/home/trowbox");
           } else if (newValue === 3) {
-            navigate("/home/profile/2");
+            navigate(`/home/profile/${user?.result?.id}`);
           }
         }}
       >

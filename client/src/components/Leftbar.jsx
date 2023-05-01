@@ -34,7 +34,7 @@ const Leftbar = () => {
           variant="body"
           sx={{ fontWeight: "medium", fontSize: "18px" }}
         >
-          Suggested for you
+          Suggestions For You
         </Typography>
         <Divider sx={{ height: "10px", marginBottom: "20px" }} />
         <Box display="flex" gap={5} sx={{justifyContent:"space-between", mb:2}}>

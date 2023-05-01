@@ -4,8 +4,13 @@ import Logo from "../assets/logo.png";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import EmailIcon from "@mui/icons-material/Email";
 import { deepPurple } from "@mui/material/colors";
+import {  useSelector } from "react-redux";
+import SearchCard from "./SearchCard";
+import { useNavigate} from "react-router-dom";
 
 const Navbar = () => {
+  const { user } = useSelector((state) => ({ ...state.auth }));
+  const navigate = useNavigate();
   return (
     <AppBar position="sticky" elevation={1}>
       <Toolbar
@@ -39,6 +44,7 @@ const Navbar = () => {
             TrowBox
           </Typography>
         </Box>
+        <SearchCard />
 
         <Box
           sx={{
@@ -56,8 +62,9 @@ const Navbar = () => {
             <EmailIcon color="inherit" htmlColor="#642c8e" />
           </Badge>
           <Avatar
+            onClick={(e) => navigate(`/home/profile/${user?.result?.id}`)}
             alt="PP"
-            src="/static/images/avatar/1.jpg"
+            src={user?.result?.profilePic}
             sx={{ bgcolor: deepPurple[500] }}
           />
         </Box>

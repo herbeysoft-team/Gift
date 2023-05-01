@@ -108,7 +108,8 @@ exports.login = async (req, res) => {
 
     res
       .status(200)
-      .json({token, others});
+      .json({token, result: others});
+     
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);

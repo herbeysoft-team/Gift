@@ -1,13 +1,20 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Box, Fab, Typography} from "@mui/material";
 import Post from "../components/Post";
 import Gift from "../assets/gift.png";
 import MobileNavBar from "../components/MobileNavBar";
 import Logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
+import {  useSelector } from "react-redux";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => ({ ...state.auth }));
+
+  useEffect(()=>{
+    console.log(user?.result?.id)
+  },[user]);
+
   return (
     <Box flex={3}>
       <MobileNavBar logo={Logo} title={"Home"}/>

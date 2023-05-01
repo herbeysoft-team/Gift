@@ -6,7 +6,7 @@ import {
   Button,
   ToggleButton,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MobileNavBar from "../components/MobileNavBar";
 import ProfilePic from "../assets/profile.png";
 import { deepPurple } from "@mui/material/colors";
@@ -14,6 +14,8 @@ import Received from "../assets/Gift_Received.png";
 import Sent from "../assets/Gift_Sent.png";
 import DragHandleSharpIcon from "@mui/icons-material/DragHandleSharp";
 import ProfileNavTabs from "../components/ProfileNavTabs";
+import { useLocation } from "react-router-dom";
+import {  useSelector } from "react-redux";
 
 const CustomButton = styled(Button)(({ theme }) => ({
   color: "#fff",
@@ -31,6 +33,11 @@ const CustomButton = styled(Button)(({ theme }) => ({
 
 const Profile = () => {
   const [drop, setDrop] = useState(false);
+  const { user } = useSelector((state) => ({ ...state.auth }));
+
+  const userId = parseInt(useLocation().pathname.split("/")[3]);
+
+ 
   return (
     <Box flex={3}>
       <MobileNavBar logo={ProfilePic} title={"Profile"} />

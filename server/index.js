@@ -7,6 +7,7 @@ const authRouter = require("./routes/auth");
 const categoryRouter = require("./routes/category");
 const subcategoryRouter  = require("./routes/subcategory");
 const itemRouter = require("./routes/item");
+const userRouter = require("./routes/user");
 
 
 //initialization
@@ -32,5 +33,6 @@ app.use("/api/v1/auth/", authRouter);
 app.use("/api/v1/category/", categoryRouter);
 app.use("/api/v1/subcategory/", subcategoryRouter);
 app.use("/api/v1/item/", itemRouter);
+// app.use("/api/v1/user/", userRouter);
 
 app.listen(port, () => console.log(`App Running on port ${port}`));

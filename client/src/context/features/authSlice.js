@@ -6,12 +6,12 @@ export const login = createAsyncThunk(
     async ({ formValue, navigate, toast }, { rejectWithValue }) => {
         try {
         const response = await api.login(formValue);
-        if(response.data.others.verified === 1){
+        if(response.data.result.verified === 1){
             toast.success("Login Successfully");
-            navigate("/")
+            navigate("/home")
         }
 
-        if(response.data.others.verified === 0){
+        if(response.data.result.verified === 0){
           toast.success("Your Account is not verified");
           navigate("/verify");
       }
@@ -114,70 +114,66 @@ export const login = createAsyncThunk(
         state.user = null;
       },
     },
-    extraReducers: {
-      [login.pending]: (state, action) => {
-        state.loading = true;
-      },
-      [login.fulfilled]: (state, action) => {
-        state.loading = false;
-        localStorage.setItem("profile", JSON.stringify({ ...action.payload }));
-        state.user = action.payload.token;
-      },
-      [login.rejected]: (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      },
-      [register.pending]: (state, action) => {
-        state.loading = true;
-      },
-      [register.fulfilled]: (state, action) => {
-        state.loading = false;
-        state.user = action.payload;
-      },
-      [register.rejected]: (state, action) => {
-        state.loading = false;
-        state.error = action.payload.message;
-      },
-      [resendOTP.pending]: (state, action) => {
-        state.loading = true;
-      },
-      [resendOTP.rejected]: (state, action) => {
-        state.loading = false;
-        state.error = action.payload.message;
-      },
-      [verify.pending]: (state, action) => {
-        state.loading = true;
-      },
-      [verify.fulfilled]: (state, action) => {
-        state.loading = false;
-        localStorage.removeItem("profile");
-        state.user = null;
-      },
-      [verify.rejected]: (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      },
-
-      [resetPasswordOTP.pending]: (state, action) => {
-        state.loading = true;
-      },
-      
-      [resetPasswordOTP.rejected]: (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      },
-
-      [resetPassword.pending]: (state, action) => {
-        state.loading = true;
-      },
-      
-      [resetPassword.rejected]: (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      },
-      
-      
+    extraReducers: (builder) => {
+      builder
+        .addCase(login.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(login.fulfilled, (state, action) => {
+          state.loading = false;
+          localStorage.setItem("profile", JSON.stringify({ ...action.payload }));
+          state.user = action.payload;
+        })
+        .addCase(login.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload;
+        })
+        .addCase(register.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(register.fulfilled, (state, action) => {
+          state.loading = false;
+          state.user = action.payload;
+        })
+        .addCase(register.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload.message;
+        })
+        .addCase(resendOTP.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(resendOTP.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload.message;
+        })
+        .addCase(verify.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(verify.fulfilled, (state, action) => {
+          state.loading = false;
+          localStorage.removeItem("profile");
+          state.user = null;
+        })
+        .addCase(verify.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload;
+        })
+        .addCase(resetPasswordOTP.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(resetPasswordOTP.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload;
+        })
+        .addCase(resetPassword.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(resetPassword.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload;
+        });
     },
+    
   });
   
   export const { setUser, setLogout } = authSlice.actions;

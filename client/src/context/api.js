@@ -22,3 +22,7 @@ export const resendOTP = (formData) => API.post("/api/v1/auth/phoneotp", formDat
 export const verify = (formData) => API.post("/api/v1/auth/verifyphoneotp", formData); //verify phone numbers with OTP
 export const resetPasswordOTP = (formData) => API.post("/api/v1/auth/passwordreset", formData); //request for OTP to reset passowrd
 export const resetPassword = (formData) => API.post("/api/v1/auth/reset", formData); //reset passowrd
+
+
+/**USER API */
+export const getUserProfile= (id) => API.get("/api/v1/user/getuserprofile", id); //get user profile

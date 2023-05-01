@@ -17,6 +17,9 @@ import {
   ListItemText,
   styled,
 } from "@mui/material";
+import { Link, useNavigate} from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setLogout } from "../context/features/authSlice";
 
 const RightNav = styled(List)({
   "& .MuiListItemButton-root": {
@@ -39,6 +42,14 @@ const RightNav = styled(List)({
 });
 
 const Rightbar = () => {
+  const { user } = useSelector((state) => ({ ...state.auth }));
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(setLogout())
+    navigate("/");
+  };
   return (
     <Box
       flex={1}
@@ -50,7 +61,7 @@ const Rightbar = () => {
       <Box position="fixed">
         <RightNav>
           <ListItem disablePadding style={{ paddingBottom: "5px" }}>
-            <ListItemButton component="a" href="#home">
+            <ListItemButton component={Link}  to="/home">
               <ListItemIcon>
                 <FeedIcon />
               </ListItemIcon>
@@ -66,7 +77,7 @@ const Rightbar = () => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding style={{ paddingBottom: "5px" }}>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton component={Link}  to="/home/trowbox">
               <ListItemIcon>
                 <CardGiftcardIcon />
               </ListItemIcon>
@@ -74,7 +85,7 @@ const Rightbar = () => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding style={{ paddingBottom: "5px" }}>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton component={Link}  to="/home/shop">
               <ListItemIcon>
                 <StorefrontIcon />
               </ListItemIcon>
@@ -98,7 +109,7 @@ const Rightbar = () => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding style={{ paddingBottom: "5px" }}>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton component={Link}  to={`/home/profile/${user?.result?.id}`}>
               <ListItemIcon>
                 <PersonIcon />
               </ListItemIcon>
@@ -109,7 +120,7 @@ const Rightbar = () => {
         <Divider />
         <RightNav>
           <ListItem disablePadding style={{ paddingBottom: "5px" }}>
-            <ListItemButton component="a" href="#home">
+            <ListItemButton component={Link}  to="/" onClick={()=> handleLogout()}>
               <ListItemIcon>
                 <ExitToAppIcon />
               </ListItemIcon>
