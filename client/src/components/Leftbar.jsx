@@ -1,4 +1,5 @@
-import React from "react";
+import toast from 'react-hot-toast'
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -8,13 +9,16 @@ import {
   Divider,
 } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
+import { useSelector, useDispatch } from "react-redux";
+import { getUnfollowUsers } from "../context/features/userSlice";
+import { addRelationship} from "../context/features/relationshipSlice";
 
 const FollowButton = styled(Button)(({ theme }) => ({
   color: "#fff",
   paddingLeft: 20,
   paddingRight: 20,
   fontSize: 10,
-  justifyContent:"flex-end",
+  justifyContent: "flex-end",
   backgroundColor: theme.palette.secondary.main,
   "&:hover": {
     backgroundColor: theme.palette.primary.main,
@@ -22,12 +26,42 @@ const FollowButton = styled(Button)(({ theme }) => ({
 }));
 
 const Leftbar = () => {
+  const dispatch = useDispatch();
+  const { unfollowUsers } = useSelector((state) => ({ ...state.user }));
+  const { loading, error } = useSelector((state) => ({ ...state.relationship }));
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    dispatch(getUnfollowUsers());
+  }, [dispatch]);
+
+  useEffect(() => {
+    loading && setIsLoading(loading);
+  }, [loading]);
+
+  useEffect(() => {
+    error && toast.error(error.message);
+  }, [error]);
+
+  const handleFollow = (id) => {
+    if(id){
+      dispatch(addRelationship({userId: id, toast}));
+      dispatch(getUnfollowUsers());
+    }
+  }
+
+  // const handleUnFollow = (id) => {
+  //   if(id){
+  //     dispatch(deleteRelationship(id));
+  //   }
+  // }
+
   return (
     <Box
       flex={1.5}
       p={2}
       height="100vh"
-      sx={{ display: { xs: "none", sm: "none", md:"none", lg:"block" } }}
+      sx={{ display: { xs: "none", sm: "none", md: "none", lg: "block" } }}
     >
       <Box position="fixed">
         <Typography
@@ -37,140 +71,41 @@ const Leftbar = () => {
           Suggestions For You
         </Typography>
         <Divider sx={{ height: "10px", marginBottom: "20px" }} />
-        <Box display="flex" gap={5} sx={{justifyContent:"space-between", mb:2}}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 1,
-              flex:3,
-            }}
-          >
-            <Avatar
-              alt="PP"
-              src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-              sx={{ bgcolor: deepPurple[500] }}
-            />
-            <Typography variant="body">Abiodun Adam</Typography>
-          </Box>
-          <Box sx={{
-              display: "flex",
-              flex:1,
-            }}>
-            <FollowButton>Follow</FollowButton>
-          </Box>
-          
-        </Box>
-        <Box display="flex" gap={5} sx={{justifyContent:"space-between", mb:2}}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 1,
-              flex:3,
-            }}
-          >
-            <Avatar
-              alt="PP"
-              src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-              sx={{ bgcolor: deepPurple[500] }}
-            />
-            <Typography variant="body">Fatimoh Adam</Typography>
-          </Box>
-          <Box sx={{
-              display: "flex",
-              flex:1,
-            }}>
-            <FollowButton>Follow</FollowButton>
-          </Box>
-          
-          
-        </Box>
-        <Box display="flex" gap={5} sx={{justifyContent:"space-between", mb:2}}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 1,
-              flex:3,
-            }}
-          >
-            <Avatar
-              alt="PP"
-              src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-              sx={{ bgcolor: deepPurple[500] }}
-            />
-            <Typography variant="body">Kamaldeen Yunus</Typography>
-          </Box>
-          <Box sx={{
-              display: "flex",
-              flex:1,
-            }}>
-            <FollowButton>Follow</FollowButton>
-          </Box>
-          
-          
-        </Box>
-        <Box display="flex" gap={5} sx={{justifyContent:"space-between", mb:2}}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 1,
-              flex:3,
-            }}
-          >
-            <Avatar
-              alt="PP"
-              src="https://images.pexels.com/photos/4881619/pexels-photo-4881619.jpeg?auto=compress&cs=tinysrgb&w=1600"
-              sx={{ bgcolor: deepPurple[500] }}
-            />
-            <Typography variant="body">Zayad Musa</Typography>
-          </Box>
-          <Box sx={{
-              display: "flex",
-              flex:1,
-            }}>
-            <FollowButton>Follow</FollowButton>
-          </Box>
-          
-          
-        </Box>
-        <Box display="flex" gap={5} sx={{justifyContent:"space-between", mb:2}}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 1,
-              flex:3,
-            }}
-          >
-            <Avatar
-              alt="PP"
-              src=""
-              sx={{ bgcolor: deepPurple[500] }}
-            />
-            <Typography variant="body">Rukayyat Saad</Typography>
-          </Box>
-          <Box sx={{
-              display: "flex",
-              flex:1,
-            }}>
-            <FollowButton>Follow</FollowButton>
-          </Box>
-          
-          
-        </Box>
-    
-
-
-        
-        
+        {unfollowUsers.map((user, index) => {
+          return (
+            <Box
+              display="flex"
+              gap={5}
+              sx={{ justifyContent: "space-between", mb: 2 }}
+              key={user.unfollowId}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 1,
+                  flex: 3,
+                }}
+              >
+                <Avatar
+                  alt="PP"
+                  src={user?.profilePic}
+                  sx={{ bgcolor: deepPurple[500] }}
+                />
+                <Typography variant="body">{user?.fullname}</Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flex: 1,
+                }}
+              >
+                <FollowButton onClick={()=>handleFollow(user?.unfollowId)}>{loading?"Loading..":"Follow"}</FollowButton>
+              </Box>
+            </Box>
+          );
+        })}
       </Box>
     </Box>
   );

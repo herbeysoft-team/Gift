@@ -12,7 +12,7 @@ import React, { useState, useEffect } from "react";
 import Logo from "../assets/logo.png";
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { login, setUser } from "../context/features/authSlice";
+import { login } from "../context/features/authSlice";
 
 const initialState = {
   phone_no: "",

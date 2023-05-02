@@ -25,4 +25,11 @@ export const resetPassword = (formData) => API.post("/api/v1/auth/reset", formDa
 
 
 /**USER API */
-export const getUserProfile= (userId) => API.post(`/api/v1/user/getuserprofile/${userId}`); //get user profile
+export const getUserProfile = (userId) => API.post(`/api/v1/user/getuserprofile/${userId}`); //get user profile
+export const getUnfollowUsers = () => API.get("/api/v1/user/getunfollowusers"); //get unfollow users
+
+
+/**RELATIONSHIP */
+export const addRelationship = (userId) => API.post(`/api/v1/relationship/addrelationship/${userId}`); //follow a user
+export const deleteRelationship = (userId) => API.post(`/api/v1/relationship/deleterelationship/${userId}`); //unfollow a user
+export const countRelationship = (userId) => API.get(`/api/v1/relationship/countrelationship/${userId}`); //count follower and following

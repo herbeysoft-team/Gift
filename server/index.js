@@ -8,6 +8,7 @@ const categoryRouter = require("./routes/category");
 const subcategoryRouter  = require("./routes/subcategory");
 const itemRouter = require("./routes/item");
 const userRouter = require("./routes/user");
+const relationshipRouter = require("./routes/relationship");
 
 
 //initialization
@@ -34,5 +35,6 @@ app.use("/api/v1/category/", categoryRouter);
 app.use("/api/v1/subcategory/", subcategoryRouter);
 app.use("/api/v1/item/", itemRouter);
 app.use("/api/v1/user/", userRouter);
+app.use("/api/v1/relationship/", relationshipRouter);
 
 app.listen(port, () => console.log(`App Running on port ${port}`));

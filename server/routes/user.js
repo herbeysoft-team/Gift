@@ -2,17 +2,19 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  getuserprofile
+  getuserprofile,
+  getunfollowusers
 } = require("../controller/user");
+const verifyToken = require("../middleware/verifyToken");
 
 /**CREATE SUBCATEORY */
 //router.post("/createsubcategory", createsubcategory);
 
-/**GET ONE SUBCATEGORY */
-router.post("/getuserprofile/:userId", getuserprofile);
+/**GET USER INFORMATION */
+router.post("/getuserprofile/:userId", verifyToken, getuserprofile);
 
-/**GET ALL SUBCATOTEGORIES */
-//router.get("/allsubcategories", allsubcategories);
+/**GET UNFOLLOW USERS */
+router.get("/getunfollowusers/", verifyToken, getunfollowusers);
 
 /**UPDATE A SUBCATEGORY */
 //router.put("/updatesubcategory/:id", updatesubcategory);

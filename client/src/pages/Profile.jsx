@@ -17,6 +17,7 @@ import ProfileNavTabs from "../components/ProfileNavTabs";
 import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../context/features/userSlice";
+import { countRelationship } from "../context/features/relationshipSlice";
 
 const CustomButton = styled(Button)(({ theme }) => ({
   color: "#fff",
@@ -38,11 +39,18 @@ const Profile = () => {
   const [drop, setDrop] = useState(false);
   const { user } = useSelector((state) => ({ ...state.auth }));
   const { userProfile } = useSelector((state) => ({ ...state.user }));
+  const { countFollow } = useSelector((state) => ({ ...state.relationship }));
 
   const userId = useLocation().pathname.split("/")[3];
   useEffect(() => {
     if (userId) {
       dispatch(getUserProfile(userId));
+    }
+  }, [userId, dispatch]);
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(countRelationship(userId));
     }
   }, [userId, dispatch]);
 
@@ -147,7 +155,7 @@ const Profile = () => {
               variant="heading"
               sx={{ fontSize: 16, fontFamily: "Poppins" }}
             >
-              879
+              {countFollow?.countfollower?.num_followers}
             </Typography>
             <Typography variant="subheading">Follower</Typography>
           </Box>
@@ -167,7 +175,7 @@ const Profile = () => {
               variant="heading"
               sx={{ fontSize: 16, fontFamily: "Poppins" }}
             >
-              879
+              {countFollow?.countfollowing?.num_following}
             </Typography>
             <Typography variant="subheading">Following</Typography>
           </Box>
