@@ -15,8 +15,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import { deepPurple } from "@mui/material/colors";
-import { useNavigate} from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 
 const SearchCard = () => {
   const navigate = useNavigate();
@@ -38,11 +37,11 @@ const SearchCard = () => {
   };
 
   const handleClose = (id) => {
-    if(id){
-      navigate(`/home/profile/${id}`)
+    if (id) {
+      navigate(`/home/profile/${id}`);
     }
-      setAnchorEl(null);
-    };
+    setAnchorEl(null);
+  };
   return (
     <Paper
       component="form"
@@ -84,31 +83,36 @@ const SearchCard = () => {
       >
         {searchUsers.map((user, index) => {
           return (
-        <MenuItem onClick={()=> handleClose(user.userId)} key={user.userId}>
-          <Box
-            display="flex"
-            gap={7}
-            sx={{ justifyContent: "space-between"}}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 1,
-                flex: 3,
-              }}
+            <MenuItem
+              onClick={() => handleClose(user.userId)}
+              key={user.userId}
             >
-              <Avatar alt="PP" src={user?.profilePic} sx={{ bgcolor: deepPurple[500] }} />
-              <Typography variant="body">{user?.fullname}</Typography>
-            </Box>
-          </Box>
-        </MenuItem>
-         );
+              <Box
+                display="flex"
+                gap={7}
+                sx={{ justifyContent: "space-between" }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 1,
+                    flex: 3,
+                  }}
+                >
+                  <Avatar
+                    alt="PP"
+                    src={user?.profilePic}
+                    sx={{ bgcolor: deepPurple[500] }}
+                  />
+                  <Typography variant="body">{user?.fullname}</Typography>
+                </Box>
+              </Box>
+            </MenuItem>
+          );
         })}
-
       </Menu>
-          
     </Paper>
   );
 };
