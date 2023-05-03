@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getUnfollowUsers } from "../context/features/userSlice";
 import { addRelationship} from "../context/features/relationshipSlice";
 
+
 const FollowButton = styled(Button)(({ theme }) => ({
   color: "#fff",
   paddingLeft: 20,
@@ -29,11 +30,14 @@ const Leftbar = () => {
   const dispatch = useDispatch();
   const { unfollowUsers } = useSelector((state) => ({ ...state.user }));
   const { loading, error } = useSelector((state) => ({ ...state.relationship }));
+  const { user } = useSelector((state) => ({ ...state.auth }));
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    dispatch(getUnfollowUsers());
-  }, [dispatch]);
+    if(user){
+    dispatch(getUnfollowUsers(user?.result?.id));
+    }
+  }, [dispatch, user]);
 
   useEffect(() => {
     loading && setIsLoading(loading);
@@ -46,7 +50,7 @@ const Leftbar = () => {
   const handleFollow = (id) => {
     if(id){
       dispatch(addRelationship({userId: id, toast}));
-      dispatch(getUnfollowUsers());
+      dispatch(getUnfollowUsers(user?.result?.id));
     }
   }
 

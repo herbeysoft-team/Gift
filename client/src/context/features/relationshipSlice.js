@@ -20,9 +20,12 @@ export const addRelationship = createAsyncThunk(
 export const deleteRelationship = createAsyncThunk(
   "relationship/deleteRelationship",
 
-  async (userId, { rejectWithValue }) => {
+  async ({userId, toast}, { rejectWithValue }) => {
     try {
       const response = await api.deleteRelationship(userId);
+      if(response){
+        toast.success("Unfollow...")
+      }
 
       return response.data;
     } catch (err) {
@@ -44,11 +47,26 @@ export const countRelationship = createAsyncThunk(
     }
   }
 );
+
+export const checkRelationship = createAsyncThunk(
+  "relationship/checkRelationship",
+
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await api.checkRelationship(userId);
+
+      return response.data.followed;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 const relationshipSlice = createSlice({
   name: "relationship",
   initialState: {
     userProfile: null,
     countFollow: null,
+    checkFollow: null,
     error: "",
     loading: false,
   },
@@ -85,6 +103,17 @@ const relationshipSlice = createSlice({
         state.countFollow = action.payload;
       })
       .addCase(countRelationship.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(checkRelationship.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(checkRelationship.fulfilled, (state, action) => {
+        state.loading = false;
+        state.checkFollow = action.payload;
+      })
+      .addCase(checkRelationship.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

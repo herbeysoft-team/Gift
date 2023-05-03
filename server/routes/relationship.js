@@ -6,6 +6,7 @@ const {
   addrelationship,
   deleterelationship,
   countrelationship,
+  checkrelationship
   
 } = require("../controller/relationship");
 
@@ -17,6 +18,9 @@ router.post("/deleterelationship/:userId", verifyToken, deleterelationship);
 
 /**COUNT RELATIONSHIP */
 router.get("/countrelationship/:userId", countrelationship);
+
+/**CHECK RELATIONSHIP */
+router.get("/checkrelationship/:userId", verifyToken, checkrelationship);
 
 
 module.exports = router;

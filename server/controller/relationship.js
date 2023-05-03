@@ -68,3 +68,24 @@ exports.countrelationship = async (req, res) => {
     console.log(error);
   }
 };
+
+
+/**
+ * GET - http://localhost:8000/api/v1/relationship/checkrelationship
+ * id- User Id
+ *
+ */
+//Check Relationship
+exports.checkrelationship = async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const checkfollower = await db.getrow(
+      "SELECT COUNT(*)  AS followed FROM relationship WHERE follower_id = ? AND following_id = ?",
+      [req.user.userId, userId]
+    );
+    res.status(201).json(checkfollower);
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};

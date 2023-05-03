@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import {
   Box,
   Avatar,
@@ -17,7 +18,12 @@ import ProfileNavTabs from "../components/ProfileNavTabs";
 import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../context/features/userSlice";
-import { countRelationship } from "../context/features/relationshipSlice";
+import {
+  countRelationship,
+  checkRelationship,
+  addRelationship,
+  deleteRelationship,
+} from "../context/features/relationshipSlice";
 
 const CustomButton = styled(Button)(({ theme }) => ({
   color: "#fff",
@@ -39,22 +45,40 @@ const Profile = () => {
   const [drop, setDrop] = useState(false);
   const { user } = useSelector((state) => ({ ...state.auth }));
   const { userProfile } = useSelector((state) => ({ ...state.user }));
-  const { countFollow } = useSelector((state) => ({ ...state.relationship }));
+  const { countFollow, checkFollow } = useSelector((state) => ({
+    ...state.relationship,
+  }));
+  const [isFollowing, setIsFollowing] = useState(false);
 
   const userId = useLocation().pathname.split("/")[3];
+
   useEffect(() => {
     if (userId) {
       dispatch(getUserProfile(userId));
+      dispatch(countRelationship(userId));
+      dispatch(checkRelationship(userId));
     }
   }, [userId, dispatch]);
 
   useEffect(() => {
-    if (userId) {
-      dispatch(countRelationship(userId));
+    if (checkFollow) {
+      setIsFollowing(checkFollow === 1);
     }
-  }, [userId, dispatch]);
+  }, [checkFollow]);
 
-  const handleFollow = () => {};
+  const handleFollow = () => {
+    if (isFollowing) {
+      //unfolow the user
+      dispatch(deleteRelationship({ userId, toast }));
+      dispatch(countRelationship(userId));
+      setIsFollowing(false);
+    } else {
+      //follow the user
+      dispatch(addRelationship({ userId, toast }));
+      dispatch(countRelationship(userId));
+      setIsFollowing(true);
+    }
+  };
 
   const handleUpdate = () => {};
 
@@ -252,7 +276,9 @@ const Profile = () => {
           {user?.result?.id === userProfile?.id ? (
             <CustomButton onClick={handleUpdate}>Update</CustomButton>
           ) : (
-            <CustomButton onClick={handleFollow}>Follow</CustomButton>
+            <CustomButton onClick={handleFollow}>
+              {isFollowing ? "Following" : "Follow"}
+            </CustomButton>
           )}
           {user?.result?.id === userProfile?.id ? (
             <CustomButton onClick={handleContact}>Contact</CustomButton>
