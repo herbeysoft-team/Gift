@@ -1,9 +1,12 @@
 import React from 'react'
-import { Box,Typography, AppBar, Badge } from "@mui/material";
+import { Box,Typography, AppBar, Badge} from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import EmailIcon from "@mui/icons-material/Email";
+import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate} from "react-router-dom";
 
 const MobileNavBar = ({logo, title}) => {
+  const navigate = useNavigate();
   return (
     <AppBar
         position="sticky"
@@ -24,7 +27,11 @@ const MobileNavBar = ({logo, title}) => {
             {title}
           </Typography>
         </Box>
+        
         <Box display="flex" flexDirection="row" alignItems="center" gap={1}>
+        <Badge badgeContent={1} color="error" variant="dot" invisible={true} onClick={(e)=>navigate("/home/search")}>
+         <SearchIcon  htmlColor="#642c8e" sx={{ fontSize: 32 }} />
+        </Badge>
         <Badge badgeContent={1} color="error" variant="dot" invisible={false}>
           <EmailIcon color="inherit" htmlColor="#642c8e" sx={{ fontSize: 32 }}/>
         </Badge>

@@ -13,6 +13,7 @@ import Reset from "./components/Reset";
 import ChangePassowrd from "./components/ChangePassowrd";
 import PageNotFound from "./components/PageNotFound";
 import Layout from "./components/Layout";
+import MobileSearch from "./components/MobileSearch";
 
 /**Import the pages */
 import Home from "./pages/Home";
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "/home/trow",
         element: <Trow/>,
+      },
+      {
+        path: "/home/search",
+        element: <MobileSearch/>,
       },
     ],
   },
