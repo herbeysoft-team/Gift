@@ -102,6 +102,7 @@ exports.login = async (req, res) => {
     //CREATE USER TOKEN
     const tokenData = { userId: userExist.id, phone_no: userExist.phone_no };
     const token = await createToken(tokenData);
+    console.log(token)
 
     //DESTRUCTION USER EXIST INFO
     const { password, ...others } = userExist;

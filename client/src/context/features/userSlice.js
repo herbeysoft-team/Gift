@@ -15,6 +15,22 @@ export const getUserProfile = createAsyncThunk(
   }
 );
 
+export const updateUserProfile = createAsyncThunk(
+  "user/updateUserProfile",
+
+  async ({ updatedValue, toast }, { rejectWithValue }) => {
+    try {
+      const response = await api.updateUserProfile(updatedValue);
+      if(response){
+        toast.success("Profile Updated Successfully")
+      }
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const getUnfollowUsers = createAsyncThunk(
   "user/getUnfollowUsers",
 
@@ -36,6 +52,20 @@ export const getSearchUsers = createAsyncThunk(
     try {
       const response = await api.getSearchUsers(searchname);
 
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const uploadProfilePic = createAsyncThunk(
+  "user/uploadProfilePic",
+
+  async ({formData, toast},{ rejectWithValue }) => {
+    try {
+      const response = await api.uploadProfilePic(formData);
+      toast.success("Updated Successfully")
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);
@@ -85,6 +115,26 @@ const userSlice = createSlice({
         state.searchUsers = action.payload;
       })
       .addCase(getSearchUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateUserProfile.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(updateUserProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(uploadProfilePic.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(uploadProfilePic.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(uploadProfilePic.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

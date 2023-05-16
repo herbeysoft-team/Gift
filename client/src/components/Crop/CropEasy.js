@@ -4,8 +4,9 @@ import Cropper from 'react-easy-crop';
 import getCroppedImg from "./utils/CropImage";
 import { Cancel } from '@mui/icons-material';
 import CropIcon from '@mui/icons-material/Crop';
+import { toast } from "react-hot-toast";
 
-const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile }) => {
+const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile, aspectRatio }) => {
     
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -36,6 +37,7 @@ const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile }) => {
     //     location: 'modal',
     //   });
     //   console.log(error);
+      toast.error(error)
     }
 
     // setLoading(false);
@@ -57,7 +59,7 @@ const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile }) => {
           crop={crop}
           zoom={zoom}
           rotation={rotation}
-          aspect={16/9}
+          aspect={aspectRatio}
           onZoomChange={setZoom}
           onRotationChange={setRotation}
           onCropChange={setCrop}

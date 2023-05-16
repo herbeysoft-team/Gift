@@ -15,7 +15,7 @@ import Received from "../assets/Gift_Received.png";
 import Sent from "../assets/Gift_Sent.png";
 import DragHandleSharpIcon from "@mui/icons-material/DragHandleSharp";
 import ProfileNavTabs from "../components/ProfileNavTabs";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../context/features/userSlice";
 import {
@@ -41,7 +41,7 @@ const CustomButton = styled(Button)(({ theme }) => ({
 
 const Profile = () => {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [drop, setDrop] = useState(false);
   const { user } = useSelector((state) => ({ ...state.auth }));
   const { userProfile } = useSelector((state) => ({ ...state.user }));
@@ -80,7 +80,9 @@ const Profile = () => {
     }
   };
 
-  const handleUpdate = () => {};
+  const handleUpdate = () => {
+    navigate(`/home/updateprofile/${user?.result?.id}`);
+  };
 
   const handleMessage = () => {};
 

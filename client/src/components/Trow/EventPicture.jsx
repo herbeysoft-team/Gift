@@ -56,7 +56,7 @@ const EventPicture = () => {
       </IconButton>
       : (
         
-        <Avatar src={photoURL} alt="thumbnail" variant="square" sx={{width:100, height:75}}/>
+        <Avatar src={photoURL} alt="thumbnail" variant="square" onClick={onChooseImg} sx={{width:100, height:75}}/>
       )
       }
 

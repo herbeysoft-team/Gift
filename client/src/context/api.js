@@ -28,6 +28,8 @@ export const resetPassword = (formData) => API.post("/api/v1/auth/reset", formDa
 export const getUserProfile = (userId) => API.post(`/api/v1/user/getuserprofile/${userId}`); //get user profile
 export const getUnfollowUsers = (id) => API.get(`/api/v1/user/getunfollowusers/${id}`); //get unfollow users
 export const getSearchUsers= (searchname) => API.get(`/api/v1/user/getsearchusers/${searchname}`); //get search users
+export const updateUserProfile = (updatedValue) => API.put("/api/v1/user/updateuserprofile", updatedValue); //update user profile
+export const uploadProfilePic = (formData) => API.put("/api/v1/user/updateuserprofilepic", formData); //upload profile pic
 
 
 

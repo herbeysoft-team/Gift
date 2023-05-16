@@ -23,6 +23,62 @@ exports.getuserprofile = async (req, res) => {
   }
 };
 
+/**
+ * GET - http://localhost:8000/api/v1/user/updateuserprofile/:id
+ * id- Get user id
+ * fullname
+ * username
+ * gender
+ * city
+ *
+ */
+//Update user profile
+exports.updateuserprofile = async (req, res) => {
+  const userId = req.user.userId;
+  const {
+    fullname,
+    username,
+    gender,
+    city,
+  } = req.body;
+  try {
+    const UpdateUserProfile = await db.update(
+      "UPDATE userProfile SET fullname = ?, username = ?, gender=?, city=? WHERE id = ?",
+      [fullname, username, gender, city, userId]
+    );
+    if (UpdateUserProfile) { 
+      res.status(201).json("Profile Updated Successfully");
+    }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+
+/**
+ * GET - http://localhost:8000/api/v1/user/updateuserprofilepic/:id
+ * id- Get user id
+ *
+ */
+//Update user profile
+exports.updateuserprofilepic = async (req, res) => {
+  const userId = req.user.userId;
+  const file = req.file.filename;
+  try {
+    const UpdateUserProfilePic = await db.update(
+      "UPDATE userProfile SET profilePic = ? WHERE id = ?",
+      [file, userId]
+    );
+    if (UpdateUserProfilePic) { 
+      res.status(201).json("Updated Successfully");
+    }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
 
 /**
  * GET - http://localhost:8000/api/v1/user/getunfollowusers/:id

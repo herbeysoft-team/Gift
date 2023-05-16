@@ -191,10 +191,10 @@ const Register = () => {
               <MenuItem  value="0">
                 Select Gender
               </MenuItem>
-              <MenuItem value="Male">
+              <MenuItem value="male">
                 Male
               </MenuItem>
-              <MenuItem value="Female">
+              <MenuItem value="female">
                 Female
               </MenuItem>
 
