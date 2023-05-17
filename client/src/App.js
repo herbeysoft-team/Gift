@@ -25,6 +25,7 @@ import Notification from "./pages/Notification";
 import Trow from "./pages/Trow";
 import UpdateProfile from "./pages/UpdateProfile";
 import ChangeProfilePic from "./pages/ChangeProfilePic";
+import AddItem from "./pages/AddItem";
 
 /**root routes */
 const router = createBrowserRouter([
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "/home/shop",
         element: <Shop />,
+      },
+      {
+        path: "/home/shop/add",
+        element: <AddItem />,
       },
       {
         path: "/home/trowbox",

@@ -64,7 +64,7 @@ const Navbar = () => {
           <Avatar
             onClick={(e) => navigate(`/home/profile/${user?.result?.id}`)}
             alt="PP"
-            src={user?.result?.profilePic}
+            src={`http://localhost:8000/images/${user?.result?.profilePic}`}
             sx={{ bgcolor: deepPurple[500] }}
           />
         </Box>

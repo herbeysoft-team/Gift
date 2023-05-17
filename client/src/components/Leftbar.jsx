@@ -12,6 +12,7 @@ import { deepPurple } from "@mui/material/colors";
 import { useSelector, useDispatch } from "react-redux";
 import { getUnfollowUsers } from "../context/features/userSlice";
 import { addRelationship} from "../context/features/relationshipSlice";
+import URL from '../constant/url';
 
 
 const FollowButton = styled(Button)(({ theme }) => ({
@@ -94,7 +95,7 @@ const Leftbar = () => {
               >
                 <Avatar
                   alt="PP"
-                  src={user?.profilePic}
+                  src={`${URL.imageBaseUrl}${user?.profilePic}`}
                   sx={{ bgcolor: deepPurple[500] }}
                 />
                 <Typography variant="body">{user?.fullname}</Typography>

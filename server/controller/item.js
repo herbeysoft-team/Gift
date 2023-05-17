@@ -1,12 +1,14 @@
 const db = require("../config/database");
 
+
 //create a item
 exports.createitem = async (req, res) => {
-  const { item_name, item_description, item_pics, item_subcategory } = req.body;
+  const { name, description, category } = req.body;
+  const file = req.file.filename;
   try {
     const result = await db.insert(
       "INSERT INTO items (item_name, item_description, item_pics, item_subcategory) VALUES (?,?,?,?)",
-      [item_name, item_description, item_pics, item_subcategory]
+      [name, description, file, category]
     );
     res.status(201).json({message:"Item Created Successfully", result});
   } catch (error) {

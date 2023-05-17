@@ -19,7 +19,6 @@ const EventPicture = () => {
         setFile(file);
         setPhotoURL(URL.createObjectURL(file));
         setOpenCrop(true);
-        console.log(file)
       }
     }
   };

@@ -25,26 +25,7 @@ app.use(express.static("./public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.disable("x-powered-by"); //less hackers know your stack
 
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "public/images");
-//   },
-//   filename: function (req, file, cb) {
-//     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    
-//     cb(null, uniqueSuffix + ".jpeg" );
-//   },
-// });
 
-// const upload = multer({ storage: storage });
-
-// const uploadMiddleware = upload.single('file');
-
-app.post("/api/v1/upload", multerMiddleware, (req, res) => {
-  const file = req.file;
-  res.status(200).json(file.filename);
-  console.log(file.filename)
-});
 
 //routes
 app.use("/api/v1/auth/", authRouter);

@@ -8,9 +8,10 @@ const {
   updateitem,
   deleteitem,
 } = require("../controller/item");
+const {multerMiddleware} = require("../middleware/multerUtil")
 
 /**CREATE ITEM */
-router.post("/createitem", createitem);
+router.post("/createitem", multerMiddleware, createitem);
 
 /**GET ONE ITEM */
 router.get("/getitem/:id", getitem);

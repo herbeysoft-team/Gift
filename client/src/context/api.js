@@ -31,10 +31,12 @@ export const getSearchUsers= (searchname) => API.get(`/api/v1/user/getsearchuser
 export const updateUserProfile = (updatedValue) => API.put("/api/v1/user/updateuserprofile", updatedValue); //update user profile
 export const uploadProfilePic = (formData) => API.put("/api/v1/user/updateuserprofilepic", formData); //upload profile pic
 
-
-
 /**RELATIONSHIP API */
 export const addRelationship = (userId) => API.post(`/api/v1/relationship/addrelationship/${userId}`); //follow a user
 export const deleteRelationship = (userId) => API.post(`/api/v1/relationship/deleterelationship/${userId}`); //unfollow a user
 export const countRelationship = (userId) => API.get(`/api/v1/relationship/countrelationship/${userId}`); //count follower and following
 export const checkRelationship = (userId) => API.get(`/api/v1/relationship/checkrelationship/${userId}`); //count follower and following
+
+/**ITEM API */
+export const getSubcategories = () => API.get(`/api/v1/subcategory/allsubcategories/`); //Get all Subcategories
+export const createItem = (formData) => API.post(`/api/v1/item/createitem`,formData); //create an item

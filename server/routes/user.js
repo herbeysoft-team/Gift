@@ -9,7 +9,7 @@ const {
   updateuserprofilepic,
 } = require("../controller/user");
 const verifyToken = require("../middleware/verifyToken");
-const {multerMiddleware} = require("../middleware/multerUtil")
+const {multerMiddleware} = require("../middleware/multerUtil");
 
 
 

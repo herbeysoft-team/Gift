@@ -2,7 +2,7 @@ import { Avatar, Box, Button, styled } from '@mui/material'
 import React, { useRef, useState } from 'react'
 import MobileNavBar from '../components/MobileNavBar'
 import ProfilePic from "../assets/profile.png";
-import { useNavigate } from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   uploadProfilePic,
@@ -10,6 +10,7 @@ import {
 import toast from "react-hot-toast";
 import { deepPurple } from "@mui/material/colors";
 import CropEasy from '../components/Crop/CropEasy';
+import URL from '../constant/url';
 
 
 const CustomButton = styled(Button)(({ theme }) => ({
@@ -29,7 +30,7 @@ const CustomButton = styled(Button)(({ theme }) => ({
 
 const ChangeProfilePic = () => {
   const dispatch = useDispatch();
-  const { userProfile, fileURL } = useSelector((state) => ({ ...state.user }));
+  const { userProfile } = useSelector((state) => ({ ...state.user }));
   const inputRef = useRef();
   const [file, setFile] = useState(null);
   const [openCrop, setOpenCrop] = useState(false);
@@ -51,7 +52,6 @@ const ChangeProfilePic = () => {
             setFile(file);
             setPhotoURL(URL.createObjectURL(file));
             setOpenCrop(true);
-            console.log(file)
           }
         }
       };
@@ -80,16 +80,16 @@ const ChangeProfilePic = () => {
         <Avatar
           onClick={onChooseImg} 
           alt="PP"
-          src={userProfile?.profilePic}
+          src={`${URL.imageBaseUrl}${userProfile?.profilePic}`}
           sx={{ bgcolor: deepPurple[500], width: 128, height: 128 }}
         />
             :
-            <Avatar
-            onClick={onChooseImg} 
-            alt="PP"
-            src={photoURL}
-            sx={{ bgcolor: deepPurple[500], width: 128, height: 128 }}
-          />
+          <Avatar
+          onClick={onChooseImg} 
+          alt="PP"
+          src={photoURL}
+          sx={{ bgcolor: deepPurple[500], width: 128, height: 128 }}
+        />
         }
 
         <input

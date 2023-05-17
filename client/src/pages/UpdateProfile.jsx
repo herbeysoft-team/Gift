@@ -18,6 +18,7 @@ import {
   updateUserProfile,
 } from "../context/features/userSlice";
 import toast from "react-hot-toast";
+import URL from '../constant/url';
 
 const initialState = {
   fullname: "",
@@ -116,7 +117,7 @@ const UpdateProfile = () => {
       >
         <Avatar
           alt="PP"
-          src={userProfile?.profilePic}
+          src={`${URL.imageBaseUrl}${userProfile?.profilePic}`}
           sx={{ bgcolor: deepPurple[500], width: 100, height: 100 }}
         />
         <EditButton onClick={handleUpdateProfile}>Change Picture</EditButton>
