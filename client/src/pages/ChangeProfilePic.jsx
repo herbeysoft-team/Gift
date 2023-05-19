@@ -10,7 +10,7 @@ import {
 import toast from "react-hot-toast";
 import { deepPurple } from "@mui/material/colors";
 import CropEasy from '../components/Crop/CropEasy';
-import URL from '../constant/url';
+import URLBASE from '../constant/urlbase';
 
 
 const CustomButton = styled(Button)(({ theme }) => ({
@@ -80,7 +80,7 @@ const ChangeProfilePic = () => {
         <Avatar
           onClick={onChooseImg} 
           alt="PP"
-          src={`${URL.imageBaseUrl}${userProfile?.profilePic}`}
+          src={`${URLBASE.imageBaseUrl}${userProfile?.profilePic}`}
           sx={{ bgcolor: deepPurple[500], width: 128, height: 128 }}
         />
             :

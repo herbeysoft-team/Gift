@@ -17,7 +17,7 @@ exports.createitem = async (req, res) => {
   }
 };
 
-//Get a item
+//Get an item
 exports.getitem = async (req, res) => {
   const { id } = req.params;
   try {
@@ -34,10 +34,45 @@ exports.getitem = async (req, res) => {
   }
 };
 
+//Get items by category
+exports.getitemsbysubcategory = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await db.getall(
+      "SELECT * FROM items WHERE item_subcategory = ?",
+      [id]
+    );
+    if (result) {
+      res.status(201).json(result);
+    }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+//Get items by search
+exports.getitemsbysearch = async (req, res) => {
+  const { searchName } = req.params;
+  try {
+    const result = await db.getall(
+      "SELECT * FROM items WHERE item_name LIKE ?",
+      [`%${searchName}%`]
+    );
+    if (result) {
+      res.status(201).json(result);
+    }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+
 //Get all items
 exports.allitems = async (req, res) => {
   try {
-    const result = await db.getall("SELECT * FROM items");
+    const result = await db.getall("SELECT * FROM items",[]);
     if (result) {
       res.status(201).json(result);
     }

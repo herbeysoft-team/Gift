@@ -24,7 +24,7 @@ import {
   addRelationship,
   deleteRelationship,
 } from "../context/features/relationshipSlice";
-import URL from '../constant/url';
+import URLBASE from '../constant/urlbase';
 
 const CustomButton = styled(Button)(({ theme }) => ({
   color: "#fff",
@@ -108,7 +108,7 @@ const Profile = () => {
       >
         <Avatar
           alt="PP"
-          src={`${URL.imageBaseUrl}${userProfile?.profilePic}`}
+          src={`${URLBASE.imageBaseUrl}${userProfile?.profilePic}`}
           sx={{ bgcolor: deepPurple[500], width: 64, height: 64 }}
         />
         <Typography

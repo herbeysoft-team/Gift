@@ -1,5 +1,5 @@
 import { Box, Fab, Tooltip } from '@mui/material'
-import React from 'react'
+import React, {useEffect} from 'react'
 import MobileNavBar from '../components/MobileNavBar'
 import Store from "../assets/store.png";
 import ShopSearch from '../components/ShopSearch';
@@ -7,9 +7,19 @@ import GiftCategoryTabs from '../components/GiftCategoryTabs';
 import CardItems from '../components/CardItems';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate} from "react-router-dom";
+import { getSubcategories} from "../context/features/itemSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const Shop = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { item_subcategories } = useSelector((state) => ({
+    ...state.item,
+  }));
+  useEffect(() => {
+    dispatch(getSubcategories());
+  }, [dispatch]);
+
   return (
     <Box flex={3}>
         {/* header */}
@@ -17,7 +27,7 @@ const Shop = () => {
         {/* Search item */}
         <ShopSearch/>
         {/* Gift Tab Categories  */}
-        <GiftCategoryTabs/>
+        <GiftCategoryTabs categories={item_subcategories}/>
         {/* display the items    */}
         <CardItems/>
         <Tooltip

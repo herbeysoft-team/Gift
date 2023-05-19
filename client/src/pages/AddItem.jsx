@@ -63,12 +63,6 @@ const AddItem = () => {
     formData.append('category', itemCategory);
    
         dispatch(createItem({formData, navigate, toast}))
-        console.log({
-            "Item NAme": itemName,
-            "Item Category": itemCategory,
-            "Item Description": itemDescription,
-            "Item Image" : file
-        })
     }else{
         toast.error("Please fill in all required field")
     }
@@ -208,7 +202,7 @@ const AddItem = () => {
       <CustomButton onClick={onSubmitItem}>Add Item</CustomButton>
       </Box>
       :
-      <CropEasy {...{ photoURL, setOpenCrop, setPhotoURL, setFile, aspectRatio: 5/9}} />
+      <CropEasy {...{ photoURL, setOpenCrop, setPhotoURL, setFile, aspectRatio: 3/4}} />
     }
     </Box>
   );

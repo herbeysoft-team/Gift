@@ -7,6 +7,7 @@ import { deepPurple } from "@mui/material/colors";
 import {  useSelector } from "react-redux";
 import SearchCard from "./SearchCard";
 import { useNavigate} from "react-router-dom";
+import URLBASE from '../constant/urlbase';
 
 const Navbar = () => {
   const { user } = useSelector((state) => ({ ...state.auth }));
@@ -64,7 +65,7 @@ const Navbar = () => {
           <Avatar
             onClick={(e) => navigate(`/home/profile/${user?.result?.id}`)}
             alt="PP"
-            src={`http://localhost:8000/images/${user?.result?.profilePic}`}
+            src={`${URLBASE.imageBaseUrl}${user?.result?.profilePic}`}
             sx={{ bgcolor: deepPurple[500] }}
           />
         </Box>

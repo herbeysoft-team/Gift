@@ -18,9 +18,51 @@ export const createItem = createAsyncThunk(
   "item/createItem",
 
   async({formData, navigate, toast}, {rejectWithValue})=>{
-    console.log(formData)
       try{
         const response = await api.createItem(formData);
+        if(response){
+          toast.success(response.data.message);
+          navigate("/home/shop");
+        }
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
+export const getItems = createAsyncThunk(
+  "item/getItems",
+
+  async(_, {rejectWithValue})=>{
+      try{
+        const response = await api.getItems();
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
+export const getItemsByCategory = createAsyncThunk(
+  "item/getItemsByCategory",
+
+  async(id, {rejectWithValue})=>{
+      try{
+        const response = await api.getItemsByCategory(id);
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
+export const getItemsBySearch = createAsyncThunk(
+  "item/getItemsBySearch",
+
+  async(searchName, {rejectWithValue})=>{
+      try{
+        const response = await api.getItemsBySearch(searchName);
         return response.data;
       }catch(err){
         return rejectWithValue(err.response.data)
@@ -33,10 +75,15 @@ const itemSlice = createSlice({
   name: "item",
   initialState: {
     item_subcategories: [],
+    items: [],
     error: "",
     loading: false,
   },
-  reducers: {},
+  reducers: {
+    clearItems: (state) => {
+      state.items = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getSubcategories.pending, (state) => {
@@ -59,9 +106,42 @@ const itemSlice = createSlice({
       .addCase(createItem.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(getItems.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getItems.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = action.payload;
+      })
+      .addCase(getItems.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getItemsByCategory.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getItemsByCategory.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = action.payload;
+      })
+      .addCase(getItemsByCategory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getItemsBySearch.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getItemsBySearch.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = action.payload;
+      })
+      .addCase(getItemsBySearch.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
       
   },
 });
-
+export const { clearItems } = itemSlice.actions;
 export default itemSlice.reducer;
