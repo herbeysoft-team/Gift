@@ -61,7 +61,6 @@ const AddItem = () => {
     formData.append('name', itemName);
     formData.append('description', itemDescription);
     formData.append('category', itemCategory);
-   
         dispatch(createItem({formData, navigate, toast}))
     }else{
         toast.error("Please fill in all required field")
@@ -83,7 +82,7 @@ const AddItem = () => {
         component="form"
         noValidate
         sx={{
-          my: 1,
+          my: 2,
           marginX: { xs: "0.5rem", md: "0.5rem", lg: "3rem" },
           p: 3,
         }}

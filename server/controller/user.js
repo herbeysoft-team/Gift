@@ -129,3 +129,28 @@ exports.getsearchusers = async (req, res) => {
     console.log(error);
   }
 };
+
+/**
+ * GET - http://localhost:8000/api/v1/user/getuserstogift/:searchname
+ * name - Name of the user OR
+ * phone Number - Phone number of the user
+ *
+ */
+//Get Search users
+exports.getuserstogift = async (req, res) => {
+
+  const userId = req.user.userId;
+  try {
+    const getUsersToGift = await db.getall(
+      "SELECT u.id as userId, u.fullname, u.phone_no, u.username FROM userProfile u WHERE u.id <> ? ",
+      [userId]
+    );
+   
+    if (getUsersToGift) {
+      res.status(201).json(getUsersToGift);
+    }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};

@@ -39,7 +39,7 @@ exports.getitemsbysubcategory = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await db.getall(
-      "SELECT * FROM items WHERE item_subcategory = ?",
+      "SELECT * FROM items WHERE item_subcategory = ? ",
       [id]
     );
     if (result) {
@@ -71,7 +71,8 @@ exports.getitemsbysearch = async (req, res) => {
 
 //Get all items
 exports.allitems = async (req, res) => {
-  try {
+
+    try {
     const result = await db.getall("SELECT * FROM items",[]);
     if (result) {
       res.status(201).json(result);

@@ -2,7 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import AuthReducer from "./features/authSlice";
 import UserReducer from "./features/userSlice";
 import RelationshipReducer from "./features/relationshipSlice";
-import ItemReducer from "./features/itemSlice"
+import ItemReducer from "./features/itemSlice";
+import TrowReducer from "./features/trowSlice";
 
 export default configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export default configureStore({
       user: UserReducer,
       relationship: RelationshipReducer,
       item: ItemReducer,
+      trow: TrowReducer,
     }
   });
   

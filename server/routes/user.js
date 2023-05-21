@@ -7,6 +7,7 @@ const {
   getsearchusers,
   updateuserprofile,
   updateuserprofilepic,
+  getuserstogift
 } = require("../controller/user");
 const verifyToken = require("../middleware/verifyToken");
 const {multerMiddleware} = require("../middleware/multerUtil");
@@ -15,6 +16,10 @@ const {multerMiddleware} = require("../middleware/multerUtil");
 
 /**GET SEARCH USERS*/
 router.get("/getsearchusers/:searchname", getsearchusers);
+
+
+/**GET USERS TO GIFT*/
+router.get("/getuserstogift/", verifyToken, getuserstogift);
 
 /**GET USER INFORMATION */
 router.post("/getuserprofile/:userId", verifyToken, getuserprofile);

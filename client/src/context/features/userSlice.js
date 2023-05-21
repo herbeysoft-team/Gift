@@ -59,6 +59,20 @@ export const getSearchUsers = createAsyncThunk(
   }
 );
 
+export const getUsersToGift = createAsyncThunk(
+  "user/getUsersToGift",
+
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.getUsersToGift();
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const uploadProfilePic = createAsyncThunk(
   "user/uploadProfilePic",
 
@@ -79,6 +93,7 @@ const userSlice = createSlice({
     userProfile: null,
     unfollowUsers: [],
     searchUsers: [],
+    usersToGift: [],
     error: "",
     loading: false,
   },
@@ -115,6 +130,17 @@ const userSlice = createSlice({
         state.searchUsers = action.payload;
       })
       .addCase(getSearchUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getUsersToGift.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getUsersToGift.fulfilled, (state, action) => {
+        state.loading = false;
+        state.usersToGift = action.payload;
+      })
+      .addCase(getUsersToGift.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

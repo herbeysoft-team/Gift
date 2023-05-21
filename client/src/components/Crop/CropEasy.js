@@ -29,18 +29,9 @@ const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile, aspectRatio }) 
       setFile(file);
       setOpenCrop(false);
     } catch (error) {
-    //   setAlert({
-    //     isAlert: true,
-    //     severity: 'error',
-    //     message: error.message,
-    //     timeout: 5000,
-    //     location: 'modal',
-    //   });
-    //   console.log(error);
       toast.error(error)
     }
 
-    // setLoading(false);
   };
   return (
     <>

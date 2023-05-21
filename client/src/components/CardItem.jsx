@@ -10,7 +10,8 @@ import React from "react";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import URLBASE from "../constant/urlbase";
 
-const CardItem = ({ gift }) => {
+const CardItem = ({ gift, checked, selectedItems}) => {
+
   return (
     <Box sx={{ boxShadow: "2" }}>
       <CardMedia
@@ -36,6 +37,8 @@ const CardItem = ({ gift }) => {
           <Checkbox
             icon={<FavoriteBorder sx={{ color: "purple", fontSize: 24 }} />}
             checkedIcon={<Favorite sx={{ color: "purple", fontSize: 24 }} />}
+            checked={selectedItems?.includes(gift.id)}
+            onChange={checked}
           />
         </IconButton>
       </CardContent>

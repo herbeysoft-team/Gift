@@ -28,6 +28,7 @@ export const resetPassword = (formData) => API.post("/api/v1/auth/reset", formDa
 export const getUserProfile = (userId) => API.post(`/api/v1/user/getuserprofile/${userId}`); //get user profile
 export const getUnfollowUsers = (id) => API.get(`/api/v1/user/getunfollowusers/${id}`); //get unfollow users
 export const getSearchUsers= (searchname) => API.get(`/api/v1/user/getsearchusers/${searchname}`); //get search users
+export const getUsersToGift= () => API.get(`/api/v1/user/getuserstogift/`); //getusers to gift
 export const updateUserProfile = (updatedValue) => API.put("/api/v1/user/updateuserprofile", updatedValue); //update user profile
 export const uploadProfilePic = (formData) => API.put("/api/v1/user/updateuserprofilepic", formData); //upload profile pic
 
@@ -41,5 +42,5 @@ export const checkRelationship = (userId) => API.get(`/api/v1/relationship/check
 export const getSubcategories = () => API.get(`/api/v1/subcategory/allsubcategories/`); //Get all Subcategories
 export const createItem = (formData) => API.post(`/api/v1/item/createitem`,formData); //create an item
 export const getItems = () => API.get(`/api/v1/item/allitems/`); //Get all items
-export const getItemsByCategory = (id) => API.get(`/api/v1/item/getitemsbysubcategory/${id}`); //Get items by category
+export const getItemsByCategory = (newValue)=> API.get(`/api/v1/item/getitemsbysubcategory/${newValue}`); //Get items by category
 export const getItemsBySearch = (searchName) => API.get(`/api/v1/item/getitemsbysearch/${searchName}`); //Get items by search

@@ -14,7 +14,7 @@ import EventName from "../components/Trow/EventName";
 import EventPurpose from "../components/Trow/EventPurpose";
 import EventPicture from "../components/Trow/EventPicture";
 import EventShop from "../components/Trow/EventShop";
-import EventReview from "../components/Trow/EventReview";
+
 const Trow = () => {
   const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
@@ -39,7 +39,7 @@ const Trow = () => {
             2: <EventPurpose />,
             3: <EventShop />,
             4: <EventPicture />,
-            5: <EventReview />,
+            
             
           }[activeStep]
         }
@@ -47,7 +47,7 @@ const Trow = () => {
 
       <MobileStepper
         variant="dots"
-        steps={6}
+        steps={5}
         position="static"
         activeStep={activeStep}
         sx={{ maxWidth: "100%", flexGrow: 1, mb:10}}
