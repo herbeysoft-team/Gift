@@ -52,7 +52,7 @@ const Trow = () => {
         activeStep={activeStep}
         sx={{ maxWidth: "100%", flexGrow: 1, mb:10}}
         nextButton={
-          <Button size="small" onClick={handleNext} disabled={activeStep === 5}>
+          <Button size="small" onClick={handleNext} disabled={activeStep === 4}>
             Next
             {theme.direction === "rtl" ? (
               <WestIcon />

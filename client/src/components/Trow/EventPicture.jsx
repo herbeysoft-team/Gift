@@ -6,6 +6,9 @@ import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined";
 import CropEasy from "../Crop/CropEasy";
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { createTrow } from "../../context/features/trowSlice";
 
 
 
@@ -21,6 +24,8 @@ const initialState={
 }
 
 const EventPicture = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const inputRef = useRef();
   const [file, setFile] = useState(null);
   const [openCrop, setOpenCrop] = useState(false);
@@ -68,14 +73,14 @@ const EventPicture = () => {
       console.log({event_name, username, phone_no,event_purpose, category_name, recommended_gift})
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('username', username);
+      formData.append('username', username.phone_no);
       formData.append('phone_number', phone_no);
       formData.append('event_name', event_name);
       formData.append('event_purpose', event_purpose);
       formData.append('category_name', category_name);
       formData.append('recommended_gift', recommended_gift);
-
-      console.log(formData)
+      dispatch(createTrow({formData, navigate, toast}))
+      
     }else{
       toast.error("Please fill in the neccesary details")
     }

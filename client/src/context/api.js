@@ -44,3 +44,6 @@ export const createItem = (formData) => API.post(`/api/v1/item/createitem`,formD
 export const getItems = () => API.get(`/api/v1/item/allitems/`); //Get all items
 export const getItemsByCategory = (newValue)=> API.get(`/api/v1/item/getitemsbysubcategory/${newValue}`); //Get items by category
 export const getItemsBySearch = (searchName) => API.get(`/api/v1/item/getitemsbysearch/${searchName}`); //Get items by search
+
+/**TROW API */
+export const createTrow = (formData) => API.post(`/api/v1/trow/createtrow`,formData); //create a trowbox

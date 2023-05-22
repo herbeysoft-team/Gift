@@ -11,7 +11,8 @@ const subcategoryRouter = require("./routes/subcategory");
 const itemRouter = require("./routes/item");
 const userRouter = require("./routes/user");
 const relationshipRouter = require("./routes/relationship");
-const {multerMiddleware} = require("./middleware/multerUtil")
+const trowRouter = require("./routes/trow");
+//const {multerMiddleware} = require("./middleware/multerUtil")
 
 //initialization
 const port = process.env.PORT;
@@ -34,5 +35,6 @@ app.use("/api/v1/subcategory/", subcategoryRouter);
 app.use("/api/v1/item/", itemRouter);
 app.use("/api/v1/user/", userRouter);
 app.use("/api/v1/relationship/", relationshipRouter);
+app.use("/api/v1/trow/", trowRouter);
 
 app.listen(port, () => console.log(`App Running on port ${port}`));
