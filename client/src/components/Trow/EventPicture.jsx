@@ -2,6 +2,7 @@ import { Avatar, Box, Button, CardMedia, Divider, IconButton, Typography } from 
 import React, { useRef, useState, useEffect } from "react";
 import Hero from "./Hero";
 import Gift from "../../assets/gift.png";
+import thumb from "../../assets/trow_thumb.png";
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined";
 import CropEasy from "../Crop/CropEasy";
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
@@ -30,8 +31,8 @@ const EventPicture = () => {
   const [file, setFile] = useState(null);
   const [openCrop, setOpenCrop] = useState(false);
   const [photoURL, setPhotoURL] = useState(null);
-  const [formVale, setFormValue] = useState(initialState)
-  const {category_name, event_date, event_name, event_purpose, phone_no, recommended_gift, username} = formVale
+  const [formValue, setFormValue] = useState(initialState)
+  const {category_name, event_date, event_name, event_purpose, phone_no, recommended_gift, username} = formValue
 
   useEffect(() => {
     // Check if trowDetails already exists in local storage
@@ -70,7 +71,6 @@ const EventPicture = () => {
     }
     if((event_name && event_purpose && category_name && event_date )){
       
-      console.log({event_name, username, phone_no,event_purpose, category_name, recommended_gift})
       const formData = new FormData();
       formData.append('file', file);
       formData.append('username', username.phone_no);
@@ -78,16 +78,13 @@ const EventPicture = () => {
       formData.append('event_name', event_name);
       formData.append('event_purpose', event_purpose);
       formData.append('category_name', category_name);
+      formData.append('event_date', event_date);
       formData.append('recommended_gift', recommended_gift);
       dispatch(createTrow({formData, navigate, toast}))
       
     }else{
       toast.error("Please fill in the neccesary details")
     }
-      
-
-   
-    //dispatch(createItem({formData, navigate, toast}))
     
     }
 
@@ -157,8 +154,8 @@ const EventPicture = () => {
         <CardMedia
           component="img"
           fit="cover"
-          image={photoURL}
-          alt="Paella dish"
+          image={file ? photoURL : thumb}
+          alt="Trowbox Image"
         />
         <Box
           sx={{
@@ -183,11 +180,11 @@ const EventPicture = () => {
               fontFamily="Poppins"
               fontWeight="medium"
             >
-              Hello
+              {event_name}
             </Typography>
             <Divider />
             <Typography variant="body" color="primary" fontFamily="Poppins">
-              Hello
+              {event_purpose}
             </Typography>
           </Box>
         </Box>

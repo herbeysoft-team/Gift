@@ -23,6 +23,7 @@ export const createTrow = createAsyncThunk(
         if(response){
           toast.success(response.data.message);
           navigate("/home/");
+
         }
         return response.data;
       }catch(err){
@@ -89,7 +90,7 @@ const trowSlice = createSlice({
       })
       .addCase(createTrow.fulfilled, (state, action) => {
         state.loading = false;
-        // state.item_subcategories = action.payload;
+        localStorage.removeItem("trowDetails");
       })
       .addCase(createTrow.rejected, (state, action) => {
         state.loading = false;
