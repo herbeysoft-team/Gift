@@ -12,6 +12,7 @@ import Wishlist from './Wishlist';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
+
   return (
     <div
       role="tabpanel"
@@ -42,7 +43,7 @@ function a11yProps(index) {
   };
 }
 
-export default function ProfileNavTabs() {
+export default function ProfileNavTabs({userId}) {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
@@ -84,7 +85,7 @@ export default function ProfileNavTabs() {
           <Sent/>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          <Wishlist/>
+          <Wishlist user_id ={userId} />
         </TabPanel>
       {/* </SwipeableViews> */}
     </Box>

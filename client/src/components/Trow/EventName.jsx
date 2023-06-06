@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 const EventName = () => {
   const dispatch = useDispatch()
   const [event_name, setEvent_name] = useState(null);
-  const [category_name, setCategory_name] = useState(null);
+  const [category_name, setCategory_name] = useState('');
   const { item_subcategories } = useSelector((state) => ({
     ...state.item,
   }));

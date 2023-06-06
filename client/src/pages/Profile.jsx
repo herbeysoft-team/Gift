@@ -302,7 +302,7 @@ const Profile = () => {
       </Box>
 
       {/* Other part Start here */}
-      <ProfileNavTabs />
+      <ProfileNavTabs userId={userId}/>
     </Box>
   );
 };

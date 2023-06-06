@@ -1,43 +1,40 @@
-import { Box, Grid, PaginationItem } from "@mui/material";
+import { Box, Fab, Grid, PaginationItem, Tooltip } from "@mui/material";
 import React, { useState, useId, useEffect, useMemo } from "react";
-import CardItem from "./CardItem";
 import { useSelector, useDispatch } from "react-redux";
 import { getItems } from "../context/features/itemSlice";
+import { addTrowWishlist } from "../context/features/trowSlice";
 import { TablePagination } from "@mui/material";
 import toast from "react-hot-toast";
-import {
-  addWishlist,
-  removeWishlist,
-  myWishlist,
-} from "../context/features/wishlistSlice";
 import Stack from "@mui/material/Stack";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import PickShopCard from "./PickShopCard";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
-const CardItems = ({ wishlist }) => {
+const PickShopCards = ({id, navigate}) => {
   const uniqueId = useId;
   const dispatch = useDispatch();
   const { items } = useSelector((state) => ({ ...state.item }));
-  const { my_wishlist } = useSelector((state) => ({ ...state.wishlist }));
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [selectedItems, setSelectedItems] = useState([]);
   const memoizedItems = useMemo(() => items, [items]);
-  const memoizedWishList = useMemo(() => my_wishlist, [my_wishlist]);
 
   useEffect(() => {
-    // Check if trowDetails already exists in local storage
-    const trowDetailsString = localStorage.getItem("trowDetails");
-    if (trowDetailsString) {
-      const trowDetails = JSON.parse(trowDetailsString);
-      setSelectedItems(trowDetails.recommended_gift);
+    // Check if trowWishlist already exists in local storage
+    const trowWishlistsString = localStorage.getItem("trowWishlist");
+    if (trowWishlistsString) {
+      const trowWishlist = JSON.parse(trowWishlistsString);
+      setSelectedItems(trowWishlist.trowWishlists_gift);
+    } else {
+      // Set default values and create userDetails in local storage
+      const defaultTrowWishlist = {
+        trowWishlists_gift: [],
+      };
+
+      localStorage.setItem("trowWishlist", JSON.stringify(defaultTrowWishlist));
     }
   }, []);
-
-  useEffect(() => {
-    // Check if trowDetails already exists in local storage
-    dispatch(myWishlist());
-  }, [dispatch]);
 
   const handleCheckboxChange = (itemId) => {
     const isSelected = selectedItems.includes(itemId);
@@ -46,48 +43,36 @@ const CardItems = ({ wishlist }) => {
       // Item is already selected, remove it from the array
       const updatedItems = selectedItems.filter((id) => id !== itemId);
       setSelectedItems(updatedItems);
-      // Retrieve "trowDetails" from local storage
-      const trowDetailsString = localStorage.getItem("trowDetails");
-      if (trowDetailsString) {
+      // Retrieve "trowWishlist" from local storage
+      const trowWishlistString = localStorage.getItem("trowWishlist");
+      if (trowWishlistString) {
         // Parse the retrieved string into an object
-        const trowDetails = JSON.parse(trowDetailsString);
-        // Update the username value
-        trowDetails.recommended_gift = updatedItems;
+        const trowWishlist = JSON.parse(trowWishlistString);
+        // Update the wishlist
+        trowWishlist.trowWishlists_gift = updatedItems;
         // Convert the updated object back to a string
-        const updatedTrowDetailsString = JSON.stringify(trowDetails);
+        const updatedTrowWishlistsString = JSON.stringify(trowWishlist);
         // Set the updated string back into local storage
-        localStorage.setItem("trowDetails", updatedTrowDetailsString);
+        localStorage.setItem("trowWishlist", updatedTrowWishlistsString);
+        toast.success("Gift Removed from Wishlist");
       }
     } else {
       // Item is not selected, add it to the array
       const updatedItems = [...selectedItems, itemId];
       setSelectedItems(updatedItems);
       // Retrieve "trowDetails" from local storage
-      const trowDetailsString = localStorage.getItem("trowDetails");
-      if (trowDetailsString) {
+      const trowWishlistsString = localStorage.getItem("trowWishlist");
+      if (trowWishlistsString) {
         // Parse the retrieved string into an object
-        const trowDetails = JSON.parse(trowDetailsString);
+        const trowWishlist = JSON.parse(trowWishlistsString);
         // Update the username value
-        trowDetails.recommended_gift = updatedItems;
+        trowWishlist.trowWishlists_gift = updatedItems;
         // Convert the updated object back to a string
-        const updatedTrowDetailsString = JSON.stringify(trowDetails);
+        const updatedTrowWishlistsString = JSON.stringify(trowWishlist);
         // Set the updated string back into local storage
-        localStorage.setItem("trowDetails", updatedTrowDetailsString);
+        localStorage.setItem("trowWishlist", updatedTrowWishlistsString);
+        toast.success("Gift Added to Wishlist");
       }
-    }
-  };
-
-  const handleAddToWishlist = (itemId) => {
-    const isSelected = memoizedWishList.includes(itemId);
-
-    if (isSelected) {
-      // Item is already in the wishlist, remove it
-      dispatch(removeWishlist({item_id: itemId, toast}));
-      dispatch(myWishlist());
-    } else {
-      // Item is not in the wishlist, add it
-      dispatch(addWishlist({item_id: itemId, toast}));
-      dispatch(myWishlist());
     }
   };
 
@@ -107,6 +92,18 @@ const CardItems = ({ wishlist }) => {
     setPage(0);
   };
 
+  const handleAddWishList = (e) => {
+      e.preventDefault();
+    //Function to add wishlist to a particular trowbox
+    const trowWishlistsString = localStorage.getItem("trowWishlist");
+    if (trowWishlistsString) {
+      const trowWishlist = JSON.parse(trowWishlistsString);
+      dispatch(addTrowWishlist({id, trowwishlist: trowWishlist, toast, navigate}));
+      
+    } 
+    
+  };
+
   return (
     <Box
       sx={{
@@ -117,21 +114,31 @@ const CardItems = ({ wishlist }) => {
         alignItems: "center",
       }}
     >
-      
-      <Grid key={uniqueId} container rowSpacing={1} columnSpacing={1}>
+      {selectedItems.length > 0 ? (
+        <Tooltip
+          onClick={handleAddWishList}
+          title="Add Wishlist"
+          sx={{
+            position: "fixed",
+            bottom: 30,
+            left: { xs: "calc(50% - 25px)", md: 30 },
+          }}
+        >
+          <Fab color="primary" aria-label="Add Item">
+            <AddShoppingCartIcon />
+          </Fab>
+        </Tooltip>
+      ) : null}
 
+      <Grid key={uniqueId} container rowSpacing={1} columnSpacing={1}>
         {memoizedItems.map((gift, index) => {
           return (
             <Grid item xs={6} sm={6} md={6} lg={4} key={index}>
-              <CardItem
+              <PickShopCard
                 key={uniqueId}
                 gift={gift}
-                checked={
-                  wishlist
-                    ? () => handleAddToWishlist(gift.id)
-                    : () => handleCheckboxChange(gift.id)
-                }
-                selectedItems={wishlist ? my_wishlist : selectedItems }
+                checked={() => handleCheckboxChange(gift.id)}
+                selectedItems={selectedItems}
               />
             </Grid>
           );
@@ -157,4 +164,4 @@ const CardItems = ({ wishlist }) => {
   );
 };
 
-export default CardItems;
+export default PickShopCards;

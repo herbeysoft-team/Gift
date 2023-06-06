@@ -26,6 +26,9 @@ import Trow from "./pages/Trow";
 import UpdateProfile from "./pages/UpdateProfile";
 import ChangeProfilePic from "./pages/ChangeProfilePic";
 import AddItem from "./pages/AddItem";
+import TrowBoxProcess from "./pages/TrowBoxProcess";
+import PickShop from "./pages/PickShop";
+import CreateEvent from "./pages/CreateEvent";
 
 /**root routes */
 const router = createBrowserRouter([
@@ -54,6 +57,10 @@ const router = createBrowserRouter([
         element: <Shop />,
       },
       {
+        path: "/home/pickshop/:id",
+        element: <PickShop />,
+      },
+      {
         path: "/home/shop/add",
         element: <AddItem />,
       },
@@ -62,9 +69,18 @@ const router = createBrowserRouter([
         element: <Trowbox />,
       },
       {
+        path: "/home/createevent",
+        element: <CreateEvent />,
+      },
+      {
         path: "/home/postdetails/:id",
         element: <PostDetails />,
       },
+      {
+        path: "/home/trowboxprocess/:id",
+        element: <TrowBoxProcess />,
+      },
+     
       {
         path: "/home/notification",
         element: <Notification />,

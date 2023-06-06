@@ -11,7 +11,6 @@ import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import URLBASE from "../constant/urlbase";
 
 const CardItem = ({ gift, checked, selectedItems}) => {
-
   return (
     <Box sx={{ boxShadow: "2" }}>
       <CardMedia

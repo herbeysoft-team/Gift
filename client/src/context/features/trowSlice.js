@@ -1,18 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../api";
 
-// export const getSubcategories = createAsyncThunk(
-//   "item/getSubcategories",
-
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const response = await api.getSubcategories();
-//       return response.data;
-//     } catch (err) {
-//       return rejectWithValue(err.response.data);
-//     }
-//   }
-// );
 
 export const createTrow = createAsyncThunk(
   "trow/createTrow",
@@ -32,51 +20,81 @@ export const createTrow = createAsyncThunk(
   }
 )
 
-// export const getItems = createAsyncThunk(
-//   "item/getItems",
+export const createEvent = createAsyncThunk(
+  "trow/createEvent",
 
-//   async(_, {rejectWithValue})=>{
-//       try{
-//         const response = await api.getItems();
-//         return response.data;
-//       }catch(err){
-//         return rejectWithValue(err.response.data)
-//       }
-//   }
-// )
+  async({formData, navigate, toast}, {rejectWithValue})=>{
+      try{
+        const response = await api.createEvent(formData);
+        if(response){
+          toast.success(response.data.message);
+          navigate("/home/trowbox");
 
-// export const getItemsByCategory = createAsyncThunk(
-//   "item/getItemsByCategory",
+        }
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
 
-//   async(newValue, {rejectWithValue})=>{
-//       try{
-//         const response = await api.getItemsByCategory(newValue);
-//         return response.data;
-//       }catch(err){
-//         return rejectWithValue(err.response.data)
-//       }
-//   }
-// )
+export const getTrow = createAsyncThunk(
+  "trow/getTrow",
 
-// export const getItemsBySearch = createAsyncThunk(
-//   "item/getItemsBySearch",
+  async(id, {rejectWithValue})=>{
+      try{
+        const response = await api.getTrow(id);
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
 
-//   async(searchName, {rejectWithValue})=>{
-//       try{
-//         const response = await api.getItemsBySearch(searchName);
-//         return response.data;
-//       }catch(err){
-//         return rejectWithValue(err.response.data)
-//       }
-//   }
-// )
+
+export const addTrowWishlist = createAsyncThunk(
+  "trow/addTrowWishlist",
+
+  async({id, trowwishlist, toast, navigate}, {rejectWithValue})=>{
+      try{
+        const response = await api.addTrowWishlist(id, trowwishlist);
+        if(response){
+          toast.success(response.data.message);
+          navigate(`/home/trowboxprocess/${id}`)
+        }
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
+export const addTrowGift = createAsyncThunk(
+  "trow/addTrowGift",
+
+  async({id, trowgift, toast, navigate}, {rejectWithValue})=>{
+
+    console.log({id, trowgift})
+      try{
+        const response = await api.addTrowGift(id, trowgift);
+        if(response){
+          toast.success(response.data.message);
+          navigate(`/home/`)
+        }
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
+
 
 
 const trowSlice = createSlice({
   name: "trow",
   initialState: {
-    username: null,
-    phone_no: null,
+    trowDetails: null,
     error: "",
     loading: false,
   },
@@ -93,6 +111,38 @@ const trowSlice = createSlice({
         localStorage.removeItem("trowDetails");
       })
       .addCase(createTrow.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getTrow.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getTrow.fulfilled, (state, action) => {
+        state.loading = false;
+        state.trowDetails = action.payload;
+      })
+      .addCase(getTrow.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(addTrowWishlist.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addTrowWishlist.fulfilled, (state, action) => {
+        state.loading = false;
+        localStorage.removeItem("trowWishlist");
+      })
+      .addCase(addTrowWishlist.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(addTrowGift.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addTrowGift.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(addTrowGift.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

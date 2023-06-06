@@ -1,11 +1,11 @@
 import { Box} from '@mui/material'
 import React from 'react'
-import CardItems from './CardItems'
+import WishCards from './WishCards'
 
-const Wishlist = () => {
+const Wishlist = ({user_id}) => {
   return (
     <Box>
-        <CardItems/>
+        <WishCards user_id = {user_id}/>
     </Box>
   )
 }

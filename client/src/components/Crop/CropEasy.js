@@ -58,7 +58,7 @@ const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile, aspectRatio }) 
         />
       </DialogContent>
       <DialogActions sx={{ flexDirection: "column", mx: 3, my: 2 }}>
-        <Box sx={{ width: "100%", mb: 1 }}>
+        <Box sx={{ width: "100%", mb: 1}}>
           <Box>
             <Typography>Zoom: {zoomPercent(zoom)}</Typography>
             <Slider

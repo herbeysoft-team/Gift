@@ -47,3 +47,13 @@ export const getItemsBySearch = (searchName) => API.get(`/api/v1/item/getitemsby
 
 /**TROW API */
 export const createTrow = (formData) => API.post(`/api/v1/trow/createtrow`,formData); //create a trowbox
+export const createEvent = (formData) => API.post(`/api/v1/trow/createevent`,formData); //create an event
+export const getTrow = (id) => API.get(`/api/v1/trow/gettrow/${id}`); //get a trowbox
+export const addTrowWishlist = (id, trowWishlist) => API.post(`/api/v1/trow/addtrowwishlist/${id}`, trowWishlist) //add wishlist to trowbox
+export const addTrowGift = (id, trowgift) => API.post(`/api/v1/trow/addtrowgift/${id}`, trowgift) //add wishlist to trowbox
+
+/**WISHLIST API */
+export const addWishlist= (item_id) => API.post(`/api/v1/wishlist/addwishlist/${item_id}`); //add item to wishlist
+export const removeWishlist= (item_id) => API.post(`/api/v1/wishlist/removewishlist/${item_id}`); //remove item from wishlist
+export const myWishlist= () => API.get(`/api/v1/wishlist/mywishlist/`); //Fetch my wishlist
+export const wishlists = (userId) => API.get(`/api/v1/wishlist/wishlists/${userId}`); //fetch user wishlist

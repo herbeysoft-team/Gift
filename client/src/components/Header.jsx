@@ -27,7 +27,7 @@ const Header = ({logo, title}) => {
       <Typography
         variant="h6"
         color={"white"}
-        sx={{ fontFamily: "Poppins", fontWeight: "medium" }}
+        sx={{ fontFamily: "Poppins", fontWeight: "medium", textAlign:"center" }}
       >
         {title}
       </Typography>

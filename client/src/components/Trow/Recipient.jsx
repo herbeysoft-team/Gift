@@ -105,11 +105,10 @@ const Recipient = () => {
           getOptionLabel={(usersToGift) =>
             `${usersToGift?.fullname} - ${usersToGift?.username}`
           }
-          value={username}
-          // eslint-disable-next-line eqeqeq
+          value={username || null}
           isOptionEqualToValue={(option, value) =>
             option.username === value.username ||
-            option.fullname === value.fullname
+            option.fullname === value.fullname 
           }
           noOptionsText={"No Result Found.."}
           renderInput={(params) => (
