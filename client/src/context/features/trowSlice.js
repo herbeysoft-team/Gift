@@ -51,6 +51,32 @@ export const getTrow = createAsyncThunk(
   }
 )
 
+export const getMyTrowBox = createAsyncThunk(
+  "trow/getMyTrowBox",
+
+  async(_, {rejectWithValue})=>{
+      try{
+        const response = await api.getMyTrowBox();
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
+export const getMyScheduleTrowBox = createAsyncThunk(
+  "trow/getMyScheduleTrowBox",
+
+  async(_, {rejectWithValue})=>{
+      try{
+        const response = await api.getMyScheduleTrowBox();
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
 
 export const addTrowWishlist = createAsyncThunk(
   "trow/addTrowWishlist",
@@ -74,7 +100,6 @@ export const addTrowGift = createAsyncThunk(
 
   async({id, trowgift, toast, navigate}, {rejectWithValue})=>{
 
-    console.log({id, trowgift})
       try{
         const response = await api.addTrowGift(id, trowgift);
         if(response){
@@ -95,6 +120,8 @@ const trowSlice = createSlice({
   name: "trow",
   initialState: {
     trowDetails: null,
+    currentTrowBox: [],
+    scheduleTrowBox: [],
     error: "",
     loading: false,
   },
@@ -143,6 +170,28 @@ const trowSlice = createSlice({
         state.loading = false;
       })
       .addCase(addTrowGift.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getMyTrowBox.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMyTrowBox.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentTrowBox = action.payload;
+      })
+      .addCase(getMyTrowBox.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getMyScheduleTrowBox.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMyScheduleTrowBox.fulfilled, (state, action) => {
+        state.loading = false;
+        state.scheduleTrowBox = action.payload;
+      })
+      .addCase(getMyScheduleTrowBox.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

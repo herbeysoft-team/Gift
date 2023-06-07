@@ -1,8 +1,9 @@
 import { Box, CardMedia, Divider, Icon, Typography } from "@mui/material";
 import React from "react";
 import { CardGiftcard } from "@mui/icons-material";
+import URLBASE from "../constant/urlbase";
 
-const TrowCard = () => {
+const TrowCard = ({box}) => {
   return (
     <Box>
       <Box sx={{ position: "relative" }}>
@@ -10,8 +11,8 @@ const TrowCard = () => {
           component="img"
           height="10%"
           fit="cover"
-          image="https://th.bing.com/th/id/OIP.iPkt7kskdztbDzNLHx3BOgHaEi?pid=ImgDet&w=1200&h=736&rs=1"
-          alt="Paella dish"
+          image={`${URLBASE.imageBaseUrl}${box?.event_pics}`}
+          alt="Trowbox Pics"
         />
         <Box
           sx={{
@@ -36,7 +37,7 @@ const TrowCard = () => {
               fontFamily="Poppins"
               fontWeight="mediuum"
             >
-              My Birthday
+              {box?.event_name.length > 15 ? `${box?.event_name.substring(0,15)}...` : box?.event_name}
             </Typography>
             <Divider />
             <Typography variant="body" color="primary" fontFamily="Poppins">

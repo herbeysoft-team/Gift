@@ -6,8 +6,6 @@ import { addTrowWishlist } from "../context/features/trowSlice";
 import { TablePagination } from "@mui/material";
 import toast from "react-hot-toast";
 import Stack from "@mui/material/Stack";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import PickShopCard from "./PickShopCard";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
@@ -152,12 +150,12 @@ const PickShopCards = ({id, navigate}) => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          renderItem={(item) => (
-            <PaginationItem
-              icon={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
-              {...item}
-            />
-          )}
+          // renderItem={(item) => (
+          //   <PaginationItem
+          //     icon={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+          //     {...item}
+          //   />
+          // )}
         />
       </Stack>
     </Box>

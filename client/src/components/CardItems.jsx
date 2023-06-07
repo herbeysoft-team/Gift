@@ -11,8 +11,7 @@ import {
   myWishlist,
 } from "../context/features/wishlistSlice";
 import Stack from "@mui/material/Stack";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+
 
 const CardItems = ({ wishlist }) => {
   const uniqueId = useId;
@@ -145,12 +144,12 @@ const CardItems = ({ wishlist }) => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          renderItem={(item) => (
-            <PaginationItem
-              icon={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
-              {...item}
-            />
-          )}
+          // renderItem={(item) => (
+          //   <PaginationItem
+          //     icon={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+          //     {...item}
+          //   />
+          // )}
         />
       </Stack>
     </Box>

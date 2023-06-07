@@ -73,12 +73,12 @@ const WishCards = ({ user_id, wishlist }) => {
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-              renderItem={(item) => (
-                <PaginationItem
-                  slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
-                  {...item}
-                />
-              )}
+              // renderItem={(item) => (
+              //   <PaginationItem
+              //     icon={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+              //     {...item}
+              //   />
+              // )}
             />
           </Stack>
         </>

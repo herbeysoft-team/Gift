@@ -1,4 +1,5 @@
 const db = require("../config/database");
+const getCurrentDate = require("../utilities/currentDate");
 
 //create a trow box
 exports.createtrow = async (req, res) => {
@@ -113,12 +114,6 @@ exports.gettrow = async (req, res) => {
         } else {
           message = `Anonymous sent you a trowbox!`;
         }
-        // console.log({
-        //   Trowbox: result,
-        //   recommended_gift: result2,
-        //   wishlist_gift: result3,
-        //   message: message,
-        // });
         res.status(201).json({
           Trowbox: result,
           recommended_gift: result2,
@@ -182,6 +177,39 @@ exports.addtrowgift = async (req, res) => {
       });
     }
     res.status(201).json({ message: "Gift Added" });
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+//get my current trowbox
+exports.getmytrowbox = async (req, res) => {
+
+  const currentDate = getCurrentDate();
+  const userId = req.user;
+  try {
+    const resultforCurrent = await db.getall("SELECT * FROM trowbox WHERE recipient_no = ? AND event_date <= ?", [userId?.phone_no, currentDate]);
+    if (resultforCurrent) {
+        res.status(201).json(resultforCurrent);
+    }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+
+//get my schedule trowbox
+exports.getmyscheduletrowbox = async (req, res) => {
+
+  const currentDate = getCurrentDate();
+  const userId = req.user;
+  try {
+    const resultforSchedule = await db.getall("SELECT * FROM trowbox WHERE recipient_no = ? AND event_date > ?", [userId?.phone_no, currentDate]);
+    if (resultforSchedule) {
+        res.status(201).json(resultforSchedule);
+    }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);

@@ -2,7 +2,9 @@ import { Box, CardMedia, Icon, Typography } from "@mui/material";
 import React from "react";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
-const ScheduleCard = () => {
+import URLBASE from "../constant/urlbase";
+
+const ScheduleCard = ({box}) => {
   return (
     <Box
       sx={{
@@ -18,7 +20,7 @@ const ScheduleCard = () => {
           component="img"
           height="150px"
           fit="cover"
-          image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiJVY49pfc2JokIUlq6piKVOl89eUB9lO0zDyUpF_POPWBuGtgSj5Tkac&s"
+          image={`${URLBASE.imageBaseUrl}${box?.event_pics}`}
           alt="Schedule Event"
         />
         <Box
@@ -44,7 +46,7 @@ const ScheduleCard = () => {
               fontFamily="Poppins"
               fontWeight="mediuum"
             >
-              Get together
+              {box?.event_name.length > 15 ? `${box?.event_name.substring(0,15)}...` : box?.event_name}
             </Typography>
           </Box>
         </Box>
@@ -67,7 +69,7 @@ const ScheduleCard = () => {
       </Box>
       <Box sx={{ flex: 1, display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center" }}>
         <EventNoteIcon fontSize={"large"} color="primary" sx={{fontSize:80}} />
-        <Typography variant="caption" sx={{fontFamily:"Poppins"}}>20/03/2023</Typography>
+        <Typography variant="caption" sx={{fontFamily:"Poppins"}}>{box?.event_date}</Typography>
       </Box>
     </Box>
   );
