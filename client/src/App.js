@@ -29,6 +29,7 @@ import AddItem from "./pages/AddItem";
 import TrowBoxProcess from "./pages/TrowBoxProcess";
 import PickShop from "./pages/PickShop";
 import CreateEvent from "./pages/CreateEvent";
+import EventDetails from "./pages/EventDetails";
 
 /**root routes */
 const router = createBrowserRouter([
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
       {
         path: "/home/postdetails/:id",
         element: <PostDetails />,
+      },
+      {
+        path: "/home/eventdetails/:id",
+        element: <EventDetails />,
       },
       {
         path: "/home/trowboxprocess/:id",
