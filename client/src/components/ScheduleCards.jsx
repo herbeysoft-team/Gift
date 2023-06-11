@@ -1,12 +1,11 @@
-import { Box, Grid, PaginationItem, Typography  } from '@mui/material'
+import { Box, Grid, Typography  } from '@mui/material'
 import React, { useState, useId, useEffect, useMemo } from 'react'
 import ScheduleCard from './ScheduleCard'
 import { useSelector, useDispatch } from "react-redux";
 import { TablePagination } from "@mui/material";
 import { getMyScheduleTrowBox } from "../context/features/trowSlice";
 import Stack from "@mui/material/Stack";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+
 
 const ScheduleCards = () => {
   const uniqueId = useId;
@@ -80,7 +79,7 @@ const ScheduleCards = () => {
         fontFamily="Poppins"
         fontWeight="medium"
         textAlign="center">
-          No Schedule TrowBox!!!
+          No TrowBox!!!
         </Typography>
       )}
     </Box>

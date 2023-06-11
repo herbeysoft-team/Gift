@@ -78,7 +78,9 @@ exports.login = async (req, res) => {
 
     //IF USER DOES NOT EXIST
     if (!userExist) {
-      return res.status(404).json({ message: "user does not exist", code:"2"});
+      return res
+        .status(404)
+        .json({ message: "user does not exist", code: "2" });
     }
 
     // if (!userExist.verified) {
@@ -96,21 +98,20 @@ exports.login = async (req, res) => {
     );
 
     if (!passwordMatch) {
-      return res.status(404).json({ message: "Password in incorrect", code:"3" });
+      return res
+        .status(404)
+        .json({ message: "Password in incorrect", code: "3" });
     }
 
     //CREATE USER TOKEN
     const tokenData = { userId: userExist.id, phone_no: userExist.phone_no };
     const token = await createToken(tokenData);
-    console.log(token)
+    console.log(token);
 
     //DESTRUCTION USER EXIST INFO
     const { password, ...others } = userExist;
 
-    res
-      .status(200)
-      .json({token, result: others});
-     
+    res.status(200).json({ token, result: others });
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);
@@ -181,7 +182,7 @@ exports.passwordreset = async (req, res) => {
     if (!phone_no) throw Error("Phone number is required");
 
     const createPasswordResetOTP = await sendPasswordResetOTPPhone(phone_no);
-    console.log(createPasswordResetOTP)
+    console.log(createPasswordResetOTP);
     res.status(200).json(createPasswordResetOTP);
   } catch (error) {
     res.status(400).send(error.message);
@@ -204,7 +205,7 @@ exports.reset = async (req, res) => {
     res.status(200).json({ phone_no, passwordreset: true });
   } catch (error) {
     res.status(400).send(error.message);
-    console.log(error.message)
+    console.log(error.message);
   }
 };
 
@@ -232,7 +233,6 @@ exports.verifyphoneotp = async (req, res) => {
  *
  */
 exports.phoneotp = async (req, res) => {
-  
   try {
     const { phone_no } = req.body;
     if (!phone_no) throw Error("A Phone number is required");

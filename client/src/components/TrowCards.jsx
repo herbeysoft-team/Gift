@@ -1,11 +1,9 @@
-import { Box, Grid, PaginationItem, Typography } from "@mui/material";
+import { Box, Grid,  Typography } from "@mui/material";
 import React, {useId, useEffect, useMemo, useState} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { TablePagination } from "@mui/material";
 import { getMyTrowBox } from "../context/features/trowSlice";
 import Stack from "@mui/material/Stack";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import TrowCard from "./TrowCard";
 
 const TrowCards = () => {

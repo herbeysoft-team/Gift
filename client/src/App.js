@@ -30,6 +30,7 @@ import TrowBoxProcess from "./pages/TrowBoxProcess";
 import PickShop from "./pages/PickShop";
 import CreateEvent from "./pages/CreateEvent";
 import EventDetails from "./pages/EventDetails";
+import PickGift from "./pages/PickGift";
 
 /**root routes */
 const router = createBrowserRouter([
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: "/home/pickshop/:id",
         element: <PickShop />,
+      },
+      {
+        path: "/home/pickgift/:id",
+        element: <PickGift />,
       },
       {
         path: "/home/shop/add",

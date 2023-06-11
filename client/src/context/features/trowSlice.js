@@ -51,6 +51,33 @@ export const getTrow = createAsyncThunk(
   }
 )
 
+export const getEvent = createAsyncThunk(
+  "trow/getEvent",
+
+  async(id, {rejectWithValue})=>{
+      try{
+        const response = await api.getEvent(id);
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
+export const getAllEvent = createAsyncThunk(
+  "trow/getAllEvent",
+
+  async(_, {rejectWithValue})=>{
+      try{
+        const response = await api.getAllEvent();
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
+
 export const getMyTrowBox = createAsyncThunk(
   "trow/getMyTrowBox",
 
@@ -98,13 +125,16 @@ export const addTrowWishlist = createAsyncThunk(
 export const addTrowGift = createAsyncThunk(
   "trow/addTrowGift",
 
-  async({id, trowgift, toast, navigate}, {rejectWithValue})=>{
+  async({id, trowgift, toast, navigate,link}, {rejectWithValue})=>{
+      console.log({trowgift, id, link})
 
       try{
         const response = await api.addTrowGift(id, trowgift);
         if(response){
           toast.success(response.data.message);
-          navigate(`/home/`)
+          if(link){
+          navigate(`/home/eventdetails/${id}`)
+          }
         }
         return response.data;
       }catch(err){
@@ -122,6 +152,8 @@ const trowSlice = createSlice({
     trowDetails: null,
     currentTrowBox: [],
     scheduleTrowBox: [],
+    eventDetails:[],
+    allEvent:[],
     error: "",
     loading: false,
   },
@@ -149,6 +181,17 @@ const trowSlice = createSlice({
         state.trowDetails = action.payload;
       })
       .addCase(getTrow.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getEvent.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getEvent.fulfilled, (state, action) => {
+        state.loading = false;
+        state.eventDetails = action.payload;
+      })
+      .addCase(getEvent.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -192,6 +235,17 @@ const trowSlice = createSlice({
         state.scheduleTrowBox = action.payload;
       })
       .addCase(getMyScheduleTrowBox.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getAllEvent.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllEvent.fulfilled, (state, action) => {
+        state.loading = false;
+        state.allEvent = action.payload;
+      })
+      .addCase(getAllEvent.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

@@ -65,7 +65,7 @@ const TrowBoxProcess = () => {
 
   const handleAddGiftToTrowbox = (e) => {
     e.preventDefault();
-    dispatch(addTrowGift({ id, trowgift: selectedItems, toast, navigate }));
+    dispatch(addTrowGift({ id, trowgift: selectedItems, toast, navigate}));
   };
   return (
     <Box flex={3}>

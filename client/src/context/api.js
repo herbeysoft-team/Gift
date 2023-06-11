@@ -49,6 +49,8 @@ export const getItemsBySearch = (searchName) => API.get(`/api/v1/item/getitemsby
 export const createTrow = (formData) => API.post(`/api/v1/trow/createtrow`,formData); //create a trowbox
 export const createEvent = (formData) => API.post(`/api/v1/trow/createevent`,formData); //create an event
 export const getTrow = (id) => API.get(`/api/v1/trow/gettrow/${id}`); //get a trowbox
+export const getEvent = (id) => API.get(`/api/v1/trow/getevent/${id}`); //get an eventbox
+export const getAllEvent = () => API.get(`/api/v1/trow/getallevent`); //get all events 
 export const getMyTrowBox = () => API.get(`/api/v1/trow/getmytrowbox`); //get my current trowbox
 export const getMyScheduleTrowBox = () => API.get(`/api/v1/trow/getmyscheduletrowbox`); //get my schedule trowbox
 export const addTrowWishlist = (id, trowWishlist) => API.post(`/api/v1/trow/addtrowwishlist/${id}`, trowWishlist) //add wishlist to trowbox

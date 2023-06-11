@@ -1,6 +1,5 @@
 const db = require("../config/database");
 
-
 //create a item
 exports.createitem = async (req, res) => {
   const { name, description, category } = req.body;
@@ -10,7 +9,7 @@ exports.createitem = async (req, res) => {
       "INSERT INTO items (item_name, item_description, item_pics, item_subcategory) VALUES (?,?,?,?)",
       [name, description, file, category]
     );
-    res.status(201).json({message:"Item Created Successfully", result});
+    res.status(201).json({ message: "Item Created Successfully", result });
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);
@@ -21,10 +20,7 @@ exports.createitem = async (req, res) => {
 exports.getitem = async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await db.getrow(
-      "SELECT * FROM items WHERE id = ?",
-      [id]
-    );
+    const result = await db.getrow("SELECT * FROM items WHERE id = ?", [id]);
     if (result) {
       res.status(201).json(result);
     }
@@ -68,12 +64,10 @@ exports.getitemsbysearch = async (req, res) => {
   }
 };
 
-
 //Get all items
 exports.allitems = async (req, res) => {
-
-    try {
-    const result = await db.getall("SELECT * FROM items",[]);
+  try {
+    const result = await db.getall("SELECT * FROM items", []);
     if (result) {
       res.status(201).json(result);
     }
@@ -93,7 +87,7 @@ exports.updateitem = async (req, res) => {
       [item_name, item_description, item_pics, item_subcategory, id]
     );
     if (result) {
-      res.status(201).json({message: "Item Updated Successfully", result});
+      res.status(201).json({ message: "Item Updated Successfully", result });
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
@@ -102,12 +96,12 @@ exports.updateitem = async (req, res) => {
 };
 
 //delete one item
-exports.deleteitem= async (req, res) => {
+exports.deleteitem = async (req, res) => {
   const { id } = req.params;
   try {
     const result = await db.delete("DELETE FROM items WHERE id = ?", [id]);
     if (result) {
-      res.status(201).json({ message: "Item Deleted Successfully"});
+      res.status(201).json({ message: "Item Deleted Successfully" });
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });

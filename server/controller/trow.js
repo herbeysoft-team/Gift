@@ -45,15 +45,10 @@ exports.createtrow = async (req, res) => {
   }
 };
 
-//create an event 
+//create an event
 exports.createevent = async (req, res) => {
-  const {
-    username,
-    event_name,
-    event_purpose,
-    category_name,
-    event_date,
-  } = req.body;
+  const { username, event_name, event_purpose, category_name, event_date } =
+    req.body;
 
   const file = req.file.filename;
   const userId = req.user;
@@ -62,7 +57,7 @@ exports.createevent = async (req, res) => {
       "INSERT INTO trowbox (sender_id, recipient_no, event_name, event_purpose, event_category, event_date, event_pics, gift_sent) VALUES (?,?,?,?,?,?,?,?)",
       [
         userId?.userId,
-        username == 'null' ? userId?.phone_no : username,
+        username == "null" ? userId?.phone_no : username,
         event_name,
         event_purpose,
         category_name,
@@ -74,13 +69,29 @@ exports.createevent = async (req, res) => {
     if (result) {
       res.status(201).json({ message: "Event Created Successfully", result });
     }
-
-    
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);
   }
 };
+
+//get all event of you, your followers and those you are following
+exports.getallevent = async (req, res) => {
+  const userInfo = req.user;
+  try {
+    const result = await db.getall("SELECT tb.*, up.fullname, up.profilePic, up.id AS userId FROM trowbox tb, userprofile up WHERE tb.recipient_no = up.phone_no AND tb.gift_sent = ? AND tb.recipient_no <> ? ORDER BY tb.event_date ASC",
+     [1, userInfo?.phone_no])
+    if(result){
+      res.status(201).json(result)
+    }
+    
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+
+
+}
 
 //get a trow box
 exports.gettrow = async (req, res) => {
@@ -102,7 +113,7 @@ exports.gettrow = async (req, res) => {
         "SELECT i.id, i.item_name, i.item_description, i.item_pics FROM items AS i, wishlist_gift AS w WHERE i.id = w.item_id AND w.trowbox_id = ?",
         [id]
       );
-      
+
       const result4 = await db.getall(
         "SELECT i.id, i.item_name, i.item_description, i.item_pics FROM items AS i, trowbox_gift AS t WHERE i.id = t.item_id AND t.trowbox_id = ?",
         [id]
@@ -122,6 +133,31 @@ exports.gettrow = async (req, res) => {
           message: message,
         });
       }
+    }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+//get a event box
+exports.getevent = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await db.getrow(
+      "SELECT u.fullname, u.id AS userId, u.username, u.profilePic, t.* FROM trowbox t, userprofile u WHERE t.recipient_no = u.phone_no AND t.id = ?",
+      [id]
+    );
+    if (result) {
+      const result2 = await db.getall(
+        "SELECT i.id, i.item_name, i.item_description, i.item_pics, u.profilePic, u.id AS userId FROM items AS i, trowbox_gift AS t, userProfile AS u WHERE i.id = t.item_id AND t.sender_id = u.id AND t.trowbox_id = ?",
+        [id]
+      );
+      res.status(201).json({
+        event_box: result,
+        event_gift: result2,
+      });
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
@@ -155,11 +191,10 @@ exports.addtrowwishlist = async (req, res) => {
   }
 };
 
-
 //add gift to a trowbox
 exports.addtrowgift = async (req, res) => {
   const { id } = req.params;
-  const trow_gift  = req.body;
+  const trow_gift = req.body;
   const userId = req.user.userId;
 
   try {
@@ -168,14 +203,13 @@ exports.addtrowgift = async (req, res) => {
       "UPDATE trowbox SET gift_sent = ? WHERE id = ?",
       [1, id]
     );
-    if (result) {
-      trow_gift.forEach((element) => {
-        const result2 = db.insert(
-          "INSERT INTO trowbox_gift (sender_id, trowbox_id, item_id) VALUES (?,?, ?)",
-          [userId, id, element]
-        );
-      });
-    }
+    trow_gift?.forEach((element) => {
+      const result2 = db.insert(
+        "INSERT INTO trowbox_gift (sender_id, trowbox_id, item_id) VALUES (?,?, ?)",
+        [userId, id, element]
+      );
+    });
+
     res.status(201).json({ message: "Gift Added" });
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
@@ -185,13 +219,15 @@ exports.addtrowgift = async (req, res) => {
 
 //get my current trowbox
 exports.getmytrowbox = async (req, res) => {
-
   const currentDate = getCurrentDate();
   const userId = req.user;
   try {
-    const resultforCurrent = await db.getall("SELECT * FROM trowbox WHERE recipient_no = ? AND event_date <= ?", [userId?.phone_no, currentDate]);
+    const resultforCurrent = await db.getall(
+      "SELECT * FROM trowbox WHERE recipient_no = ? AND event_date <= ?",
+      [userId?.phone_no, currentDate]
+    );
     if (resultforCurrent) {
-        res.status(201).json(resultforCurrent);
+      res.status(201).json(resultforCurrent);
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
@@ -199,16 +235,17 @@ exports.getmytrowbox = async (req, res) => {
   }
 };
 
-
 //get my schedule trowbox
 exports.getmyscheduletrowbox = async (req, res) => {
-
   const currentDate = getCurrentDate();
   const userId = req.user;
   try {
-    const resultforSchedule = await db.getall("SELECT * FROM trowbox WHERE recipient_no = ? AND event_date > ?", [userId?.phone_no, currentDate]);
+    const resultforSchedule = await db.getall(
+      "SELECT * FROM trowbox WHERE recipient_no = ? AND event_date > ?",
+      [userId?.phone_no, currentDate]
+    );
     if (resultforSchedule) {
-        res.status(201).json(resultforSchedule);
+      res.status(201).json(resultforSchedule);
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });

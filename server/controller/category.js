@@ -8,7 +8,7 @@ exports.createcategory = async (req, res) => {
       "INSERT INTO category (cat_name) VALUES (?)",
       [cat_name]
     );
-    res.status(201).json({message:"Category Created Successfully", result});
+    res.status(201).json({ message: "Category Created Successfully", result });
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);
@@ -55,7 +55,9 @@ exports.updatecategory = async (req, res) => {
       [cat_name, id]
     );
     if (result) {
-      res.status(201).json({message: "Category Updated Successfully", result});
+      res
+        .status(201)
+        .json({ message: "Category Updated Successfully", result });
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
@@ -69,7 +71,7 @@ exports.deletecategory = async (req, res) => {
   try {
     const result = await db.delete("DELETE FROM category WHERE id = ?", [id]);
     if (result) {
-      res.status(201).json({ message: "Category Deleted Successfully"});
+      res.status(201).json({ message: "Category Deleted Successfully" });
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
