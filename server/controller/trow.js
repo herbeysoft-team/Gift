@@ -79,19 +79,18 @@ exports.createevent = async (req, res) => {
 exports.getallevent = async (req, res) => {
   const userInfo = req.user;
   try {
-    const result = await db.getall("SELECT tb.*, up.fullname, up.profilePic, up.id AS userId FROM trowbox tb, userprofile up WHERE tb.recipient_no = up.phone_no AND tb.gift_sent = ? AND tb.recipient_no <> ? ORDER BY tb.event_date ASC",
-     [1, userInfo?.phone_no])
-    if(result){
-      res.status(201).json(result)
+    const result = await db.getall(
+      "SELECT tb.*, up.fullname, up.profilePic, up.id AS userId FROM trowbox tb, userprofile up WHERE tb.recipient_no = up.phone_no AND tb.gift_sent = ? AND tb.recipient_no <> ? ORDER BY tb.event_date ASC",
+      [1, userInfo?.phone_no]
+    );
+    if (result) {
+      res.status(201).json(result);
     }
-    
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);
   }
-
-
-}
+};
 
 //get a trow box
 exports.gettrow = async (req, res) => {

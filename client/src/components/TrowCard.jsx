@@ -2,19 +2,40 @@ import { Box, CardMedia, Divider, Icon, Typography } from "@mui/material";
 import React from "react";
 import { CardGiftcard } from "@mui/icons-material";
 import URLBASE from "../constant/urlbase";
+import { useNavigate } from "react-router-dom";
 
-const TrowCard = ({box}) => {
+
+const TrowCard = ({ box }) => {
+  const navigate = useNavigate();
+  const handleGoEvent = (id) => {
+    if (id) {
+      navigate(`/home/eventdetails/${id}`);
+    }
+  };
+
+
   return (
     <Box>
       <Box sx={{ position: "relative" }}>
+        
         <CardMedia
           component="img"
           height="10%"
           fit="cover"
           image={`${URLBASE.imageBaseUrl}${box?.event_pics}`}
           alt="Trowbox Pics"
+          onClick={() => handleGoEvent(box?.id)}
         />
+        {/* <IconButton
+            aria-label="share"
+            size="large"
+            sx={{ position: "absolute", top: 5, right: 10 }}
+            
+            <IosShareIcon color="secondary" sx={{fontSize: 40 }}  />
+            
+          </IconButton> */}
         <Box
+          onClick={() => handleGoEvent(box?.id)}
           sx={{
             position: "absolute",
             bottom: 10,
@@ -37,7 +58,9 @@ const TrowCard = ({box}) => {
               fontFamily="Poppins"
               fontWeight="mediuum"
             >
-              {box?.event_name.length > 15 ? `${box?.event_name.substring(0,15)}...` : box?.event_name}
+              {box?.event_name.length > 15
+                ? `${box?.event_name.substring(0, 15)}...`
+                : box?.event_name}
             </Typography>
             <Divider />
             <Typography variant="body" color="primary" fontFamily="Poppins">

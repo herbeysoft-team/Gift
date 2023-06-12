@@ -5,6 +5,7 @@ import RelationshipReducer from "./features/relationshipSlice";
 import ItemReducer from "./features/itemSlice";
 import TrowReducer from "./features/trowSlice";
 import WishlistReducer from "./features/wishlistSlice";
+import PostReducer from "./features/postSlice";
 
 export default configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export default configureStore({
       item: ItemReducer,
       trow: TrowReducer,
       wishlist: WishlistReducer,
+      post: PostReducer,
     }
   });
   

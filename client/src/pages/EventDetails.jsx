@@ -3,15 +3,18 @@ import {
   Badge,
   Box,
   Button,
+  ButtonGroup,
   CardMedia,
   Divider,
   IconButton,
+  Modal,
+  TextField,
   Typography,
 } from "@mui/material";
-import IosShareIcon from '@mui/icons-material/IosShare';
-import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
+import IosShareIcon from "@mui/icons-material/IosShare";
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
 import EventNoteIcon from "@mui/icons-material/EventNote";
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import MobileNavBar from "../components/MobileNavBar";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -23,11 +26,23 @@ import URLBASE from "../constant/urlbase";
 import PostGift from "../components/PostGift";
 import { useLocation, useNavigate } from "react-router-dom";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import styled from "@emotion/styled";
+import CloseIcon from "@mui/icons-material/Close";
+import { createPost } from "../context/features/postSlice";
+import toast from "react-hot-toast";
+
+const SytledModal = styled(Modal)({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+});
 
 const EventDetails = () => {
   const [gift, setGift] = useState(false);
   const [btnName, setBtnName] = useState("SHOW GIFT ITEMS");
   const [iconGift, setIconGift] = useState(<ArrowDropDownIcon />);
+  const [open, setOpen] = useState(false);
+  const [description, setDescription] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const id = useLocation().pathname.split("/")[3];
@@ -49,11 +64,36 @@ const EventDetails = () => {
     });
   };
 
-  const handleGoProfile = (id) =>{
-    if(id){
-        navigate(`/home/profile/${id}`)
+  const handleGoProfile = (id) => {
+    if (id) {
+      navigate(`/home/profile/${id}`);
     }
-  }
+  };
+
+  const handlePostEvent = async (e) => {
+    e.preventDefault();
+
+    if (id) {
+      dispatch(
+        createPost({
+          formData: {
+            id,
+            description,
+          },
+          navigate,
+          toast,
+        })
+      );
+    }
+    setOpen(false);
+    setDescription("");
+  };
+
+  //function called when any input value is changed
+  const onInputChange = (e) => {
+    setDescription(e.target.value);
+  };
+
   return (
     <Box flex={3}>
       <MobileNavBar logo={Logo} title={"Event"} />
@@ -86,18 +126,28 @@ const EventDetails = () => {
             size="large"
             sx={{ position: "absolute", top: 5, right: 10 }}
           >
-            <Badge badgeContent={eventDetails?.event_gift?.length > 0 ? eventDetails?.event_gift?.length : "0" } color="primary">
-             <CardGiftcardIcon color="secondary" sx={{fontSize: 32 }}  />
+            <Badge
+              badgeContent={
+                eventDetails?.event_gift?.length > 0
+                  ? eventDetails?.event_gift?.length
+                  : "0"
+              }
+              color="primary"
+            >
+              <CardGiftcardIcon color="secondary" sx={{ fontSize: 32 }} />
             </Badge>
           </IconButton>
-          <IconButton
-            aria-label="share"
-            size="large"
-            sx={{ position: "absolute", top: 5, left: 10 }}
-          >
-            <IosShareIcon color="secondary" sx={{fontSize: 40 }}  />
-            
-          </IconButton>
+          {eventDetails?.event_box?.userId === user?.result?.id &&
+          parseInt(eventDetails?.event_box?.post) === 0 ? (
+            <IconButton
+              aria-label="share"
+              size="large"
+              sx={{ position: "absolute", top: 5, left: 10 }}
+              onClick={() => setOpen(true)}
+            >
+              <IosShareIcon color="secondary" sx={{ fontSize: 40 }} />
+            </IconButton>
+          ) : null}
           <Box
             sx={{
               position: "absolute",
@@ -126,8 +176,11 @@ const EventDetails = () => {
             </Typography>
             <Divider />
             <Typography variant="caption" color="primary" fontFamily="Poppins">
-            {eventDetails?.event_box?.event_purpose.length > 30
-                ? `${eventDetails?.event_box?.event_purpose.substring(0, 27)}...`
+              {eventDetails?.event_box?.event_purpose.length > 30
+                ? `${eventDetails?.event_box?.event_purpose.substring(
+                    0,
+                    27
+                  )}...`
                 : eventDetails?.event_box?.event_purpose}
             </Typography>
           </Box>
@@ -146,7 +199,7 @@ const EventDetails = () => {
             gap={1}
             sx={{ justifyContent: "center", alignItems: "center" }}
             key={eventDetails?.event_box?.userId}
-            onClick={()=>handleGoProfile(eventDetails?.event_box?.userId)}
+            onClick={() => handleGoProfile(eventDetails?.event_box?.userId)}
           >
             <Avatar
               alt={`PP`}
@@ -251,6 +304,64 @@ const EventDetails = () => {
           </Button>
         )}
       </Box>
+      {/* for the modal */}
+      <SytledModal
+        open={open}
+        onClose={(e) => setOpen(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          width={400}
+          height={280}
+          component="form"
+          bgcolor={"background.default"}
+          color={"text.primary"}
+          p={3}
+          noValidate
+          autoComplete="off"
+        >
+          <Typography
+            style={{ marginBottom: "1rem" }}
+            color="primary"
+            fontFamily="Poppins"
+            fontWeight="mediuum"
+            variant="h6"
+          >
+            Share with your network!
+          </Typography>
+
+          <TextField
+            sx={{ width: "100%", marginBottom: "10px" }}
+            required
+            type="text"
+            id="description"
+            name="description"
+            label="Add Description"
+            multiline
+            rows={3}
+            value={description || ""}
+            size="small"
+            margin="dense"
+            onChange={onInputChange}
+          />
+
+          <ButtonGroup
+            fullWidth
+            variant="contained"
+            aria-label="outlined primary button group"
+          >
+            <Button onClick={handlePostEvent}>Post It</Button>
+            <Button
+              color="secondary"
+              sx={{ width: "100px" }}
+              onClick={() => setOpen(false)}
+            >
+              <CloseIcon />
+            </Button>
+          </ButtonGroup>
+        </Box>
+      </SytledModal>
     </Box>
   );
 };

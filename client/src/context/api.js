@@ -61,3 +61,7 @@ export const addWishlist= (item_id) => API.post(`/api/v1/wishlist/addwishlist/${
 export const removeWishlist= (item_id) => API.post(`/api/v1/wishlist/removewishlist/${item_id}`); //remove item from wishlist
 export const myWishlist= () => API.get(`/api/v1/wishlist/mywishlist/`); //Fetch my wishlist
 export const wishlists = (userId) => API.get(`/api/v1/wishlist/wishlists/${userId}`); //fetch user wishlist
+
+/**POST API */
+export const createPost = (formData) => API.post(`/api/v1/post/createpost`,formData); //create a post
+export const getPosts = () => API.get(`/api/v1/post/getposts/`); //get posts

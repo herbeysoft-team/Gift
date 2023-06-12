@@ -12,7 +12,6 @@ const Events = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { user } = useSelector((state) => ({ ...state.auth }));
   const { allEvent } = useSelector((state) => ({ ...state.trow }));
 
   const memoizedEvent = useMemo(() => allEvent, [allEvent]);
@@ -31,7 +30,7 @@ const Events = () => {
   };
 
   return (
-    <Box>
+    <Box mb={10}>
       {/* The Gift Box Button */}
       <Box
         p={2}

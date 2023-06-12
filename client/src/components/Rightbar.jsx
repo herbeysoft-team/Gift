@@ -71,14 +71,14 @@ const Rightbar = () => {
               <ListItemText primary="Feed" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding style={{ paddingBottom: "5px" }}>
+          {/* <ListItem disablePadding style={{ paddingBottom: "5px" }}>
             <ListItemButton component="a" href="#simple-list">
               <ListItemIcon>
                 <EventIcon />
               </ListItemIcon>
               <ListItemText primary="Event" />
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
           <ListItem disablePadding style={{ paddingBottom: "5px" }}>
             <ListItemButton component={Link}  to="/home/trowbox">
               <ListItemIcon>
