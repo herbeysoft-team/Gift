@@ -18,6 +18,7 @@ import ProfileNavTabs from "../components/ProfileNavTabs";
 import { useLocation, useNavigate} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../context/features/userSlice";
+import { getLikesCount } from "../context/features/likeSlice";
 import {
   countRelationship,
   checkRelationship,
@@ -46,6 +47,7 @@ const Profile = () => {
   const [drop, setDrop] = useState(false);
   const { user } = useSelector((state) => ({ ...state.auth }));
   const { userProfile } = useSelector((state) => ({ ...state.user }));
+  const { upvoteCount } = useSelector((state) => ({ ...state.like }));
   const { countFollow, checkFollow } = useSelector((state) => ({
     ...state.relationship,
   }));
@@ -58,6 +60,7 @@ const Profile = () => {
       dispatch(getUserProfile(userId));
       dispatch(countRelationship(userId));
       dispatch(checkRelationship(userId));
+      dispatch(getLikesCount(userId))
     }
   }, [userId, dispatch]);
 
@@ -162,7 +165,7 @@ const Profile = () => {
               variant="heading"
               sx={{ fontSize: 16, fontFamily: "Poppins" }}
             >
-              879
+              {upvoteCount}
             </Typography>
             <Typography variant="subheading">Upvote</Typography>
           </Box>

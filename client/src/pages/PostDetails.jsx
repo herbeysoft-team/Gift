@@ -10,7 +10,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo  } from "react";
 import MobileNavBar from "../components/MobileNavBar";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
@@ -20,20 +20,86 @@ import {
   DoneAll,
   Send,
   MoreVert,
-  StarBorder,
-  Star,
+  Favorite,
+  FavoriteBorder,
 } from "@mui/icons-material";
 import PostGift from "../components/PostGift";
 import PostComment from "../components/PostComment";
 import CommentBox from "../components/CommentBox";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getPost } from "../context/features/postSlice";
+import { getCommentsForPost } from "../context/features/commentSlice";
+import { getLikesForPost, addLike, deleteLike } from "../context/features/likeSlice";
+import URLBASE from "../constant/urlbase";
+import toast from "react-hot-toast";
 
 const PostDetails = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const id = useLocation().pathname.split("/")[3];
+  const { post } = useSelector((state) => ({ ...state.post }));
+  const { commentsforPost } = useSelector((state) => ({ ...state.comment }));
+  const { likesforPost } = useSelector((state) => ({ ...state.like }));
   const [gift, setGift] = useState(false);
   const [btnName, setBtnName] = useState("SHOW GIFT ITEMS");
   const [iconGift, setIconGift] = useState(<ArrowDropDownIcon />);
   const [comment, setComment] = useState(false);
   const [btnCommentName, setBtnCommentName] = useState("SHOW COMMENTS");
   const [iconComment, setIconComment] = useState(<ArrowDropDownIcon />);
+  const memoizedComments = useMemo(() => commentsforPost, [commentsforPost]);
+  const [lastTapTime, setLastTapTime] = useState(0);
+  const { user } = useSelector((state) => ({ ...state.auth }));
+
+
+  const handleGoEvent = (id) => {
+    if (id) {
+      navigate(`/home/eventdetails/${id}`);
+    }
+  };
+  useEffect(() => {
+    if (id) {
+      dispatch(getPost(id));
+      dispatch(getCommentsForPost(id));
+      dispatch(getLikesForPost(id));
+
+    }
+  }, [id, dispatch]);
+
+
+  const handleDoubleTap = () => {
+    const currentTime = new Date().getTime();
+    const doubleTapDelay = 300; // Adjust this value as per your preference
+
+    if (currentTime - lastTapTime < doubleTapDelay) {
+      handleToggleLike(id);
+      dispatch(getLikesForPost(id));
+    } else {
+      setLastTapTime(currentTime);
+    }
+  };
+
+  const handleToggleLike = (id) => {
+    const isSelected = likesforPost.includes(user?.result?.id);
+
+    if (isSelected) {
+      //then dislike the item
+      dispatch(deleteLike({ id, toast }));
+      dispatch(getLikesForPost(id));
+    } else {
+      dispatch(
+        addLike({
+          formData: {
+            postId: id,
+          },
+          toast,
+        })
+      );
+      dispatch(getLikesForPost(id));
+    }
+  };
+
+
   return (
     <Box flex={3}>
       <MobileNavBar logo={Logo} title={"Post"} />
@@ -53,13 +119,15 @@ const PostDetails = () => {
           zIndex: 2,
         }}
       >
+      
         <Box sx={{ position: "relative", overflow: "hidden" }}>
           <CardMedia
             component="img"
             height="auto"
             fit="cover"
-            image="https://th.bing.com/th/id/OIP.iPkt7kskdztbDzNLHx3BOgHaEi?pid=ImgDet&w=1200&h=736&rs=1"
+            image={`${URLBASE.imageBaseUrl}${post?.event_box?.event_pics}`}
             alt="Post Image"
+            onClick={handleDoubleTap}
           />
           <IconButton
             aria-label="option"
@@ -72,16 +140,19 @@ const PostDetails = () => {
             />
           </IconButton>
           <IconButton
-            aria-label="like"
-            size="large"
-            sx={{ position: "absolute", top: 0, left: 0 }}
-          >
-            <Checkbox
-              icon={<StarBorder sx={{ color: "white", fontSize: 32 }} />}
-              checkedIcon={<Star sx={{ color: "purple", fontSize: 32 }} />}
-            />
-          </IconButton>
+          aria-label="upvote"
+          size="large"
+          sx={{ position: "absolute", top: 5, right: 5 }}
+        >
+          <Checkbox
+            icon={<FavoriteBorder sx={{ color: "white", fontSize: 32 }} />}
+            checkedIcon={<Favorite sx={{ color: "purple", fontSize: 32 }} />}
+            checked={likesforPost.includes(user?.result?.id)}
+            onChange={() => handleToggleLike(id)}
+          />
+        </IconButton>
           <Box
+            onClick={() => handleGoEvent(id)}
             sx={{
               position: "absolute",
               bottom: 0,
@@ -98,20 +169,28 @@ const PostDetails = () => {
             }}
           >
             <Typography
-              variant="h4"
+              variant="h6"
               color="primary"
               fontFamily="Poppins"
               fontWeight="mediuum"
             >
-              Product Lunch
+              {post?.event_box?.event_name.length > 20
+                ? `${post?.event_box?.event_name.substring(0, 17)}...`
+                : post?.event_box?.event_name}
             </Typography>
             <Divider />
             <Typography variant="caption" color="primary" fontFamily="Poppins">
-              The app is about to lunch for the first time
+            {post?.event_box?.description.length > 140
+                ? `${post?.event_box?.description.substring(
+                    0,
+                    137
+                  )}...`
+                : post?.event_box?.description}
             </Typography>
           </Box>
         </Box>
         <Box
+          onClick={() => handleGoEvent(id)}
           display="flex"
           flexDirection="row"
           alignItems="center"
@@ -131,7 +210,7 @@ const PostDetails = () => {
           </Box>
           <Box display="flex" flexDirection="column" alignItems="center">
             <Typography variant="caption" color="secondary">
-              45
+            {likesforPost?.length > 0 ? likesforPost?.length : "0"}
             </Typography>
             <Icon>
               <DoneAll color="secondary" />
@@ -162,34 +241,32 @@ const PostDetails = () => {
         gap={1}
         px={1.5}
       >
-        <AvatarGroup max={4}>
-          <Avatar
-            alt="Remy Sharp"
-            src="https://material-ui.com/static/images/avatar/1.jpg"
-          />
-          <Avatar
-            alt="Travis Howard"
-            src="https://material-ui.com/static/images/avatar/2.jpg"
-          />
-          <Avatar
-            alt="Cindy Baker"
-            src="https://material-ui.com/static/images/avatar/3.jpg"
-          />
-          <Avatar alt="Agnes Walker" src="" />
-        </AvatarGroup>
+        <AvatarGroup max={4} sx={{alignSelf:"flex-start"}}>
+            {memoizedComments?.length > 0 ? (
+                memoizedComments.map((c, index) => {
+                  return (
+                    <Avatar
+                      key={index}
+                      alt="PP"
+                      src={`${URLBASE.imageBaseUrl}${c?.profilePic}`}
+                    />
+                  );
+                })
+            ) : null}
+          </AvatarGroup>
         <Typography
           variant="body"
           color="primary"
           sx={{ fontFamily: "Poppins", fontWeight: "bold" }}
         >
-          +345
+          {memoizedComments?.length > 0 ? `+${memoizedComments?.length}` : 0}
         </Typography>
         <Typography
           variant="caption"
           color="primary"
           sx={{ fontFamily: "Poppins", fontWeight: "medium" }}
         >
-          Friends who comment
+          {memoizedComments?.length > 0 ? "Friends who comment" : "No comment"}
         </Typography>
       </Box>
       <Box
@@ -223,11 +300,25 @@ const PostDetails = () => {
           {btnName}
         </Button>
         {gift ? (
-          <Box>
-            <PostGift />
-            <PostGift />
-            <PostGift />
-          </Box>
+          <>
+            {post?.event_gift?.length > 0 ? (
+              <Box width="100%">
+                {post?.event_gift.map((box, index) => {
+                  return <PostGift key={index} box={box} />;
+                })}
+              </Box>
+            ) : (
+              <Typography
+                variant="h6"
+                color="primary"
+                fontFamily="Poppins"
+                fontWeight="medium"
+                textAlign="center"
+              >
+                No Gift Yet!
+              </Typography>
+            )}
+          </>
         ) : null}
 
         {/* The Comments for the post */}
@@ -254,26 +345,30 @@ const PostDetails = () => {
           {btnCommentName}
         </Button>
         {comment ? (
-          <Box
-            sx={{
-              width: "100%",
-              px: 1,
-              py: 0.5,
-            }}
-          >
-            <PostComment />
-            <PostComment />
-            <PostComment />
-            <PostComment />
-            <PostComment />
-            <PostComment />
-            <PostComment />
-            <PostComment />
-            <PostComment />
-          </Box>
+
+            <>
+            {memoizedComments?.length > 0 ? (
+              <Box width="100%">
+                {memoizedComments?.map((box, index) => {
+                  return <PostComment key={index} box={box} />;
+                })}
+              </Box>
+            ) : (
+              <Typography
+                variant="h6"
+                color="primary"
+                fontFamily="Poppins"
+                fontWeight="medium"
+                textAlign="center"
+              >
+                No Comment
+              </Typography>
+            )}
+          </>
+        
         ) : null}
         {/* Post Comment Box */}
-      <CommentBox/>
+          <CommentBox postId={id}/>
       </Box>
       
     </Box>

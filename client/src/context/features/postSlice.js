@@ -6,7 +6,6 @@ export const createPost = createAsyncThunk(
   "post/createPost",
 
   async({formData, navigate, toast}, {rejectWithValue})=>{
-    console.log(formData)
       try{
         const response = await api.createPost(formData);
         if(response){
@@ -36,6 +35,20 @@ export const getPosts = createAsyncThunk(
 )
 
 
+export const getPost = createAsyncThunk(
+  "post/getPost",
+
+  async(id, {rejectWithValue})=>{
+      try{
+        const response = await api.getPost(id);
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
+
 
 const postSlice = createSlice({
   name: "post",
@@ -43,6 +56,7 @@ const postSlice = createSlice({
     error: "",
     loading: false,
     posts: [],
+    post:[],
   },
   reducers: {
     
@@ -69,11 +83,18 @@ const postSlice = createSlice({
       .addCase(getPosts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
-      
-      
-      
-      
+      })
+      .addCase(getPost.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getPost.fulfilled, (state, action) => {
+        state.loading = false;
+        state.post = action.payload;
+      })
+      .addCase(getPost.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      }); 
    },
 });
 // export const { setUsername, setPhoneNo } = trowSlice.actions;

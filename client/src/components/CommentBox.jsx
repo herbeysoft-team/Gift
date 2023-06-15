@@ -1,8 +1,34 @@
 import { IconButton, InputBase, Paper } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
+import { addComment, getComments, getCommentsForPost } from "../context/features/commentSlice";
+import {useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 
-const CommentBox = () => {
+
+
+const CommentBox = ({postId}) => {
+  const dispatch = useDispatch();
+  const [commentText, setCommentText] = useState("");
+
+
+  //function called when any input value is changed
+  const onInputChange = (e) => {
+    setCommentText(e.target.value);
+  };
+
+  const handlePostComment = async (e) => {
+    e.preventDefault();
+    if(commentText && postId){
+      dispatch(addComment({formData:{
+          postId,
+          commentText
+        }, toast}))
+    }
+    setCommentText("")
+    dispatch(getCommentsForPost(postId))
+    dispatch(getComments(postId))
+  };
   return (
     <Paper
       component="form"
@@ -29,8 +55,10 @@ const CommentBox = () => {
         name="commentText"
         type="text"
         id="commentText"
+        onChange={onInputChange}
+        value={commentText|| ""}
       />
-      <IconButton type="submit" sx={{ p: "10px" }}>
+      <IconButton type="submit" sx={{ p: "10px" }} onClick={handlePostComment}>
         <SendIcon color="primary" />
       </IconButton>
     </Paper>

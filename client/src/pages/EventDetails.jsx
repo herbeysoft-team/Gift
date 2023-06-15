@@ -138,7 +138,7 @@ const EventDetails = () => {
             </Badge>
           </IconButton>
           {eventDetails?.event_box?.userId === user?.result?.id &&
-          parseInt(eventDetails?.event_box?.post) === 0 ? (
+          parseInt(eventDetails?.event_box?.post) === 0  && eventDetails?.event_gift?.length > 0 ? (
             <IconButton
               aria-label="share"
               size="large"

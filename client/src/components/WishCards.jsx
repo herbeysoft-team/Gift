@@ -1,4 +1,4 @@
-import { Box, Grid, PaginationItem, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import React, { useState, useId, useEffect, useMemo } from "react";
 import WishCard from "./WishCard";
 import { useSelector, useDispatch } from "react-redux";
@@ -6,8 +6,6 @@ import { wishlists, removeWishlist } from "../context/features/wishlistSlice";
 import { TablePagination } from "@mui/material";
 import toast from "react-hot-toast";
 import Stack from "@mui/material/Stack";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const WishCards = ({ user_id, wishlist }) => {
   const uniqueId = useId;

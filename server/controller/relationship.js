@@ -1,5 +1,5 @@
 const db = require("../config/database");
-
+const moment = require("moment");
 /**
  * GET - http://localhost:8000/api/v1/relationship/addrelationship
  * id- Follower ID
@@ -14,6 +14,18 @@ exports.addrelationship = async (req, res) => {
       [req.user.userId, userId]
     );
     if (addRelationship) {
+      
+        const notification = await db.insert(
+          "INSERT INTO notification(userId, activity, content_id, content_owner, content_type, date) VALUES (?,?,?,?,?,?)",
+          [
+            req.user.userId,
+            "follow",
+            userId,
+            userId,
+            "profile",
+            moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+          ]
+        );
       res.status(201).json("Following");
     }
   } catch (error) {
@@ -36,6 +48,17 @@ exports.deleterelationship = async (req, res) => {
       [req.user.userId, userId]
     );
     if (deleteRelationship) {
+      const notification = await db.insert(
+        "INSERT INTO notification(userId, activity, content_id, content_owner, content_type, date) VALUES (?,?,?,?,?,?)",
+        [
+          req.user.userId,
+          "unfollow",
+          userId,
+          userId,
+          "profile",
+          moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+        ]
+      );
       res.status(201).json("Unfollow");
     }
   } catch (error) {

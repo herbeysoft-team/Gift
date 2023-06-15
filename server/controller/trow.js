@@ -1,5 +1,6 @@
 const db = require("../config/database");
 const getCurrentDate = require("../utilities/currentDate");
+const moment = require("moment");
 
 //create a trow box
 exports.createtrow = async (req, res) => {
@@ -29,6 +30,17 @@ exports.createtrow = async (req, res) => {
       ]
     );
     if (result) {
+      const notification = await db.insert(
+        "INSERT INTO notification(userId, activity, content_id, content_owner_no, content_type, date) VALUES (?,?,?,?,?,?)",
+        [
+          userId,
+          "trow",
+          result,
+          phone_number ? phone_number : username,
+          "trowbox",
+          moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+        ]
+      );
       //add the recommended gifts
       recommended_gift_sent.forEach((element) => {
         const result2 = db.insert(
@@ -67,6 +79,18 @@ exports.createevent = async (req, res) => {
       ]
     );
     if (result) {
+      const notification = await db.insert(
+        "INSERT INTO notification(userId, activity, content_id, content_owner_no, content_type, date) VALUES (?,?,?,?,?,?)",
+        [
+          userId?.userId,
+          "event",
+          result,
+          username == "null" ? userId?.phone_no : username,
+          "event",
+          moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+        ]
+      );
+
       res.status(201).json({ message: "Event Created Successfully", result });
     }
   } catch (error) {

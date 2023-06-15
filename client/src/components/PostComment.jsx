@@ -1,8 +1,11 @@
 import { Avatar, Box, Typography } from "@mui/material";
 import React from "react";
 import { deepPurple } from "@mui/material/colors";
+import URLBASE from "../constant/urlbase";
+import moment from "moment"
 
-const PostComment = () => {
+const PostComment = ({box}) => {
+
   return (
     <Box
       display="flex"
@@ -12,7 +15,7 @@ const PostComment = () => {
       gap={1}
       mb={1}
     >
-      <Avatar alt="PP" src="" sx={{ bgcolor: deepPurple[500] }} />
+      <Avatar alt="PP" src={`${URLBASE.imageBaseUrl}${box?.profilePic}`} sx={{ bgcolor: deepPurple[500] }} />
 
       <Box
         sx={{
@@ -22,6 +25,7 @@ const PostComment = () => {
           px: 2,
           boxShadow: 1,
           borderRadius: 10,
+          flex: 5
         }}
       >
         <Box
@@ -35,21 +39,21 @@ const PostComment = () => {
           <Box>
             <Typography
               variant="body"
-              color="primary"
-              sx={{ fontFamily: "Poppins", fontWeight: "bold" }}
+              color="secondary"
+              sx={{ fontFamily: "Poppins"}}
             >
-              Rukayyat Saad
+             {box?.fullname}
             </Typography>
           </Box>
           <Box>
             <Typography variant="caption" color="secondary">
-              5d
+              {moment(box?.createdAt).fromNow()}
             </Typography>
           </Box>
         </Box>
 
-        <Typography variant="caption" color="primary">
-          This is so great, I love it and it is so great and interesting. Btw, Kudos to you 
+        <Typography variant="caption" color="primary" alignSelf="self-start">
+          {box?.description}
         </Typography>
       </Box>
     </Box>

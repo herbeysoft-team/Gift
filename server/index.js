@@ -13,7 +13,9 @@ const userRouter = require("./routes/user");
 const relationshipRouter = require("./routes/relationship");
 const trowRouter = require("./routes/trow");
 const wishlistRouter = require("./routes/wishlist");
-const postRouter = require("./routes/post")
+const postRouter = require("./routes/post");
+const commentRouter = require("./routes/comment");
+const likeRouter = require("./routes/like");
 //const {multerMiddleware} = require("./middleware/multerUtil")
 
 //initialization
@@ -40,5 +42,7 @@ app.use("/api/v1/relationship/", relationshipRouter);
 app.use("/api/v1/trow/", trowRouter);
 app.use("/api/v1/wishlist/", wishlistRouter);
 app.use("/api/v1/post/", postRouter);
+app.use("/api/v1/comment/", commentRouter);
+app.use("/api/v1/like/", likeRouter);
 
 app.listen(port, () => console.log(`App Running on port ${port}`));

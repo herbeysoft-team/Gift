@@ -1,0 +1,24 @@
+const express = require("express");
+const router = express.Router();
+const {
+  addlike, getlikes, deletelike, getlikescount
+} = require("../controller/like");
+const verifyToken = require("../middleware/verifyToken");
+
+
+/**ADD LIKE*/
+router.post("/addlike", verifyToken, addlike);
+
+/**GET LIKE FOR A POST*/
+router.get("/getlikes/:id", getlikes);
+
+/**DISLIKE A POST*/
+router.delete("/deletelike/:id", verifyToken, deletelike);
+
+/**GET LIKE COUNT FOR USER*/
+router.get("/getlikescount/:userId", getlikescount);
+
+
+
+
+module.exports = router;

@@ -56,8 +56,8 @@ const Feeds = () => {
       {/* The Post Here */}
       {memoizedPost.length > 0 ? (
         <>
-          {memoizedPost.map((box, index) => {
-            return <Post key={box.id} box={box} />;
+          {memoizedPost.map((post) => {
+            return <Post key={post.post_id} post={post} />;
           })}
           <Stack spacing={2} alignItems="center">
             <TablePagination

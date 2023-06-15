@@ -6,6 +6,8 @@ import ItemReducer from "./features/itemSlice";
 import TrowReducer from "./features/trowSlice";
 import WishlistReducer from "./features/wishlistSlice";
 import PostReducer from "./features/postSlice";
+import CommentReducer from "./features/commentSlice";
+import LikeReducer from "./features/likeSlice";
 
 export default configureStore({
     reducer: {
@@ -16,6 +18,8 @@ export default configureStore({
       trow: TrowReducer,
       wishlist: WishlistReducer,
       post: PostReducer,
+      comment: CommentReducer,
+      like: LikeReducer,
     }
   });
   

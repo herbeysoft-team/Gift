@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Favorite,
   FavoriteBorder,
@@ -23,11 +23,78 @@ import { deepPurple } from "@mui/material/colors";
 import URLBASE from "../constant/urlbase";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import moment from "moment"
+import moment from "moment";
+import { getComments } from "../context/features/commentSlice";
+import { getLikes, addLike, deleteLike } from "../context/features/likeSlice";
+import toast from "react-hot-toast";
 
-const Post = ({box}) => {
+const Post = ({ post }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [lastTapTime, setLastTapTime] = useState(0);
   const { user } = useSelector((state) => ({ ...state.auth }));
+
+  // Filter the comments based on the post ID
+  const comments = useSelector((state) => state.comment[post.post_id] || []);
+
+  // Filter the likes based on the post ID
+  const likes = useSelector((state) => state.like[post.post_id] || []);
+
+  const handleToggleLike = (id) => {
+    const isSelected = likes.includes(user?.result?.id);
+
+    if (isSelected) {
+      //then dislike the item
+      dispatch(deleteLike({ id, toast }));
+      dispatch(getLikes(post?.post_id));
+    } else {
+      dispatch(
+        addLike({
+          formData: {
+            postId: id,
+          },
+          toast,
+        })
+      );
+      dispatch(getLikes(post?.post_id));
+    }
+  };
+
+  const handleGoPost = (id) => {
+    if (id && post) {
+      navigate(`/home/postdetails/${id}`);
+    }
+  };
+
+  const handleGoProfile = (id) => {
+    if (id) {
+      navigate(`/home/profile/${id}`);
+    }
+  };
+
+  useEffect(() => {
+    if (post?.post_id) {
+      dispatch(getComments(post?.post_id));
+    }
+  }, [post?.post_id, dispatch]);
+
+  useEffect(() => {
+    if (post?.post_id) {
+      dispatch(getLikes(post?.post_id));
+    }
+  }, [post?.post_id, dispatch]);
+
+  const handleDoubleTap = () => {
+    const currentTime = new Date().getTime();
+    const doubleTapDelay = 300; // Adjust this value as per your preference
+
+    if (currentTime - lastTapTime < doubleTapDelay) {
+      handleToggleLike(post?.post_id);
+      dispatch(getLikes(post?.post_id));
+    } else {
+      setLastTapTime(currentTime);
+    }
+  };
 
   return (
     <Box sx={{ marginTop: 1, mx: 0.5, marginBottom: 3, boxShadow: "2" }}>
@@ -36,8 +103,9 @@ const Post = ({box}) => {
           component="img"
           height="auto"
           fit="cover"
-          image={`${URLBASE.imageBaseUrl}${box?.event_pics}`}
+          image={`${URLBASE.imageBaseUrl}${post?.event_pics}`}
           alt="Post Image"
+          onClick={handleDoubleTap}
         />
         <IconButton
           aria-label="upvote"
@@ -47,6 +115,8 @@ const Post = ({box}) => {
           <Checkbox
             icon={<FavoriteBorder sx={{ color: "white", fontSize: 32 }} />}
             checkedIcon={<Favorite sx={{ color: "purple", fontSize: 32 }} />}
+            checked={likes.includes(user?.result?.id)}
+            onChange={() => handleToggleLike(post?.post_id)}
           />
         </IconButton>
         <Box
@@ -62,33 +132,40 @@ const Post = ({box}) => {
             boxShadow: 1,
             borderRadius: 10,
           }}
+          onClick={() => handleGoProfile(post?.user_id)}
         >
-          <Avatar alt={`PP`} src={`${URLBASE.imageBaseUrl}${box?.profilePic}`} sx={{ bgcolor: deepPurple[500] }} />
+          <Avatar
+            alt={`PP`}
+            src={`${URLBASE.imageBaseUrl}${post?.profilePic}`}
+            sx={{ bgcolor: deepPurple[500] }}
+          />
           <Typography variant="body" color={"white"}>
-            
-          {parseInt(user?.result.id) ===
-              parseInt(box?.user_id)
-                ? "You"
-                : box?.fullname.length > 15
-                ? `${box?.fullname.substring(0, 15)}...`
-                : box?.fullname}
+            {parseInt(user?.result.id) === parseInt(post?.user_id)
+              ? "You"
+              : post?.fullname.length > 15
+              ? `${post?.fullname.substring(0, 15)}...`
+              : post?.fullname}
           </Typography>
         </Box>
       </Box>
 
       <CardHeader
+        onClick={() => handleGoPost(post?.post_id)}
         action={
           <IconButton aria-label="settings">
             <MoreVert sx={{ color: "purple", fontSize: 32 }} />
           </IconButton>
         }
-        titleTypographyProps={{ variant: "h6", sx: { fontFamily: "Poppins" } }}
+        titleTypographyProps={{
+          variant: "h6",
+          sx: { fontFamily: "Poppins", color: "purple" },
+        }}
         subheaderTypographyProps={{
           variant: "body2",
           sx: { fontFamily: "Poppins" },
         }}
-        title={box?.event_name}
-        subheader={box?.description}
+        title={post?.event_name}
+        subheader={post?.description}
         sx={{ borderBottom: "0.5px solid lightgray" }}
       />
 
@@ -101,6 +178,7 @@ const Post = ({box}) => {
           width="100%"
           pl={{ xs: 0, md: 1 }}
           pr={{ xs: 0, md: 1 }}
+          onClick={() => handleGoPost(post?.post_id)}
         >
           <Box
             display="flex"
@@ -109,24 +187,28 @@ const Post = ({box}) => {
             pl={{ xs: 0, md: 1 }}
             pr={{ xs: 0, md: 1 }}
           >
-            <Typography variant="caption" sx={{fontFamily:"Poppins"}}>{moment(box?.createdAt).fromNow()}</Typography>
-            <Typography variant="caption" color="secondary" sx={{fontFamily:"Poppins"}}>
-              Friends who comment
+            <Typography variant="caption" sx={{ fontFamily: "Poppins" }}>
+              {moment(post?.createdAt).fromNow()}
             </Typography>
-            <AvatarGroup max={4}>
-              <Avatar
-                alt="Remy Sharp"
-                src="https://material-ui.com/static/images/avatar/1.jpg"
-              />
-              <Avatar
-                alt="Travis Howard"
-                src="https://material-ui.com/static/images/avatar/2.jpg"
-              />
-              <Avatar
-                alt="Cindy Baker"
-                src="https://material-ui.com/static/images/avatar/3.jpg"
-              />
-              <Avatar alt="Agnes Walker" src="" />
+            <Typography
+              variant="caption"
+              color="secondary"
+              sx={{ fontFamily: "Poppins" }}
+            >
+              {comments?.length > 0 ? "Friends who comment" : "No comment"}
+            </Typography>
+            <AvatarGroup max={4} sx={{ alignSelf: "flex-start" }}>
+              {comments?.length > 0
+                ? comments.map((c) => {
+                    return (
+                      <Avatar
+                        key={c.id}
+                        alt="PP"
+                        src={`${URLBASE.imageBaseUrl}${c?.profilePic}`}
+                      />
+                    );
+                  })
+                : null}
             </AvatarGroup>
           </Box>
           <Box display="flex" flexDirection="row" gap={1}>
@@ -137,18 +219,26 @@ const Post = ({box}) => {
               <Icon>
                 <CardGiftcard color="secondary" />
               </Icon>
-              <Typography variant="caption" color="secondary"sx={{fontFamily:"Poppins"}}>
+              <Typography
+                variant="caption"
+                color="secondary"
+                sx={{ fontFamily: "Poppins" }}
+              >
                 Retrow
               </Typography>
             </Box>
             <Box display="flex" flexDirection="column" alignItems="center">
               <Typography variant="caption" color="secondary">
-                45
+                {likes?.length > 0 ? likes?.length : "0"}
               </Typography>
               <Icon>
                 <DoneAll color="secondary" />
               </Icon>
-              <Typography variant="caption" color="secondary"sx={{fontFamily:"Poppins"}}>
+              <Typography
+                variant="caption"
+                color="secondary"
+                sx={{ fontFamily: "Poppins" }}
+              >
                 Upvote
               </Typography>
             </Box>
@@ -160,7 +250,11 @@ const Post = ({box}) => {
               <Icon>
                 <Send color="secondary" />
               </Icon>
-              <Typography variant="caption" color="secondary"sx={{fontFamily:"Poppins"}}>
+              <Typography
+                variant="caption"
+                color="secondary"
+                sx={{ fontFamily: "Poppins" }}
+              >
                 Share
               </Typography>
             </Box>

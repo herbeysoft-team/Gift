@@ -65,3 +65,17 @@ export const wishlists = (userId) => API.get(`/api/v1/wishlist/wishlists/${userI
 /**POST API */
 export const createPost = (formData) => API.post(`/api/v1/post/createpost`,formData); //create a post
 export const getPosts = () => API.get(`/api/v1/post/getposts/`); //get posts
+export const getPost = (id) => API.get(`/api/v1/post/getpost/${id}`); //get a post
+
+/**ADD COMMENT API*/
+export const addComment = (formData) => API.post(`/api/v1/comment/addcomment`, formData); //add a comment to post
+export const deleteComment = (formData) => API.delete(`/api/v1/comment/deletecomment`, formData); //add a comment to post
+export const getComments= (id) => API.get(`/api/v1/comment/getcomments/${id}`); //Fetch comments for a post in feed
+export const getCommentsForPost= (id) => API.get(`/api/v1/comment/getcomments/${id}`); //Fetch comments for a post
+
+/**ADD LIKE API*/
+export const addLike = (formData) => API.post(`/api/v1/like/addlike`, formData); //like a post
+export const deleteLike= (id) => API.delete(`/api/v1/like/deletelike/${id}`); //dislike a post
+export const getLikes= (id) => API.get(`/api/v1/like/getlikes/${id}`); //Fetch all likes for a post
+export const getLikesCount= (userId) => API.get(`/api/v1/like/getlikescount/${userId}`); //Get count of upvote of a particular user
+export const getLikesForPost= (id) => API.get(`/api/v1/like/getlikes/${id}`); //fetch all like for a partiular post 

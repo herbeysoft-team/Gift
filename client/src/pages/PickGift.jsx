@@ -4,7 +4,6 @@ import MobileNavBar from '../components/MobileNavBar'
 import Store from "../assets/store.png";
 import ShopSearch from '../components/ShopSearch';
 import GiftCategoryTabs from '../components/GiftCategoryTabs';
-import PickShopCards from '../components/PickShopCards';
 import { useNavigate, useLocation} from "react-router-dom";
 import { getSubcategories} from "../context/features/itemSlice";
 import { useSelector, useDispatch } from "react-redux";
