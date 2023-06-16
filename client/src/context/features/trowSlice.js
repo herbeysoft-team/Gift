@@ -125,16 +125,13 @@ export const addTrowWishlist = createAsyncThunk(
 export const addTrowGift = createAsyncThunk(
   "trow/addTrowGift",
 
-  async({id, trowgift, toast, navigate,link}, {rejectWithValue})=>{
-      console.log({trowgift, id, link})
+  async({id, trowgift, toast, navigate}, {rejectWithValue})=>{
 
       try{
         const response = await api.addTrowGift(id, trowgift);
         if(response){
           toast.success(response.data.message);
-          if(link){
           navigate(`/home/eventdetails/${id}`)
-          }
         }
         return response.data;
       }catch(err){

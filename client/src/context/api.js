@@ -79,3 +79,6 @@ export const deleteLike= (id) => API.delete(`/api/v1/like/deletelike/${id}`); //
 export const getLikes= (id) => API.get(`/api/v1/like/getlikes/${id}`); //Fetch all likes for a post
 export const getLikesCount= (userId) => API.get(`/api/v1/like/getlikescount/${userId}`); //Get count of upvote of a particular user
 export const getLikesForPost= (id) => API.get(`/api/v1/like/getlikes/${id}`); //fetch all like for a partiular post 
+
+/**NOTIFICATION API */
+export const getMyNotification = () => API.get(`/api/v1/notification/getmynotification`); //Fetch all my notification

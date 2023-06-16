@@ -16,6 +16,7 @@ const wishlistRouter = require("./routes/wishlist");
 const postRouter = require("./routes/post");
 const commentRouter = require("./routes/comment");
 const likeRouter = require("./routes/like");
+const notificationRouter = require("./routes/notification")
 //const {multerMiddleware} = require("./middleware/multerUtil")
 
 //initialization
@@ -44,5 +45,6 @@ app.use("/api/v1/wishlist/", wishlistRouter);
 app.use("/api/v1/post/", postRouter);
 app.use("/api/v1/comment/", commentRouter);
 app.use("/api/v1/like/", likeRouter);
+app.use("/api/v1/notification/", notificationRouter);
 
 app.listen(port, () => console.log(`App Running on port ${port}`));

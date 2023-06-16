@@ -26,7 +26,7 @@ router.get("/getmytrowbox", verifyToken, getmytrowbox);
 router.get("/getmyscheduletrowbox", verifyToken, getmyscheduletrowbox);
 
 /**ADD TROW WISHLIST*/
-router.post("/addtrowwishlist/:id", addtrowwishlist);
+router.post("/addtrowwishlist/:id", verifyToken, addtrowwishlist);
 
 /**ADD TROW GIFT*/
 router.post("/addtrowgift/:id", verifyToken, addtrowgift);

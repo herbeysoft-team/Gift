@@ -192,6 +192,8 @@ exports.getevent = async (req, res) => {
 exports.addtrowwishlist = async (req, res) => {
   const { id } = req.params;
   const { trowWishlists_gift } = req.body;
+  const userId = req.user.userId;
+
 
   try {
     //add the wishlist to trowbox
@@ -200,6 +202,22 @@ exports.addtrowwishlist = async (req, res) => {
       [1, id]
     );
     if (result) {
+      const contentOwner = await db.getval(
+        "SELECT sender_id FROM trowbox WHERE id = ?",
+        [id]
+      );
+      if(contentOwner){
+      const notification = await db.insert(
+        "INSERT INTO notification(userId, activity, content_id, content_owner, content_type, date) VALUES (?,?,?,?,?,?)",
+        [
+          userId,
+          "wishlist",
+          id,
+          contentOwner,
+          "trowbox",
+          moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+        ]
+      );
       trowWishlists_gift.forEach((element) => {
         const result2 = db.insert(
           "INSERT INTO wishlist_gift (trowbox_id, item_id) VALUES (?,?)",
@@ -207,6 +225,7 @@ exports.addtrowwishlist = async (req, res) => {
         );
       });
     }
+  }
     res.status(201).json({ message: "Wishlist Added" });
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
@@ -226,6 +245,25 @@ exports.addtrowgift = async (req, res) => {
       "UPDATE trowbox SET gift_sent = ? WHERE id = ?",
       [1, id]
     );
+    
+    const contentOwner = await db.getval(
+      "SELECT recipient_no FROM trowbox WHERE id = ?",
+      [id]
+    );
+    if(contentOwner){
+    const notification = await db.insert(
+      "INSERT INTO notification(userId, activity, content_id, content_owner_no, content_type, date) VALUES (?,?,?,?,?,?)",
+      [
+        userId,
+        "gifting",
+        id,
+        contentOwner,
+        "trowbox",
+        moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+      ]
+    );
+    }
+
     trow_gift?.forEach((element) => {
       const result2 = db.insert(
         "INSERT INTO trowbox_gift (sender_id, trowbox_id, item_id) VALUES (?,?, ?)",
@@ -246,8 +284,8 @@ exports.getmytrowbox = async (req, res) => {
   const userId = req.user;
   try {
     const resultforCurrent = await db.getall(
-      "SELECT * FROM trowbox WHERE recipient_no = ? AND event_date <= ?",
-      [userId?.phone_no, currentDate]
+      "SELECT * FROM trowbox WHERE recipient_no = ? AND event_date <= ? AND gift_sent = ?",
+      [userId?.phone_no, currentDate, 1]
     );
     if (resultforCurrent) {
       res.status(201).json(resultforCurrent);
@@ -264,8 +302,8 @@ exports.getmyscheduletrowbox = async (req, res) => {
   const userId = req.user;
   try {
     const resultforSchedule = await db.getall(
-      "SELECT * FROM trowbox WHERE recipient_no = ? AND event_date > ?",
-      [userId?.phone_no, currentDate]
+      "SELECT * FROM trowbox WHERE recipient_no = ? AND event_date > ? AND gift_sent = ?",
+      [userId?.phone_no, currentDate, 1]
     );
     if (resultforSchedule) {
       res.status(201).json(resultforSchedule);

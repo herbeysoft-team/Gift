@@ -45,7 +45,7 @@ const Post = ({ post }) => {
 
     if (isSelected) {
       //then dislike the item
-      dispatch(deleteLike({ id, toast }));
+      //dispatch(deleteLike({ id, toast }));
       dispatch(getLikes(post?.post_id));
     } else {
       dispatch(

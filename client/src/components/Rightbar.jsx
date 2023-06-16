@@ -96,7 +96,7 @@ const Rightbar = () => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding style={{ paddingBottom: "5px" }}>
-            <ListItemButton component="a" href="#simple-list">
+            <ListItemButton component={Link}  to={`/home/notification`}>
               <ListItemIcon>
                 <NotificationsIcon />
               </ListItemIcon>

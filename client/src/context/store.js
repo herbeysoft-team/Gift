@@ -8,6 +8,7 @@ import WishlistReducer from "./features/wishlistSlice";
 import PostReducer from "./features/postSlice";
 import CommentReducer from "./features/commentSlice";
 import LikeReducer from "./features/likeSlice";
+import NotificationReducer from "./features/notificationSlice";
 
 export default configureStore({
     reducer: {
@@ -20,6 +21,7 @@ export default configureStore({
       post: PostReducer,
       comment: CommentReducer,
       like: LikeReducer,
+      notification: NotificationReducer,
     }
   });
   
