@@ -154,3 +154,60 @@ exports.getuserstogift = async (req, res) => {
     console.log(error);
   }
 };
+
+
+// ADMIN SPECIAL API
+//Get all users
+exports.allcountfordashboard = async (req, res) => {
+  try {
+    const getUsersCount = await db.getval(
+      "SELECT COUNT(*) AS users FROM userprofile ",
+      []
+    );
+
+    const getPostCount = await db.getval(
+      "SELECT COUNT(*) AS posts FROM post ",
+      []
+    );
+
+    const getTrowboxCount = await db.getval(
+      "SELECT COUNT(*) AS trowbox FROM trowbox ",
+      []
+    );
+
+    const getGiftCount = await db.getval(
+      "SELECT COUNT(*) AS gift FROM trowbox_gift ",
+      []
+    );
+
+    const getRetrowCount = await db.getval(
+      "SELECT COUNT(*) AS retrow FROM retrow ",
+      []
+    );
+
+    const getShareCount = await db.getval(
+      "SELECT COUNT(*) AS share FROM share",
+      []
+    );
+
+
+    console.log({getUsersCount,
+      getTrowboxCount,
+      getPostCount,
+      getGiftCount,
+      getRetrowCount,
+      getShareCount})
+      res.status(201).json({
+        getUsersCount,
+        getTrowboxCount,
+        getPostCount,
+        getGiftCount,
+        getRetrowCount,
+        getShareCount
+      });
+    
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};

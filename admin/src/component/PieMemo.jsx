@@ -1,10 +1,10 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
-// import { getMemosCount } from "../Context/features/memoSlice";
+import { allgiftcount } from "../context/features/giftSlice";
 import { useSelector, useDispatch } from "react-redux";
 
-const COLORS = ["#da1919", "#e74e48", "#424041"];
+const COLORS = ["#642c8e", "#d676af"];
 
 const RADIAN = Math.PI / 180;
 
@@ -34,23 +34,23 @@ const renderCustomizedLabel = ({
 };
 
 export default function PieMemo() {
-  // const { memoscount } = useSelector((state) => ({
-  //   ...state.memo,
-  // }));
-  // const dispatch = useDispatch();
+  
+  const dispatch = useDispatch();
    const [costGroups, setCostGroups] = useState([]);
+  const { allGiftCount } = useSelector((state) => ({
+    ...state.gift,
+  }));
+  const memoizedGift = useMemo(() => allGiftCount, [allGiftCount]);
+  useEffect(() => {
+    dispatch(allgiftcount());
+  }, [dispatch]);
 
-  // useEffect(() => {
-  //   dispatch(getMemosCount());
-  // }, [dispatch]);
-
-  // useEffect(() => {
-  //   setCostGroups([
-  //     { name: "Approved", qty: memoscount?.Approved },
-  //     { name: "Pending", qty: memoscount?.Pending },
-  //     { name: "Rejected", qty: memoscount?.Rejected },
-  //   ]);
-  // }, [memoscount]);
+  useEffect(() => {
+    setCostGroups([
+      { name: "Redeemed", qty: memoizedGift?.RedeemedGift },
+      { name: "Pending", qty: memoizedGift?.PendingGift},
+    ]);
+  }, [memoizedGift]);
 
   return (
     <Box
@@ -67,7 +67,7 @@ export default function PieMemo() {
           labelLine={false}
           label={renderCustomizedLabel}
           outerRadius={80}
-          fill="#8884d8"
+          fill="#642c8e"
           dataKey="qty"
         >
           {costGroups.map((entry, index) => (
@@ -77,7 +77,7 @@ export default function PieMemo() {
         <Tooltip />
       </PieChart>
       <Stack gap={2}>
-        <Typography variant="h5">Memo Statistics</Typography>
+        <Typography variant="h5" sx={{fontFamily:"Poppins"}}>Gift Statistics</Typography>
         <Box sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
           {COLORS.map((color, i) => (
             <Stack key={color} alignItems="center" spacing={1}>

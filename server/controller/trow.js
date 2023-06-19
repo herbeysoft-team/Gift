@@ -374,3 +374,29 @@ exports.getmyscheduletrowbox = async (req, res) => {
     console.log(error);
   }
 };
+
+
+//ADMIN SPECIAL API
+//Get all gift count
+exports.allgiftcount = async (req, res) => {
+  try {
+    const giftRedeemed = await db.getval(
+      "SELECT COUNT(*) AS RedeemedGift FROM trowbox_gift WHERE status = 'redeemed'",
+      []
+    );
+    const giftPending = await db.getval(
+      "SELECT COUNT(*) AS PendingGift FROM trowbox_gift WHERE status = 'pending'",
+      []
+    );
+      console.log({ RedeemedGift: giftRedeemed,
+        PendingGift: giftPending,})
+    res.status(201).json({
+        RedeemedGift: giftRedeemed,
+        PendingGift: giftPending,
+      });
+    
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};

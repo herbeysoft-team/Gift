@@ -33,65 +33,6 @@ export const login = createAsyncThunk(
 //     }
 //   );
 
-//   export const resendOTP = createAsyncThunk(
-//     "auth/resendOTP",
-//     async ({ formValue, toast }, { rejectWithValue }) => {
-//       try {
-//         const response = await api.resendOTP(formValue);
-//         toast.success("OTP has been sent");
-//         return response.data;
-//       } catch (err) {
-//         toast.error(err.response.data.message);
-//         return rejectWithValue(err.response.data);
-//       }
-//     }
-//   );
-
-//   export const verify = createAsyncThunk(
-//     "auth/verify",
-//     async ({ formValue, navigate, toast }, { rejectWithValue }) => {
-//       try {
-//         const response = await api.verify(formValue);
-//         toast.success("Account Verified. Please Login");
-//         navigate("/")
-//         return response.data;
-//       } catch (err) {
-//         toast.error(err.response.data.message);
-//         return rejectWithValue(err.response.data);
-//       }
-//     }
-//   );
-
-//   export const resetPasswordOTP = createAsyncThunk(
-//     "auth/resetPasswordOTP",
-//     async ({ formValue, navigate, toast }, { rejectWithValue }) => {
-//       try {
-//         const response = await api.resetPasswordOTP(formValue);
-//         toast.success("A new OTP has been sent to you!");
-//         navigate("/changePassword")
-//         return response.data;
-//       } catch (err) {
-//         toast.error(err.response.data.message);
-//         return rejectWithValue(err.response.data);
-//       }
-//     }
-//   );
-
-//   export const resetPassword = createAsyncThunk(
-//     "auth/resetPassword",
-//     async ({ formValue, navigate, toast }, { rejectWithValue }) => {
-//       try {
-//         const response = await api.resetPassword(formValue);
-//         toast.success("Password changed successfully!");
-//         navigate("/");
-//         return response.data;
-//       } catch (err) {
-//         toast.error(err.response.data.message);
-//         return rejectWithValue(err.response.data);
-//       }
-//     }
-//   );
-
 
 const authSlice = createSlice({
     name: "auth",
@@ -123,50 +64,6 @@ const authSlice = createSlice({
           state.loading = false;
           state.error = action.payload;
         })
-//         .addCase(register.pending, (state) => {
-//           state.loading = true;
-//         })
-//         .addCase(register.fulfilled, (state, action) => {
-//           state.loading = false;
-//           state.user = action.payload;
-//         })
-//         .addCase(register.rejected, (state, action) => {
-//           state.loading = false;
-//           state.error = action.payload.message;
-//         })
-//         .addCase(resendOTP.pending, (state) => {
-//           state.loading = true;
-//         })
-//         .addCase(resendOTP.rejected, (state, action) => {
-//           state.loading = false;
-//           state.error = action.payload.message;
-//         })
-//         .addCase(verify.pending, (state) => {
-//           state.loading = true;
-//         })
-//         .addCase(verify.fulfilled, (state, action) => {
-//           state.loading = false;
-//           localStorage.removeItem("profile");
-//           state.user = null;
-//         })
-//         .addCase(verify.rejected, (state, action) => {
-//           state.loading = false;
-//           state.error = action.payload;
-//         })
-//         .addCase(resetPasswordOTP.pending, (state) => {
-//           state.loading = true;
-//         })
-//         .addCase(resetPasswordOTP.rejected, (state, action) => {
-//           state.loading = false;
-//           state.error = action.payload;
-//         })
-//         .addCase(resetPassword.pending, (state) => {
-//           state.loading = true;
-//         })
-//         .addCase(resetPassword.rejected, (state, action) => {
-//           state.loading = false;
-//           state.error = action.payload;
-//         });
      },
     
   });

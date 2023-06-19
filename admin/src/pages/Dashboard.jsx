@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Box, Grid, Paper, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import CardItem from "../component/CardItem";
 import PeopleIcon from '@mui/icons-material/People';
 import PagesIcon from '@mui/icons-material/Pages';
@@ -8,7 +8,7 @@ import MoveToInboxIcon from '@mui/icons-material/MoveToInbox';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import RedoIcon from '@mui/icons-material/Redo';
 import IosShareIcon from '@mui/icons-material/IosShare';
-// import { getUsersCount } from "../../Context/features/userSlice";
+import { allcountfordashboard } from "../context/features/userSlice";
 // import { getMemosCount } from "../../Context/features/memoSlice";
 import { useSelector, useDispatch } from "react-redux";
 // import { Backdrop } from "@mui/material";
@@ -35,19 +35,21 @@ const Wrapper = styled(Box)(({ theme }) => ({
 }));
 
 const Dashboard = () => {
-  // const { userscount, loading, error } = useSelector((state) => ({
-  //   ...state.user,
-  // }));
+  const { allcount, loading, error } = useSelector((state) => ({
+    ...state.user,
+  }));
+
+  const memoizedCount = useMemo(() => allcount, [allcount]);
   // const { memoscount } = useSelector((state) => ({
   //   ...state.memo,
   // }));
 
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
+  //const [isLoading, setIsLoading] = useState(false);
 
-  // useEffect(() => {
-  //   dispatch(getUsersCount());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(allcountfordashboard());
+  }, [dispatch]);
 
   // useEffect(() => {
   //   dispatch(getMemosCount());
@@ -60,6 +62,7 @@ const Dashboard = () => {
   // useEffect(() => {
   //   error && toast.error(error);
   // }, [error]);
+
   return (
     <Box
       sx={{
@@ -93,7 +96,7 @@ const Dashboard = () => {
               <CardItem
                 name="USER"
                 icon={<PeopleIcon />}
-                number={"34"}
+                number={memoizedCount?.getUsersCount}
                 bgavatar= "#642c8e"
                 numberColor="#642c8e"
               />
@@ -104,7 +107,7 @@ const Dashboard = () => {
               <CardItem
                 name="POST"
                 icon={<PagesIcon />}
-                number={"56"}
+                number={memoizedCount?.getPostCount}
                 bgavatar="#642c8e"
                 numberColor="#642c8e"
               />
@@ -115,7 +118,7 @@ const Dashboard = () => {
               <CardItem
                 name="TROWBOX"
                 icon={<MoveToInboxIcon />}
-                number={"34"}
+                number={memoizedCount?.getTrowboxCount}
                 bgavatar="#642c8e"
                 numberColor="#642c8e"
               />
@@ -129,7 +132,7 @@ const Dashboard = () => {
               <CardItem
                 name="GIFT"
                 icon={<CardGiftcardIcon />}
-                number={"45"}
+                number={memoizedCount?.getGiftCount}
                 bgavatar="#642c8e"
                 numberColor="#642c8e"
               />
@@ -140,7 +143,7 @@ const Dashboard = () => {
               <CardItem
                 name="RETROW"
                 icon={<RedoIcon />}
-                number={"34"}
+                number={memoizedCount?.getRetrowCount}
                 bgavatar="#642c8e"
                 numberColor="#642c8e"
               />
@@ -151,7 +154,7 @@ const Dashboard = () => {
               <CardItem
                 name="SHARE"
                 icon={<IosShareIcon />}
-                number={"45"}
+                number={memoizedCount?.getShareCount}
                 bgavatar="#642c8e"
                 numberColor="#642c8e"
               />

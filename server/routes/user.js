@@ -7,16 +7,19 @@ const {
   getsearchusers,
   updateuserprofile,
   updateuserprofilepic,
-  getuserstogift
+  getuserstogift,
+  allcountfordashboard
 } = require("../controller/user");
 const verifyToken = require("../middleware/verifyToken");
+const verifyAdmin = require("../middleware/verifyAdmin");
 const {multerMiddleware} = require("../middleware/multerUtil");
 
 
+/**GET COUNT FOR DASHBOARD*/
+router.get("/allcountfordashboard",verifyAdmin, allcountfordashboard);
 
 /**GET SEARCH USERS*/
 router.get("/getsearchusers/:searchname",verifyToken, getsearchusers);
-
 
 /**GET USERS TO GIFT*/
 router.get("/getuserstogift/", verifyToken, getuserstogift);

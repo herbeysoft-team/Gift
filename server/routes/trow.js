@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const {createtrow, createretrow, createevent, gettrow, getevent, getallevent, getmytrowbox, getmyscheduletrowbox, addtrowwishlist, addtrowgift} = require("../controller/trow")
+const {createtrow, createretrow, createevent, gettrow, getevent, getallevent, getmytrowbox, getmyscheduletrowbox, addtrowwishlist, addtrowgift, allgiftcount} = require("../controller/trow")
 const {multerMiddleware} = require("../middleware/multerUtil")
 const verifyToken = require("../middleware/verifyToken");
+const verifyAdmin = require("../middleware/verifyAdmin");
 
 /**CREATE TROW */
 router.post("/createtrow", verifyToken, multerMiddleware, createtrow);
@@ -33,5 +34,8 @@ router.post("/addtrowwishlist/:id", verifyToken, addtrowwishlist);
 
 /**ADD TROW GIFT*/
 router.post("/addtrowgift/:id", verifyToken, addtrowgift);
+
+/**GET GIFT COUNT  */
+router.get("/allgiftcount", verifyAdmin, allgiftcount);
 
 module.exports = router;
