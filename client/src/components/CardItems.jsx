@@ -1,4 +1,4 @@
-import { Box, Grid, PaginationItem } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import React, { useState, useId, useEffect, useMemo } from "react";
 import CardItem from "./CardItem";
 import { useSelector, useDispatch } from "react-redux";

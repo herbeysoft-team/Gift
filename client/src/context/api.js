@@ -47,6 +47,7 @@ export const getItemsBySearch = (searchName) => API.get(`/api/v1/item/getitemsby
 
 /**TROW API */
 export const createTrow = (formData) => API.post(`/api/v1/trow/createtrow`,formData); //create a trowbox
+export const createReTrow = (formData) => API.post(`/api/v1/trow/createretrow`,formData); //create a retrowbox
 export const createEvent = (formData) => API.post(`/api/v1/trow/createevent`,formData); //create an event
 export const getTrow = (id) => API.get(`/api/v1/trow/gettrow/${id}`); //get a trowbox
 export const getEvent = (id) => API.get(`/api/v1/trow/getevent/${id}`); //get an eventbox
@@ -82,3 +83,15 @@ export const getLikesForPost= (id) => API.get(`/api/v1/like/getlikes/${id}`); //
 
 /**NOTIFICATION API */
 export const getMyNotification = () => API.get(`/api/v1/notification/getmynotification`); //Fetch all my notification
+
+/**RETROW API */
+export const getRetrow= (id) => API.get(`/api/v1/like/getretrow/${id}`); //Fetch all retrow for the trowbox
+export const getRetrowForPost= (id) => API.get(`/api/v1/like/getretrow/${id}`); //Fetch all retrow for the trowbox
+
+/**MESSAGING API */
+export const sendMessage = (formData) => API.post(`/api/v1/message/sendmessagetext`, formData); //send a message
+export const sendMessageMedia = (formData) => API.post(`/api/v1/message/sendmessagemedia`, formData); //send a message media
+export const getShare = (id) => API.get(`/api/v1/message/getshare/${id}`); //Fetch all share
+export const getShareForPost = (id) => API.get(`/api/v1/message/getshare/${id}`); //Fetch share for a post
+export const getMessages= (userId) => API.get(`/api/v1/message/getmessages/${userId}`); //Fetch all messages between users
+export const getMessagesUsers= () => API.get(`/api/v1/message/getmessagesusers`); //Fetch all users who you converse with

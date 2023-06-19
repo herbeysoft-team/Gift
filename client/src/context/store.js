@@ -9,6 +9,9 @@ import PostReducer from "./features/postSlice";
 import CommentReducer from "./features/commentSlice";
 import LikeReducer from "./features/likeSlice";
 import NotificationReducer from "./features/notificationSlice";
+import RetrowReducer from "./features/retrowSlice";
+import ShareReducer from "./features/shareSlice";
+import MessageReducer from "./features/messageSlice"
 
 export default configureStore({
     reducer: {
@@ -22,6 +25,9 @@ export default configureStore({
       comment: CommentReducer,
       like: LikeReducer,
       notification: NotificationReducer,
+      retrow: RetrowReducer,
+      share: ShareReducer,
+      message: MessageReducer,
     }
   });
   

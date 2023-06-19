@@ -35,7 +35,7 @@ exports.getposts = async (req, res) => {
   const userInfo = req.user;
   try {
     const posts = await db.getall(
-      "SELECT up.id AS user_id, up.profilePic, up.fullname, p.id AS post_id, p.description, p.createdAt, tb.* FROM userprofile up JOIN post p ON up.id = p.user_id JOIN trowbox tb ON tb.recipient_no = up.phone_no AND tb.id = p.event_id LEFT JOIN relationship AS r ON (p.user_id = r.following_id) WHERE r.follower_id = ? OR p.user_id =? ORDER BY p.createdAt DESC",
+      "SELECT DISTINCT up.id AS user_id, up.profilePic, up.fullname, p.id AS post_id, p.description, p.createdAt, tb.* FROM userprofile up JOIN post p ON up.id = p.user_id JOIN trowbox tb ON tb.recipient_no = up.phone_no AND tb.id = p.event_id LEFT JOIN relationship AS r ON (p.user_id = r.following_id) WHERE r.follower_id = ? OR p.user_id =? ORDER BY p.createdAt DESC",
       [
         userInfo?.userId,
         userInfo?.userId

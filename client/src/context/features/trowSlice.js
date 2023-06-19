@@ -20,6 +20,24 @@ export const createTrow = createAsyncThunk(
   }
 )
 
+export const createReTrow = createAsyncThunk(
+  "trow/createReTrow",
+
+  async({formData, navigate, toast}, {rejectWithValue})=>{
+      try{
+        const response = await api.createReTrow(formData);
+        if(response){
+          toast.success(response.data.message);
+          navigate("/home/");
+
+        }
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
 export const createEvent = createAsyncThunk(
   "trow/createEvent",
 
@@ -167,6 +185,17 @@ const trowSlice = createSlice({
         localStorage.removeItem("trowDetails");
       })
       .addCase(createTrow.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(createReTrow.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(createReTrow.fulfilled, (state, action) => {
+        state.loading = false;
+        
+      })
+      .addCase(createReTrow.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

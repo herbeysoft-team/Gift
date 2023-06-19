@@ -57,6 +57,66 @@ exports.createtrow = async (req, res) => {
   }
 };
 
+//create a retrow
+exports.createretrow = async (req, res) => {
+  const {
+    phone_number,
+    event_name,
+    event_purpose,
+    category_name,
+    event_date,
+    event_id,
+    event_pic
+  } = req.body;
+  
+  const userId = req.user.userId;
+  
+  try {
+    const result = await db.insert(
+      "INSERT INTO trowbox (sender_id, recipient_no, event_name, event_purpose, event_category, event_date, event_pics) VALUES (?,?,?,?,?,?,?)",
+      [
+        userId,
+        phone_number,
+        event_name,
+        event_purpose,
+        category_name,
+        event_date,
+        event_pic,
+      ]
+    );
+    if (result) {
+      const retrow = await db.insert("INSERT INTO retrow(user_id, event_id) VALUES (?,?)", [userId, event_id])
+      const notification = await db.insert(
+        "INSERT INTO notification(userId, activity, content_id, content_owner_no, content_type, date) VALUES (?,?,?,?,?,?)",
+        [
+          userId,
+          "retrow",
+          result,
+          phone_number,
+          "trowbox",
+          moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+        ]
+      );
+
+      const recommended_gift = await db.getall("SELECT item_id FROM recommended_gift WHERE trowbox_id = ?", [event_id] )
+      if(recommended_gift){
+        //add the recommended gifts
+        recommended_gift.forEach((element) => {
+          const result2 = db.insert(
+            "INSERT INTO recommended_gift (trowbox_id, item_id) VALUES (?,?)",
+            [result, element.item_id]
+          );
+        });
+      }
+    }
+
+    res.status(201).json({ message: "Retrow Successfully", result });
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
 //create an event
 exports.createevent = async (req, res) => {
   const { username, event_name, event_purpose, category_name, event_date } =
@@ -99,12 +159,13 @@ exports.createevent = async (req, res) => {
   }
 };
 
+
 //get all event of you, your followers and those you are following
 exports.getallevent = async (req, res) => {
   const userInfo = req.user;
   try {
     const result = await db.getall(
-      "SELECT tb.*, up.fullname, up.profilePic, up.id AS userId FROM trowbox tb, userprofile up WHERE tb.recipient_no = up.phone_no AND tb.gift_sent = ? AND tb.recipient_no <> ? ORDER BY tb.event_date ASC",
+      "SELECT DISTINCT tb.*, up.fullname, up.profilePic, up.id AS userId FROM trowbox tb, userprofile up WHERE tb.recipient_no = up.phone_no AND tb.gift_sent = ? AND tb.recipient_no <> ? ORDER BY tb.event_date ASC",
       [1, userInfo?.phone_no]
     );
     if (result) {

@@ -56,10 +56,10 @@ const Navbar = () => {
             gap: 2,
           }}
         >
-          <Badge badgeContent={1} color="error" variant="dot">
+          <Badge badgeContent={1} color="error" variant="dot" onClick={(e)=>navigate("/home/notification")}>
             <NotificationsIcon htmlColor="#642c8e" />
           </Badge>
-          <Badge badgeContent={1} color="error" variant="dot" invisible={true}>
+          <Badge badgeContent={1} color="error" variant="dot" invisible={true} onClick={(e)=>navigate("/home/message")}>
             <EmailIcon color="inherit" htmlColor="#642c8e" />
           </Badge>
           <Avatar

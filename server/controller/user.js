@@ -114,11 +114,11 @@ exports.getunfollowusers = async (req, res) => {
 //Get Search users
 exports.getsearchusers = async (req, res) => {
   const searchName = req.params.searchname;
-  
+  const userId = req.user.userId;
   try {
     const getSearchUsers = await db.getall(
-      "SELECT u.id as userId, u.fullname, u.profilePic FROM userProfile u WHERE u.fullname LIKE ? OR u.phone_no LIKE ?",
-      [`%${searchName}%`, `%${searchName}%`]
+      "SELECT u.id as userId, u.fullname, u.profilePic, u.phone_no FROM userProfile u WHERE (u.fullname LIKE ? OR u.phone_no LIKE ?) AND u.id <> ?",
+      [`%${searchName}%`, `%${searchName}%`, userId]
     );
    
     if (getSearchUsers) {

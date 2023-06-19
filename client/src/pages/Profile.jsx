@@ -26,6 +26,7 @@ import {
   deleteRelationship,
 } from "../context/features/relationshipSlice";
 import URLBASE from '../constant/urlbase';
+import { setLogout } from "../context/features/authSlice";
 
 const CustomButton = styled(Button)(({ theme }) => ({
   color: "#fff",
@@ -52,6 +53,7 @@ const Profile = () => {
     ...state.relationship,
   }));
   const [isFollowing, setIsFollowing] = useState(false);
+  
 
   const userId = useLocation().pathname.split("/")[3];
 
@@ -88,9 +90,14 @@ const Profile = () => {
     navigate(`/home/updateprofile/${user?.result?.id}`);
   };
 
-  const handleMessage = () => {};
+  const handleMessage = () => {
+    navigate(`/home/messagedetails/${userId}`);
+  };
 
-  const handleContact = () => {};
+  const handleLogout = () => {
+    dispatch(setLogout());
+    navigate("/");
+  };
 
   return (
     <Box flex={3}>
@@ -287,7 +294,7 @@ const Profile = () => {
             </CustomButton>
           )}
           {user?.result?.id === userProfile?.id ? (
-            <CustomButton onClick={handleContact}>Contact</CustomButton>
+            <CustomButton onClick={handleLogout}>Logout</CustomButton>
           ) : (
             <CustomButton onClick={handleMessage}>Message</CustomButton>
           )}

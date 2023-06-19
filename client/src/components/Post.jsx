@@ -18,6 +18,8 @@ import {
   Box,
   AvatarGroup,
   Icon,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import URLBASE from "../constant/urlbase";
@@ -25,20 +27,39 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import { getComments } from "../context/features/commentSlice";
-import { getLikes, addLike, deleteLike } from "../context/features/likeSlice";
+import { getLikes, addLike } from "../context/features/likeSlice";
+import { getRetrow } from "../context/features/retrowSlice";
+import { getShare } from "../context/features/shareSlice";
 import toast from "react-hot-toast";
+import IosShareIcon from '@mui/icons-material/IosShare';
+import RedoIcon from '@mui/icons-material/Redo';
 
 const Post = ({ post }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [lastTapTime, setLastTapTime] = useState(0);
   const { user } = useSelector((state) => ({ ...state.auth }));
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   // Filter the comments based on the post ID
-  const comments = useSelector((state) => state.comment[post.post_id] || []);
+  const comments = useSelector((state) => state.comment[post?.post_id] || []);
 
   // Filter the likes based on the post ID
-  const likes = useSelector((state) => state.like[post.post_id] || []);
+  const likes = useSelector((state) => state.like[post?.post_id] || []);
+
+  // Filter the likes based on the post ID
+  const retrow = useSelector((state) => state.retrow[post?.id] || []);
+
+  // Filter the share based on the post ID
+  const share = useSelector((state) => state.share[post?.post_id] || []);
+
 
   const handleToggleLike = (id) => {
     const isSelected = likes.includes(user?.result?.id);
@@ -59,7 +80,7 @@ const Post = ({ post }) => {
       dispatch(getLikes(post?.post_id));
     }
   };
-
+  //console.log(share)
   const handleGoPost = (id) => {
     if (id && post) {
       navigate(`/home/postdetails/${id}`);
@@ -84,6 +105,18 @@ const Post = ({ post }) => {
     }
   }, [post?.post_id, dispatch]);
 
+  useEffect(() => {
+    if (post?.post_id) {
+      dispatch(getShare(post?.post_id));
+    }
+  }, [post?.post_id, dispatch]);
+
+  useEffect(() => {
+    if (post?.id) {
+      dispatch(getRetrow(post?.id));
+    }
+  }, [post?.id, dispatch]);
+
   const handleDoubleTap = () => {
     const currentTime = new Date().getTime();
     const doubleTapDelay = 300; // Adjust this value as per your preference
@@ -94,6 +127,14 @@ const Post = ({ post }) => {
     } else {
       setLastTapTime(currentTime);
     }
+  };
+
+  const handleRetrow = () => {
+    navigate('/home/retrowbox/', {state: post});
+  };
+
+  const handleShare = () => {
+    navigate('/home/share/', {state: post});
   };
 
   return (
@@ -150,9 +191,16 @@ const Post = ({ post }) => {
       </Box>
 
       <CardHeader
-        onClick={() => handleGoPost(post?.post_id)}
+        // onClick={() => handleGoPost(post?.post_id)}
         action={
-          <IconButton aria-label="settings">
+          <IconButton
+            aria-label="settings"
+            // onid="demo-positioned-button"
+            aria-controls={open ? "demo-positioned-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClick}
+          >
             <MoreVert sx={{ color: "purple", fontSize: 32 }} />
           </IconButton>
         }
@@ -214,7 +262,7 @@ const Post = ({ post }) => {
           <Box display="flex" flexDirection="row" gap={1}>
             <Box display="flex" flexDirection="column" alignItems="center">
               <Typography variant="caption" color="secondary">
-                2345
+              {retrow?.length > 0 ? retrow?.length : "0"}
               </Typography>
               <Icon>
                 <CardGiftcard color="secondary" />
@@ -245,7 +293,7 @@ const Post = ({ post }) => {
 
             <Box display="flex" flexDirection="column" alignItems="center">
               <Typography variant="caption" color="secondary">
-                42
+              {share?.length > 0 ? share?.length : "0"}
               </Typography>
               <Icon>
                 <Send color="secondary" />
@@ -261,6 +309,31 @@ const Post = ({ post }) => {
           </Box>
         </Box>
       </CardActions>
+      <Menu
+        id="demo-positioned-menu"
+        aria-labelledby="demo-positioned-button"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+      >
+        <MenuItem onClick={handleRetrow} sx={{ fontFamily: "Poppins" }}>
+          <RedoIcon  color="secondary" />
+            {" Retrow"}
+        </MenuItem>
+        <MenuItem onClick={handleShare} sx={{ fontFamily: "Poppins" }}>
+          <IosShareIcon  color="secondary" />
+            {" Share"}
+        </MenuItem>
+      </Menu>
+
     </Box>
   );
 };

@@ -75,7 +75,7 @@ export const deleteLike = createAsyncThunk(
 
 
 
-const commentSlice = createSlice({
+const likeSlice = createSlice({
   name: "like",
   initialState: {
     likes: [],
@@ -148,4 +148,4 @@ const commentSlice = createSlice({
    },
 });
 // export const { setUsername, setPhoneNo } = trowSlice.actions;
-export default commentSlice.reducer;
+export default likeSlice.reducer;

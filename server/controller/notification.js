@@ -18,7 +18,7 @@ exports.getmynotification = async (req, res) => {
             if (notification.content_type === 'comment') {
               notificationText = `${notification.username} commented on your post`;
             } else if (notification.content_type === 'upvote') {
-              notificationText = `${notification.username} upvoted on your post`;
+              notificationText = `${notification.username} upvoted your post`;
             } else if (notification.content_type === 'profile'){
                     if(notification.activity === 'follow'){
                       notificationText = `${notification.username} started following you`;
@@ -33,17 +33,20 @@ exports.getmynotification = async (req, res) => {
                     }else if(notification.activity === 'wishlist'){
                       notificationText = `${notification.username} sent you wishlist`;
                     }else if(notification.activity === 'gifting'){
-                      notificationText = `${notification.username} sent you gift(s)`
+                      notificationText = `${notification.username} sent you gift(s)`;
+                    } else if(notification.activity === 'retrow'){
+                      notificationText = `Anonymous sent you a trowbox, Please send your wishlist`;
                     }
 
+            }  else if (notification.content_type === 'share'){
+              notificationText = `${notification.username} shared you a post`;     
             }
-            
             return {
               ...notification,
               notificationText
             };
           });
-          console.log(preparedNotifications)
+          
           res.status(201).json(preparedNotifications);
       
     }

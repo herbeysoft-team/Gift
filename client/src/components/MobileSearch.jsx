@@ -6,6 +6,7 @@ import MobileSearchBox from "./MobileSearchBox";
 import { useSelector } from "react-redux";
 import { deepPurple } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
+import URLBASE from "../constant/urlbase";
 
 const MobileSearch = () => {
   const { searchUsers } = useSelector((state) => ({ ...state.user }));
@@ -41,7 +42,7 @@ const MobileSearch = () => {
               >
                 <Avatar
                   alt="PP"
-                  src={user?.profilePic}
+                  src={`${URLBASE.imageBaseUrl}${user?.profilePic}`}
                   sx={{ bgcolor: deepPurple[500] }}
                 />
                 <Typography variant="body">{user?.fullname}</Typography>

@@ -15,7 +15,7 @@ const {multerMiddleware} = require("../middleware/multerUtil");
 
 
 /**GET SEARCH USERS*/
-router.get("/getsearchusers/:searchname", getsearchusers);
+router.get("/getsearchusers/:searchname",verifyToken, getsearchusers);
 
 
 /**GET USERS TO GIFT*/

@@ -35,6 +35,13 @@ const NotifyCard = ({ notification }) => {
       notification?.activity === "gifting"
     ) {
       navigate(`/home/eventdetails/${id}`);
+    } else if (
+      notification?.content_type === "trowbox" &&
+      notification?.activity === "retrow"
+    ) {
+      navigate(`/home/trowboxprocess/${id}`);
+    } else if (notification?.content_type === "share") {
+      navigate(`/home/postdetails/${id}`);
     }
   };
   return (
@@ -76,6 +83,9 @@ const NotifyCard = ({ notification }) => {
           <img src={NotifyIn} alt="event" width={32} height={32} />
         )}
         {notification?.content_type === "trowbox" && (
+          <img src={NotifyOut} alt="trowbox" width={32} height={32} />
+        )}
+        {notification?.content_type === "share" && (
           <img src={NotifyOut} alt="trowbox" width={32} height={32} />
         )}
         <Typography

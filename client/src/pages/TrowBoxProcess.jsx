@@ -209,7 +209,7 @@ const TrowBoxProcess = () => {
                       <Typography variant="body" sx={{ fontSize: "12px" }}>
                         {gift?.item_name}
                       </Typography>
-                      {parseInt(trowDetails?.Trowbox?.gift_sent) === 1 ? null : (
+                      {parseInt(trowDetails?.Trowbox?.gift_sent) === 1 || trowDetails?.Trowbox?.recipient_no === user?.result.phone_no ? null : (
                         <IconButton aria-label="wishlist" size="large">
                           <Checkbox
                             icon={

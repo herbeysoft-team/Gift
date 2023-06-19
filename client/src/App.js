@@ -31,6 +31,12 @@ import PickShop from "./pages/PickShop";
 import CreateEvent from "./pages/CreateEvent";
 import EventDetails from "./pages/EventDetails";
 import PickGift from "./pages/PickGift";
+import ReTrowBox from "./pages/ReTrowBox";
+import MessageDetails from "./pages/MessageDetails";
+import Share from "./pages/Share";
+import Message from "./pages/Message";
+
+
 
 /**root routes */
 const router = createBrowserRouter([
@@ -75,6 +81,14 @@ const router = createBrowserRouter([
         element: <Trowbox />,
       },
       {
+        path: "/home/retrowbox",
+        element: <ReTrowBox />,
+      },
+      {
+        path: "/home/share",
+        element: <Share />,
+      },
+      {
         path: "/home/createevent",
         element: <CreateEvent />,
       },
@@ -90,8 +104,15 @@ const router = createBrowserRouter([
         path: "/home/trowboxprocess/:id",
         element: <TrowBoxProcess />,
       },
-     
       {
+        path: "/home/message",
+        element: <Message />,
+      },
+      {
+        path: "/home/messagedetails/:id",
+        element: <MessageDetails />,
+      },
+     {
         path: "/home/notification",
         element: <Notification />,
       },

@@ -18,6 +18,23 @@ exports.getlikes = async (req, res) => {
   }
 };
 
+exports.getretrow = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await db.getall(
+      "SELECT user_id FROM retrow WHERE event_id = ?",
+      [id]
+    );
+    if (result) {
+      res.status(201).json(result.map((retrow) => retrow.user_id));
+    }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
 exports.getlikescount = async (req, res) => {
   const { userId } = req.params;
 

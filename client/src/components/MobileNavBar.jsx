@@ -32,7 +32,7 @@ const MobileNavBar = ({logo, title}) => {
         <Badge badgeContent={1} color="error" variant="dot" invisible={true} onClick={(e)=>navigate("/home/search")}>
          <SearchIcon  htmlColor="#642c8e" sx={{ fontSize: 32 }} />
         </Badge>
-        <Badge badgeContent={1} color="error" variant="dot" invisible={false}>
+        <Badge badgeContent={1} color="error" variant="dot" invisible={false} onClick={(e)=>navigate("/home/message")}>
           <EmailIcon color="inherit" htmlColor="#642c8e" sx={{ fontSize: 32 }}/>
         </Badge>
         <Badge badgeContent={1} color="error" variant="dot" invisible={false} onClick={(e)=>navigate("/home/notification")}>
