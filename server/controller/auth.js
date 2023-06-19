@@ -243,3 +243,67 @@ exports.phoneotp = async (req, res) => {
     res.status(400).send(error.message);
   }
 };
+
+
+
+// ADMIN SPECIAL API
+
+/**
+ * POST - http://localhost:8000/api/v1/auth/adminlogin
+ * username - Get the username
+ * password - Get the password
+ *
+ */
+exports.adminlogin = async (req, res) => {
+  try {
+    //CHECK IF THE INPUT IS NOT EMPTY
+    if (!(req.body.username && req.body.password)) {
+      throw Error("Empty Credentials Supplied");
+    }
+
+    //CHECK IF THE USER EXIST
+    const userExist = await db.getrow(
+      "SELECT * FROM adminprofile  WHERE username = ?",
+      [req.body.username]
+    );
+
+    //IF USER DOES NOT EXIST
+    if (!userExist) {
+      return res
+        .status(404)
+        .json({ message: "user does not exist", code: "2" });
+    }
+
+    // if (!userExist.verified) {
+    //   return res.status(404).json({
+    //     message: "Phone Number hasn't be verified yet. Please check your inbox", code:"1"
+    //   });
+    // }
+    //IF USER EXIST
+    const hashedPassword = userExist.password;
+
+    //CHECK IF PASSWORD MATCH
+    const passwordMatch = await verifyHashData(
+      req.body.password,
+      hashedPassword
+    );
+
+    if (!passwordMatch) {
+      return res
+        .status(404)
+        .json({ message: "Password in incorrect", code: "3" });
+    }
+
+    //CREATE USER TOKEN
+    const tokenData = { userId: userExist.id, username: userExist.username };
+    const token = await createToken(tokenData);
+
+    //DESTRUCTION USER EXIST INFO
+    const { password, ...others } = userExist;
+
+    res.status(200).json({ token, result: others });
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};

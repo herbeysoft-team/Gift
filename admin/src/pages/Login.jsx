@@ -11,8 +11,8 @@ import {
 import React, { useState, useEffect } from "react";
 import Logo from "../assets/logo.png";
 import { Link, useNavigate } from 'react-router-dom';
-// import { useDispatch, useSelector } from "react-redux";
-// import { login } from "../context/features/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../context/features/authSlice";
 
 const initialState = {
   username: "",
@@ -43,19 +43,19 @@ function Copyright(props) {
 const Login = () => {
   const [formValue, setFormValue] = useState(initialState);
   const { username, password } = formValue;
-//   const { loading, error } = useSelector((state) => ({ ...state.auth }));
-//   const dispatch = useDispatch();
-//   const [isLoading, setIsLoading] = useState(false);
-//   const navigate = useNavigate();
+  const { loading, error } = useSelector((state) => ({ ...state.auth }));
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   
 
-//   useEffect(() => {
-//     loading && setIsLoading(loading);
-//   }, [loading]);
+  useEffect(() => {
+    loading && setIsLoading(loading);
+  }, [loading]);
 
-//   useEffect(() => {
-//     error && toast.error(error.message);
-//   }, [error]);
+  useEffect(() => {
+    error && toast.error(error.message);
+  }, [error]);
 
  
 
@@ -80,7 +80,7 @@ const Login = () => {
     else if(!passwordRegex.test(password)){
       toast.error("Password must be Alphanumeric")
     }else{
-    // dispatch(login({ formValue, navigate, toast }));
+    dispatch(login({ formValue, navigate, toast }));
     }
     }
 

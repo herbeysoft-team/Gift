@@ -12,3 +12,7 @@ API.interceptors.request.use((req) => {
     }
     return req;
   });
+
+
+/**AUTHENTICATION API */  
+export const login = (formData) => API.post("/api/v1/auth/adminlogin", formData); //sign in for all users

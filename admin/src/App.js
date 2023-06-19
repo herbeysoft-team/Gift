@@ -5,98 +5,100 @@ import { createTheme, ThemeProvider, CssBaseline } from "@mui/material";
 import { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import Login from "./pages/Login";
-// import { setUser } from "./context/features/authSlice";
+import Layout from "./pages/Layout";
+import Dashboard from "./pages/Dashboard";
+import { setUser } from "./context/features/authSlice";
 
 
 
 /**root routes */
 const router = createBrowserRouter([
-  // {
-  //   path: "/home",
-  //   element: <Layout />,
-  //   children: [
-  //     {
-  //       path: "/home",
-  //       element: <Home />,
-  //     },
-  //     {
-  //       path: "/home/profile/:id",
-  //       element: <Profile />,
-  //     },
-  //     {
-  //       path: "/home/updateprofile/:id",
-  //       element: <UpdateProfile />,
-  //     },
-  //     {
-  //       path: "/home/changeprofilepic",
-  //       element: <ChangeProfilePic />,
-  //     },
-  //     {
-  //       path: "/home/shop",
-  //       element: <Shop />,
-  //     },
-  //     {
-  //       path: "/home/pickshop/:id",
-  //       element: <PickShop />,
-  //     },
-  //     {
-  //       path: "/home/pickgift/:id",
-  //       element: <PickGift />,
-  //     },
-  //     {
-  //       path: "/home/shop/add",
-  //       element: <AddItem />,
-  //     },
-  //     {
-  //       path: "/home/trowbox",
-  //       element: <Trowbox />,
-  //     },
-  //     {
-  //       path: "/home/retrowbox",
-  //       element: <ReTrowBox />,
-  //     },
-  //     {
-  //       path: "/home/share",
-  //       element: <Share />,
-  //     },
-  //     {
-  //       path: "/home/createevent",
-  //       element: <CreateEvent />,
-  //     },
-  //     {
-  //       path: "/home/postdetails/:id",
-  //       element: <PostDetails />,
-  //     },
-  //     {
-  //       path: "/home/eventdetails/:id",
-  //       element: <EventDetails />,
-  //     },
-  //     {
-  //       path: "/home/trowboxprocess/:id",
-  //       element: <TrowBoxProcess />,
-  //     },
-  //     {
-  //       path: "/home/message",
-  //       element: <Message />,
-  //     },
-  //     {
-  //       path: "/home/messagedetails/:id",
-  //       element: <MessageDetails />,
-  //     },
-  //    {
-  //       path: "/home/notification",
-  //       element: <Notification />,
-  //     },
-  //     {
-  //       path: "/home/trow",
-  //       element: <Trow/>,
-  //     },
-  //     {
-  //       path: "/home/search",
-  //       element: <MobileSearch/>,
-  //     },
-  //   ],
-  // },
+  {
+    path: "/home",
+    element: <Layout />,
+    children: [
+      {
+        path: "/home",
+        element: <Dashboard />,
+      },
+    //   {
+    //     path: "/home/profile/:id",
+    //     element: <Profile />,
+    //   },
+    //   {
+    //     path: "/home/updateprofile/:id",
+    //     element: <UpdateProfile />,
+    //   },
+    //   {
+    //     path: "/home/changeprofilepic",
+    //     element: <ChangeProfilePic />,
+    //   },
+    //   {
+    //     path: "/home/shop",
+    //     element: <Shop />,
+    //   },
+    //   {
+    //     path: "/home/pickshop/:id",
+    //     element: <PickShop />,
+    //   },
+    //   {
+    //     path: "/home/pickgift/:id",
+    //     element: <PickGift />,
+    //   },
+    //   {
+    //     path: "/home/shop/add",
+    //     element: <AddItem />,
+    //   },
+    //   {
+    //     path: "/home/trowbox",
+    //     element: <Trowbox />,
+    //   },
+    //   {
+    //     path: "/home/retrowbox",
+    //     element: <ReTrowBox />,
+    //   },
+    //   {
+    //     path: "/home/share",
+    //     element: <Share />,
+    //   },
+    //   {
+    //     path: "/home/createevent",
+    //     element: <CreateEvent />,
+    //   },
+    //   {
+    //     path: "/home/postdetails/:id",
+    //     element: <PostDetails />,
+    //   },
+    //   {
+    //     path: "/home/eventdetails/:id",
+    //     element: <EventDetails />,
+    //   },
+    //   {
+    //     path: "/home/trowboxprocess/:id",
+    //     element: <TrowBoxProcess />,
+    //   },
+    //   {
+    //     path: "/home/message",
+    //     element: <Message />,
+    //   },
+    //   {
+    //     path: "/home/messagedetails/:id",
+    //     element: <MessageDetails />,
+    //   },
+    //  {
+    //     path: "/home/notification",
+    //     element: <Notification />,
+    //   },
+    //   {
+    //     path: "/home/trow",
+    //     element: <Trow/>,
+    //   },
+    //   {
+    //     path: "/home/search",
+    //     element: <MobileSearch/>,
+    //   },
+    ],
+  },
   {
     path: "/",
     element: <Login></Login>,
@@ -126,6 +128,12 @@ const router = createBrowserRouter([
 
 function App() {
 
+  const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("trowadmin"));
+  useEffect(() => {
+    dispatch(setUser(user));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   /**create a theme */
   const theme = createTheme({
     spacing: 10,

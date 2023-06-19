@@ -11,6 +11,7 @@ const {
   reset,
   verifyphoneotp,
   phoneotp,
+  adminlogin
 } = require("../controller/auth");
 
 /**SIGN UP */
@@ -18,6 +19,9 @@ router.post("/signup", signup);
 
 /**LOGIN */
 router.post("/login", login);
+
+/**ADMIN LOGIN */
+router.post("/adminlogin", adminlogin);
 
 /**LOGOUT */
 router.post("/logout", logout);
