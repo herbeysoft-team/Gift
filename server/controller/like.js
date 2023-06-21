@@ -103,3 +103,21 @@ exports.deletelike = async (req, res) => {
     console.log(error);
   }
 };
+
+
+// ADMIN SPECIAL API////////////////////////////////////////////////////////////
+exports.allupvote = async (req, res) => {
+
+  try {
+    const allupvote = await db.getall(
+      "SELECT post_id, COUNT(user_id) AS like_count FROM upvote GROUP BY post_id",
+      []
+    );
+    if (allupvote) {
+      res.status(201).json(allupvote);
+    }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};

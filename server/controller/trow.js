@@ -408,7 +408,6 @@ exports.alltrowbox = async (req, res) => {
       []
     );
     if(alltrowbox){
-      console.log(alltrowbox)
     res.status(201).json(alltrowbox);
   }
   } catch (error) {
@@ -420,7 +419,6 @@ exports.alltrowbox = async (req, res) => {
 //Update user profile
 exports.updatetrowboxbyadmin = async (req, res) => {
   const { wishlist_sent, gift_sent, post, event_name, id } = req.body;
-  console.log(req.body)
   try {
     const UpdateTrowbox = await db.update(
       "UPDATE trowbox SET wishlist_sent = ?, gift_sent = ?, post = ?, event_name = ? WHERE id = ?",
@@ -428,6 +426,44 @@ exports.updatetrowboxbyadmin = async (req, res) => {
     );
     if (UpdateTrowbox) {
         res.status(201).json({ successtrowbox: true, message:"Updated Successfully" }); 
+    }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+
+//Get all gift for admin
+exports.allgift= async (req, res) => {
+  try {
+    const allgift = await db.getall(
+      "SELECT t.*, u.fullname, i.item_name, i.item_description, i.item_pics FROM trowbox_gift AS t " +
+      "JOIN userprofile AS u ON t.sender_id = u.id " +
+      "JOIN items AS i ON t.item_id = i.id",
+      []
+    );
+    if(allgift){
+    res.status(201).json(allgift);
+    }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+//Update user profile
+exports.updategiftbyadmin = async (req, res) => {
+  const { sender_id, trowbox_id, status,  id } = req.body;
+  console.log(req.body)
+  try {
+    const UpdateGift = await db.update(
+      "UPDATE trowbox_gift SET status = ? WHERE id = ?",
+      [status, id]
+    );
+    if (UpdateGift) {
+
+        res.status(201).json({ successgift: true, message:"Updated Successfully" }); 
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });

@@ -19,7 +19,7 @@ export const alltrowbox= createAsyncThunk(
     async ({ updatedValue, toast }, { rejectWithValue }) => {
       try {
         const response = await api.updatetrowboxbyadmin(updatedValue);
-        console.log(response.data.message)
+
         if(response){
           toast.success(response.data.message)
         }

@@ -22,11 +22,14 @@ import { useNavigate } from "react-router-dom";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GroupIcon from "@mui/icons-material/Group";
-import WarehouseIcon from "@mui/icons-material/Warehouse";
+import RedeemIcon from '@mui/icons-material/Redeem';
 import OutboxIcon from '@mui/icons-material/Outbox';
-import CategoryIcon from "@mui/icons-material/Category";
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import CategoryIcon from '@mui/icons-material/Category';
+import SubjectIcon from '@mui/icons-material/Subject';
 import Logo from "../assets/logo.png";
-import TextSnippetIcon from "@mui/icons-material/TextSnippet";
+import IronIcon from '@mui/icons-material/Iron';
 const drawerWidth = 240;
 
 const links = [
@@ -50,18 +53,42 @@ const links = [
   },
   {
     id: 4,
-    name: "Category",
-    path: "/a_category",
-    icon: <CategoryIcon />,
+    name: "Gift",
+    path: "/home/gift",
+    icon: <RedeemIcon />,
+  },
+  {
+    id: 5,
+    name: "Post",
+    path: "/home/post",
+    icon: <PostAddIcon />,
+  },
+  {
+    id: 6,
+    name: "Upvote",
+    path: "/home/upvote",
+    icon: <FavoriteIcon />,
   },
 ];
 
 const links2 = [
   {
-    id: 5,
-    name: "Memo",
-    path: "/a_memo",
-    icon: <TextSnippetIcon />,
+    id: 7,
+    name: "Category",
+    path: "/home/category",
+    icon: <CategoryIcon />,
+  },
+  {
+    id: 8,
+    name: "SubCategory",
+    path: "/home/subcategory",
+    icon: <SubjectIcon />,
+  },
+  {
+    id: 9,
+    name: "Item",
+    path: "/home/item",
+    icon: <IronIcon />,
   },
 ];
 

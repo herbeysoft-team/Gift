@@ -10,6 +10,12 @@ import Dashboard from "./pages/Dashboard";
 import { setUser } from "./context/features/authSlice";
 import User from "./pages/User";
 import Trowbox from './pages/Trowbox';
+import Gift from "./pages/Gift";
+import Post from "./pages/Post";
+import Upvote from "./pages/Upvote";
+import Category from "./pages/Category";
+import Subcategory from "./pages/Subcategory";
+import Item from "./pages/Item";
 
 
 
@@ -31,6 +37,31 @@ const router = createBrowserRouter([
         path: "/home/trowbox",
         element: <Trowbox/>,
       },
+      {
+        path: "/home/gift",
+        element: <Gift/>,
+      },
+      {
+        path: "/home/post",
+        element: <Post/>,
+      },
+      {
+        path: "/home/upvote",
+        element: <Upvote/>,
+      },
+      {
+        path: "/home/category",
+        element: <Category/>,
+      },
+      {
+        path: "/home/subcategory",
+        element: <Subcategory/>,
+      },
+      {
+        path: "/home/item",
+        element: <Item/>,
+      },
+    
     
     ],
   },

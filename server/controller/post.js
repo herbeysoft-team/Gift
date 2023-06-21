@@ -80,3 +80,21 @@ exports.getpost = async (req, res) => {
   }
 };
 
+// ADMIN SPECIAL API////////////////////////////////////////////////////////////
+//get all post by admin
+exports.allpostbyadmin = async (req, res) => {
+  try {
+    const posts = await db.getall(
+      "SELECT DISTINCT up.id AS user_id, up.profilePic, up.fullname, p.id AS post_id, p.description, p.createdAt, tb.* FROM userprofile up JOIN post p ON up.id = p.user_id JOIN trowbox tb ON tb.recipient_no = up.phone_no AND tb.id = p.event_id ORDER BY p.createdAt DESC",
+      [
+      ]
+    );   
+    if(posts){ 
+    res.status(201).json(posts);
+    }
+    
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};

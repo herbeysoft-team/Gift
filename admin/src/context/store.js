@@ -3,7 +3,8 @@ import AuthReducer from "./features/authSlice";
 import UserReducer from "./features/userSlice";
 import GiftReducer from "./features/giftSlice";
 import TrowReducer from "./features/trowSlice";
-
+import PostReducer from "./features/postSlice";
+import LikeReducer from "./features/likeSlice";
 
 export default configureStore({
     reducer: {
@@ -11,7 +12,8 @@ export default configureStore({
       user: UserReducer,
       gift: GiftReducer,
       trow: TrowReducer,
-      
+      post: PostReducer,
+      like: LikeReducer,
     }
   });
   
