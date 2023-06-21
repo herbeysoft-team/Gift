@@ -2,7 +2,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import { useEffect, useState, useMemo } from "react";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 import { allgiftcount } from "../context/features/giftSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 const COLORS = ["#642c8e", "#d676af"];
 
@@ -36,21 +36,23 @@ const renderCustomizedLabel = ({
 export default function PieMemo() {
   
   const dispatch = useDispatch();
-   const [costGroups, setCostGroups] = useState([]);
-  const { allGiftCount } = useSelector((state) => ({
-    ...state.gift,
-  }));
-  const memoizedGift = useMemo(() => allGiftCount, [allGiftCount]);
+  const [costGroups, setCostGroups] = useState([]);
+  
+const { allGiftCount } = useSelector((state) => ({
+  allGiftCount: state.gift.allGiftCount,
+}), shallowEqual);
+
+  // const memoizedGift = useMemo(() => allGiftCount, [allGiftCount]);
   useEffect(() => {
     dispatch(allgiftcount());
   }, [dispatch]);
 
   useEffect(() => {
     setCostGroups([
-      { name: "Redeemed", qty: memoizedGift?.RedeemedGift },
-      { name: "Pending", qty: memoizedGift?.PendingGift},
+      { name: "Redeemed", qty: allGiftCount?.RedeemedGift },
+      { name: "Pending", qty: allGiftCount?.PendingGift },
     ]);
-  }, [memoizedGift]);
+  }, [allGiftCount]);
 
   return (
     <Box

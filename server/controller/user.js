@@ -14,7 +14,6 @@ exports.getuserprofile = async (req, res) => {
       [userId]
     );
     if (getUserProfile) {
-      
       res.status(201).json(getUserProfile[0]);
     }
   } catch (error) {
@@ -35,18 +34,13 @@ exports.getuserprofile = async (req, res) => {
 //Update user profile
 exports.updateuserprofile = async (req, res) => {
   const userId = req.user.userId;
-  const {
-    fullname,
-    username,
-    gender,
-    city,
-  } = req.body;
+  const { fullname, username, gender, city } = req.body;
   try {
     const UpdateUserProfile = await db.update(
       "UPDATE userProfile SET fullname = ?, username = ?, gender=?, city=? WHERE id = ?",
       [fullname, username, gender, city, userId]
     );
-    if (UpdateUserProfile) { 
+    if (UpdateUserProfile) {
       res.status(201).json("Profile Updated Successfully");
     }
   } catch (error) {
@@ -54,7 +48,6 @@ exports.updateuserprofile = async (req, res) => {
     console.log(error);
   }
 };
-
 
 /**
  * GET - http://localhost:8000/api/v1/user/updateuserprofilepic/:id
@@ -70,7 +63,7 @@ exports.updateuserprofilepic = async (req, res) => {
       "UPDATE userProfile SET profilePic = ? WHERE id = ?",
       [file, userId]
     );
-    if (UpdateUserProfilePic) { 
+    if (UpdateUserProfilePic) {
       res.status(201).json("Updated Successfully");
     }
   } catch (error) {
@@ -78,7 +71,6 @@ exports.updateuserprofilepic = async (req, res) => {
     console.log(error);
   }
 };
-
 
 /**
  * GET - http://localhost:8000/api/v1/user/getunfollowusers/:id
@@ -93,7 +85,7 @@ exports.getunfollowusers = async (req, res) => {
       "SELECT u.id as unfollowId, u.fullname, u.profilePic FROM userProfile u WHERE u.id NOT IN (SELECT following_id FROM relationship WHERE follower_id = ? )  AND u.id <> ? ORDER BY u.username ASC LIMIT 5",
       [userId, userId]
     );
-   
+
     if (getUnfollowUsers) {
       res.status(201).json(getUnfollowUsers);
     }
@@ -102,8 +94,6 @@ exports.getunfollowusers = async (req, res) => {
     console.log(error);
   }
 };
-
-
 
 /**
  * GET - http://localhost:8000/api/v1/user/getsearchusers/:searchname
@@ -120,7 +110,7 @@ exports.getsearchusers = async (req, res) => {
       "SELECT u.id as userId, u.fullname, u.profilePic, u.phone_no FROM userProfile u WHERE (u.fullname LIKE ? OR u.phone_no LIKE ?) AND u.id <> ?",
       [`%${searchName}%`, `%${searchName}%`, userId]
     );
-   
+
     if (getSearchUsers) {
       res.status(201).json(getSearchUsers);
     }
@@ -138,14 +128,13 @@ exports.getsearchusers = async (req, res) => {
  */
 //Get Search users
 exports.getuserstogift = async (req, res) => {
-
   const userId = req.user.userId;
   try {
     const getUsersToGift = await db.getall(
       "SELECT u.id as userId, u.fullname, u.phone_no, u.username FROM userProfile u WHERE u.id <> ? ",
       [userId]
     );
-   
+
     if (getUsersToGift) {
       res.status(201).json(getUsersToGift);
     }
@@ -155,9 +144,9 @@ exports.getuserstogift = async (req, res) => {
   }
 };
 
+// ADMIN SPECIAL API////////////////////////////////////////////////////////////
 
-// ADMIN SPECIAL API
-//Get all users
+//Get all users count
 exports.allcountfordashboard = async (req, res) => {
   try {
     const getUsersCount = await db.getval(
@@ -190,22 +179,47 @@ exports.allcountfordashboard = async (req, res) => {
       []
     );
 
-
-    console.log({getUsersCount,
+    res.status(201).json({
+      getUsersCount,
       getTrowboxCount,
       getPostCount,
       getGiftCount,
       getRetrowCount,
-      getShareCount})
-      res.status(201).json({
-        getUsersCount,
-        getTrowboxCount,
-        getPostCount,
-        getGiftCount,
-        getRetrowCount,
-        getShareCount
-      });
-    
+      getShareCount,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+//Get all users count
+exports.allusersforadmin = async (req, res) => {
+  try {
+    const getAllUsers = await db.getall("SELECT * FROM userprofile ", []);
+
+    if (getAllUsers) {
+      res.status(201).json(getAllUsers);
+    }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+//Update user profile
+exports.updateuserprofilebyadmin = async (req, res) => {
+  const { verified, city, id } = req.body;
+  try {
+    const UpdateUserProfile = await db.update(
+      "UPDATE userProfile SET verified = ?, city = ? WHERE id = ?",
+      [verified, city, id]
+    );
+    if (UpdateUserProfile) {
+      
+        res.status(201).json({ successupdateuser: true, message:"Updated Successfully" }); // Return an object with successupdateuser property set to true
+     
+    }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);

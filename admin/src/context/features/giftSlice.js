@@ -19,7 +19,7 @@ const giftSlice = createSlice({
     initialState: {
       allGiftCount: [],
       error: "",
-      loading: false,
+      loadinggiftcount: false,
     },
     reducers: {
       
@@ -27,14 +27,14 @@ const giftSlice = createSlice({
     extraReducers: (builder) => {
       builder
         .addCase(allgiftcount.pending, (state) => {
-          state.loading = true;
+          state.loadinggiftcount = true;
         })
         .addCase(allgiftcount.fulfilled, (state, action) => {
-          state.loading = false;
+          state.loadinggiftcount = false;
           state.allGiftCount = action.payload;
         })
         .addCase(allgiftcount.rejected, (state, action) => {
-          state.loading = false;
+          state.loadinggiftcount = false;
           state.error = action.payload;
         })
      },

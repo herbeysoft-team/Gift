@@ -376,7 +376,7 @@ exports.getmyscheduletrowbox = async (req, res) => {
 };
 
 
-//ADMIN SPECIAL API
+// ADMIN SPECIAL API////////////////////////////////////////////////////////////
 //Get all gift count
 exports.allgiftcount = async (req, res) => {
   try {
@@ -388,13 +388,47 @@ exports.allgiftcount = async (req, res) => {
       "SELECT COUNT(*) AS PendingGift FROM trowbox_gift WHERE status = 'pending'",
       []
     );
-      console.log({ RedeemedGift: giftRedeemed,
-        PendingGift: giftPending,})
     res.status(201).json({
         RedeemedGift: giftRedeemed,
         PendingGift: giftPending,
       });
     
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+
+//Get all trowbox
+exports.alltrowbox = async (req, res) => {
+  try {
+    const alltrowbox = await db.getall(
+      "SELECT t.*, u.fullname FROM trowbox AS t JOIN userprofile AS u ON t.sender_id = u.id ",
+      []
+    );
+    if(alltrowbox){
+      console.log(alltrowbox)
+    res.status(201).json(alltrowbox);
+  }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+//Update user profile
+exports.updatetrowboxbyadmin = async (req, res) => {
+  const { wishlist_sent, gift_sent, post, event_name, id } = req.body;
+  console.log(req.body)
+  try {
+    const UpdateTrowbox = await db.update(
+      "UPDATE trowbox SET wishlist_sent = ?, gift_sent = ?, post = ?, event_name = ? WHERE id = ?",
+      [wishlist_sent, gift_sent, post, event_name, id]
+    );
+    if (UpdateTrowbox) {
+        res.status(201).json({ successtrowbox: true, message:"Updated Successfully" }); 
+    }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);

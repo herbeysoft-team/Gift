@@ -17,16 +17,13 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Link, Outlet } from "react-router-dom";
-import { Badge, Menu, MenuItem, ToggleButton } from "@mui/material";
-import { useDispatch } from "react-redux";
+import {  Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GroupIcon from "@mui/icons-material/Group";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
+import OutboxIcon from '@mui/icons-material/Outbox';
 import CategoryIcon from "@mui/icons-material/Category";
 import Logo from "../assets/logo.png";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
@@ -36,20 +33,20 @@ const links = [
   {
     id: 1,
     name: "Dashboard",
-    path: "/a_dashboard",
+    path: "/home",
     icon: <DashboardIcon />,
   },
   {
     id: 2,
     name: "User",
-    path: "/a_user",
+    path: "/home/user",
     icon: <GroupIcon />,
   },
   {
     id: 3,
-    name: "Department",
-    path: "/a_department",
-    icon: <WarehouseIcon />,
+    name: "Trowbox",
+    path: "/home/trowbox",
+    icon: <OutboxIcon />,
   },
   {
     id: 4,
@@ -147,18 +144,8 @@ const Layout = () => {
   const [open, setOpen] = useState(false);
   const [openOption, setOpenOption] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [name, setName] = useState([]);
-  const [userId, setUserId] = useState(null);
-  const [modeSelected, setModeSelected] = useState(false);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    let user = JSON.parse(localStorage.getItem("trowadmin"));
-    //console.log(user);
-    setName(user);
-    setUserId(user?.result?.id);
-  }, []);
+  const navigate = useNavigate();
 
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
@@ -218,6 +205,7 @@ const Layout = () => {
                 sx={{
                   display: "flex",
                   alignItems: "center",
+                 
                 }}
               >
                  <img src={Logo} alt="logo" />
@@ -251,9 +239,9 @@ const Layout = () => {
               horizontal: "right",
             }}
           >
-            <MenuItem onClick={() => navigate(`/a_edit/${userId}`)}>
+            {/* <MenuItem onClick={() => navigate(`/a_edit/${userId}`)}>
               Profile
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
           </Menu>
         </Toolbar>

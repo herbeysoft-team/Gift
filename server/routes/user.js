@@ -8,7 +8,9 @@ const {
   updateuserprofile,
   updateuserprofilepic,
   getuserstogift,
-  allcountfordashboard
+  allcountfordashboard,
+  allusersforadmin,
+  updateuserprofilebyadmin
 } = require("../controller/user");
 const verifyToken = require("../middleware/verifyToken");
 const verifyAdmin = require("../middleware/verifyAdmin");
@@ -17,6 +19,12 @@ const {multerMiddleware} = require("../middleware/multerUtil");
 
 /**GET COUNT FOR DASHBOARD*/
 router.get("/allcountfordashboard",verifyAdmin, allcountfordashboard);
+
+/**GET ALL USER FOR ADMIN*/
+router.get("/allusersforadmin",verifyAdmin, allusersforadmin);
+
+/**UPDATE USER PROFILE BY ADMIN*/
+router.put("/updateuserprofilebyadmin", verifyAdmin, updateuserprofilebyadmin);
 
 /**GET SEARCH USERS*/
 router.get("/getsearchusers/:searchname",verifyToken, getsearchusers);

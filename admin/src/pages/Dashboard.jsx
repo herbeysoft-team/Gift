@@ -1,21 +1,17 @@
 import styled from "@emotion/styled";
 import { Box, Grid, Paper, Typography } from "@mui/material";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import CardItem from "../component/CardItem";
-import PeopleIcon from '@mui/icons-material/People';
-import PagesIcon from '@mui/icons-material/Pages';
-import MoveToInboxIcon from '@mui/icons-material/MoveToInbox';
-import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
-import RedoIcon from '@mui/icons-material/Redo';
-import IosShareIcon from '@mui/icons-material/IosShare';
+import PeopleIcon from "@mui/icons-material/People";
+import PagesIcon from "@mui/icons-material/Pages";
+import MoveToInboxIcon from "@mui/icons-material/MoveToInbox";
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
+import RedoIcon from "@mui/icons-material/Redo";
+import IosShareIcon from "@mui/icons-material/IosShare";
 import { allcountfordashboard } from "../context/features/userSlice";
-// import { getMemosCount } from "../../Context/features/memoSlice";
 import { useSelector, useDispatch } from "react-redux";
-// import { Backdrop } from "@mui/material";
-// import loaderImg from "../../assets/loader.gif";
-import toast from "react-hot-toast";
-import PieMemo from "../component/PieMemo";
 
+import PieMemo from "../component/PieMemo";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -35,14 +31,11 @@ const Wrapper = styled(Box)(({ theme }) => ({
 }));
 
 const Dashboard = () => {
-  const { allcount, loading, error } = useSelector((state) => ({
+  const { allcount } = useSelector((state) => ({
     ...state.user,
   }));
 
   const memoizedCount = useMemo(() => allcount, [allcount]);
-  // const { memoscount } = useSelector((state) => ({
-  //   ...state.memo,
-  // }));
 
   const dispatch = useDispatch();
   //const [isLoading, setIsLoading] = useState(false);
@@ -50,18 +43,6 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(allcountfordashboard());
   }, [dispatch]);
-
-  // useEffect(() => {
-  //   dispatch(getMemosCount());
-  // }, [dispatch]);
-
-  // useEffect(() => {
-  //   loading && setIsLoading(loading);
-  // }, [loading]);
-
-  // useEffect(() => {
-  //   error && toast.error(error);
-  // }, [error]);
 
   return (
     <Box
@@ -72,20 +53,12 @@ const Dashboard = () => {
         justifyItems: "center",
       }}
     >
-      {/* {isLoading && (
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={loading}
-        >
-          <img src={loaderImg} alt="Loading..." />
-        </Backdrop>
-      )} */}
       <Typography
         component="h4"
         color="secondary.dark"
         variant="h4"
         textAlign="center"
-        sx={{ fontWeight: "bold", fontFamily:"Poppins" }}
+        sx={{ fontWeight: "bold", fontFamily: "Poppins" }}
       >
         Dashboard
       </Typography>
@@ -97,7 +70,7 @@ const Dashboard = () => {
                 name="USER"
                 icon={<PeopleIcon />}
                 number={memoizedCount?.getUsersCount}
-                bgavatar= "#642c8e"
+                bgavatar="#642c8e"
                 numberColor="#642c8e"
               />
             </Item>
@@ -162,13 +135,13 @@ const Dashboard = () => {
           </Grid>
         </Grid>
         <Box mt={2}></Box>
-        
-        <Paper elevation={2} sx={{ p: 2, gridColumn: "1/3" }} className="grid">
+
+        <Box sx={{ p: 2, gridColumn: "1/3", boxShadow: 1 }} className="grid">
           <PieMemo />
-        </Paper>
+        </Box>
       </Wrapper>
     </Box>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

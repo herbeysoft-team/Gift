@@ -8,6 +8,8 @@ import Login from "./pages/Login";
 import Layout from "./pages/Layout";
 import Dashboard from "./pages/Dashboard";
 import { setUser } from "./context/features/authSlice";
+import User from "./pages/User";
+import Trowbox from './pages/Trowbox';
 
 
 
@@ -21,109 +23,25 @@ const router = createBrowserRouter([
         path: "/home",
         element: <Dashboard />,
       },
-    //   {
-    //     path: "/home/profile/:id",
-    //     element: <Profile />,
-    //   },
-    //   {
-    //     path: "/home/updateprofile/:id",
-    //     element: <UpdateProfile />,
-    //   },
-    //   {
-    //     path: "/home/changeprofilepic",
-    //     element: <ChangeProfilePic />,
-    //   },
-    //   {
-    //     path: "/home/shop",
-    //     element: <Shop />,
-    //   },
-    //   {
-    //     path: "/home/pickshop/:id",
-    //     element: <PickShop />,
-    //   },
-    //   {
-    //     path: "/home/pickgift/:id",
-    //     element: <PickGift />,
-    //   },
-    //   {
-    //     path: "/home/shop/add",
-    //     element: <AddItem />,
-    //   },
-    //   {
-    //     path: "/home/trowbox",
-    //     element: <Trowbox />,
-    //   },
-    //   {
-    //     path: "/home/retrowbox",
-    //     element: <ReTrowBox />,
-    //   },
-    //   {
-    //     path: "/home/share",
-    //     element: <Share />,
-    //   },
-    //   {
-    //     path: "/home/createevent",
-    //     element: <CreateEvent />,
-    //   },
-    //   {
-    //     path: "/home/postdetails/:id",
-    //     element: <PostDetails />,
-    //   },
-    //   {
-    //     path: "/home/eventdetails/:id",
-    //     element: <EventDetails />,
-    //   },
-    //   {
-    //     path: "/home/trowboxprocess/:id",
-    //     element: <TrowBoxProcess />,
-    //   },
-    //   {
-    //     path: "/home/message",
-    //     element: <Message />,
-    //   },
-    //   {
-    //     path: "/home/messagedetails/:id",
-    //     element: <MessageDetails />,
-    //   },
-    //  {
-    //     path: "/home/notification",
-    //     element: <Notification />,
-    //   },
-    //   {
-    //     path: "/home/trow",
-    //     element: <Trow/>,
-    //   },
-    //   {
-    //     path: "/home/search",
-    //     element: <MobileSearch/>,
-    //   },
+      {
+        path: "/home/user",
+        element: <User/>,
+      },
+      {
+        path: "/home/trowbox",
+        element: <Trowbox/>,
+      },
+    
     ],
   },
   {
     path: "/",
     element: <Login></Login>,
   },
-
-  // {
-  //   path: "/reset",
-  //   element: <Reset></Reset>,
-  // },
-  // {
-  //   path: "/verify",
-  //   element: <Verify></Verify>,
-  // },
-  // {
-  //   path: "/register",
-  //   element: <Register></Register>,
-  // },
-  // {
-  //   path: "/changePassword",
-  //   element: <ChangePassowrd></ChangePassowrd>,
-  // },
-  // {
-  //   path: "*",
-  //   element: <PageNotFound></PageNotFound>,
-  // },
+  {
+    path: "*",
+    element: <Login/>,
+  },
 ]);
 
 function App() {
@@ -160,7 +78,8 @@ function App() {
         defaultProps: {
           variantMapping: {
             // Map the new variant to render a <h1> by default
-            heading: "h3",
+            heading: "h4",
+            
           },
         },
       },

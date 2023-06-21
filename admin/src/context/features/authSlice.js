@@ -39,7 +39,7 @@ const authSlice = createSlice({
     initialState: {
       user: null,
       error: "",
-      loading: false,
+      loadinglogin: false,
     },
     reducers: {
       setUser: (state, action) => {
@@ -53,15 +53,15 @@ const authSlice = createSlice({
     extraReducers: (builder) => {
       builder
         .addCase(login.pending, (state) => {
-          state.loading = true;
+          state.loadinglogin = true;
         })
         .addCase(login.fulfilled, (state, action) => {
-          state.loading = false;
+          state.loadinglogin = false;
           localStorage.setItem("trowadmin", JSON.stringify({ ...action.payload }));
           state.user = action.payload;
         })
         .addCase(login.rejected, (state, action) => {
-          state.loading = false;
+          state.loadinglogin = false;
           state.error = action.payload;
         })
      },
