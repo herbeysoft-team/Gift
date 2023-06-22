@@ -2,13 +2,13 @@ const db = require("../config/database");
 
 //create a category
 exports.createcategory = async (req, res) => {
-  const { cat_name } = req.body;
+  const { category_name } = req.body;
   try {
     const result = await db.insert(
       "INSERT INTO category (cat_name) VALUES (?)",
-      [cat_name]
+      [category_name]
     );
-    res.status(201).json({ message: "Category Created Successfully", result });
+    res.status(201).json({ message: "Created Successfully", result });
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);
@@ -47,8 +47,8 @@ exports.allcategories = async (req, res) => {
 
 //update one category
 exports.updatecategory = async (req, res) => {
-  const { id } = req.params;
-  const { cat_name } = req.body;
+
+  const { cat_name, id } = req.body;
   try {
     const result = await db.update(
       "UPDATE category SET cat_name = ? WHERE id = ?",
@@ -57,7 +57,7 @@ exports.updatecategory = async (req, res) => {
     if (result) {
       res
         .status(201)
-        .json({ message: "Category Updated Successfully", result });
+        .json({ message: "Updated Successfully", result });
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
@@ -68,6 +68,7 @@ exports.updatecategory = async (req, res) => {
 //delete one category
 exports.deletecategory = async (req, res) => {
   const { id } = req.params;
+
   try {
     const result = await db.delete("DELETE FROM category WHERE id = ?", [id]);
     if (result) {

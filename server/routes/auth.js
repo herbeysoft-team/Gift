@@ -11,7 +11,8 @@ const {
   reset,
   verifyphoneotp,
   phoneotp,
-  adminlogin
+  adminlogin, 
+  changepassword,
 } = require("../controller/auth");
 
 /**SIGN UP */
@@ -44,4 +45,6 @@ router.post("/passwordreset", passwordreset);
 /**PASSWORD RESET */
 router.post("/reset", reset);
 
+/**ADMIN CHANGE PASSOWRD */
+router.post("/changepassword", changepassword);
 module.exports = router;

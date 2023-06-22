@@ -18,7 +18,6 @@ const Upvote = () => {
     dispatch(allupvote());
   }, [dispatch]);
 
-  console.log(allVote)
     const columns = useMemo(
       () => [
         { field: "post_id", headerName: "Post ID", width: 500 },

@@ -1,12 +1,15 @@
-import { Avatar, Box, Typography, gridClasses } from "@mui/material";
+import { Avatar, Box, Fab, Tooltip, Typography, gridClasses } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
 import { getItems} from "../context/features/itemSlice";
 import URLBASE from "../constant/urlbase";
 import ItemActions from "../component/ItemActions";
+import AddIcon from "@mui/icons-material/Add";
+import { useNavigate } from "react-router-dom";
 
 const Item = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const { items } = useSelector((state) => ({
     ...state.item,
@@ -90,6 +93,23 @@ const Item = () => {
           onCellClick={(params) => setRowId(params.id)}
         />
       ) : null}
+
+      <Tooltip
+        onClick={(e) => {
+          navigate("/home/additem")
+        }}
+        title="Create New Item"
+        placement="bottom"
+        sx={{
+          position: "fixed",
+          bottom: 20,
+          left: { xs: "calc(50% - 25px)", md: "50%" },
+        }}
+      >
+        <Fab color="primary" aria-label="add">
+          <AddIcon />
+        </Fab>
+      </Tooltip>
     </Box>
   );
 };

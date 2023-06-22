@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { allpost } from "../context/features/postSlice";
 import URLBASE from "../constant/urlbase";
 import moment from "moment"; 
-//import GiftActions from "../component/GiftActions";
+
 
 const Post = () => {
   const dispatch = useDispatch();
@@ -48,14 +48,6 @@ const Post = () => {
             renderCell: (params) =>
             moment(params.row.createdAt).format('YYYY-MM-DD HH:MM:SS'),
           },
-        // {
-        //   field: "actions",
-        //   headerName: "Actions",
-        //   type: "actions",
-        //   renderCell: (params) => (
-        //     <GiftActions {...{ params, rowId, setRowId }} />
-        //   ),
-        // },
       ],
       []
     );

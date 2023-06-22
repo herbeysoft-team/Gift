@@ -1,23 +1,21 @@
 import {
   Box,
-  Button,
-  ButtonGroup,
-  Fab,
-  Modal,
+  Grid,
   TextField,
   Tooltip,
   Typography,
-  gridClasses,
+  Fab,
+  Modal,
+  ButtonGroup,
+  Button,
 } from "@mui/material";
-import React, { useEffect, useMemo, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategories, createCategory } from "../context/features/itemSlice";
-import CatActions from "../component/CatActions";
 import AddIcon from "@mui/icons-material/Add";
 import styled from "@emotion/styled";
 import CloseIcon from "@mui/icons-material/Close";
 import toast from "react-hot-toast";
+import { passwordChange } from "../context/features/authSlice";
 
 const SytledModal = styled(Modal)({
   display: "flex",
@@ -25,60 +23,44 @@ const SytledModal = styled(Modal)({
   justifyContent: "center",
 });
 
-const Category = () => {
+const Profile = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const [cat_name, setCat_name] = useState("");
-  const { item_categories } = useSelector((state) => ({
-    ...state.item,
+  const [password, setPassword] = useState("");
+  const [cpassword, setCpassword] = useState("");
+  const { user } = useSelector((state) => ({
+    ...state.auth,
   }));
-  const [pageSize, setPageSize] = useState(10);
-  const [rowId, setRowId] = useState(null);
-  const memoizedCategory = useMemo(() => item_categories, [item_categories]);
-
   const onInputChange = (e) => {
-    setCat_name(e.target.value);
+    setPassword(e.target.value);
   };
 
+  const onInputChangeC = (e) => {
+    setCpassword(e.target.value);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (cat_name) {
-      dispatch(
-        createCategory({
-          formValue: {
-            category_name: cat_name,
-          },
-          toast,
-        })
-      );
-      dispatch(getCategories());
-      setOpen(false);
-      setCat_name("");
+    if (password && cpassword) {
+      if (password !== cpassword) {
+        toast.error("The password is not the same");
+      } else {
+        dispatch(
+          passwordChange({
+            formValue: {
+              id: user?.result?.id,
+              cpassword,
+            }, toast
+          })
+        );
+        setOpen(false);
+        setPassword("")
+        setCpassword("")
+      }
+    } else {
+      toast.error("Please fill the neccessary details");
     }
   };
 
-  useEffect(() => {
-    dispatch(getCategories());
-  }, [dispatch]);
-
-  const columns = useMemo(
-    () => [
-      { field: "id", headerName: "Category ID", width: 500 },
-      {
-        field: "cat_name",
-        headerName: "Category Name",
-        width: 500,
-        editable: true,
-      },
-      {
-        field: "actions",
-        headerName: "Actions",
-        type: "actions",
-        renderCell: (params) => <CatActions {...{ params, rowId, setRowId }} />,
-      },
-    ],
-    [rowId]
-  );
   return (
     <Box
       sx={{
@@ -95,37 +77,38 @@ const Category = () => {
         textAlign="center"
         sx={{ fontWeight: "bold", fontFamily: "Poppins" }}
       >
-        Manage Item Category
+        Profile
       </Typography>
 
-      {memoizedCategory ? (
-        <DataGrid
-          columns={columns}
-          rows={memoizedCategory}
-          getRowId={(row) => row.id}
-          rowsPerPageOptions={[10, 20, 30]}
-          pageSize={pageSize}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          getRowSpacing={(params) => ({
-            top: params.isFirstVisible ? 0 : 5,
-            bottom: params.isLastVisible ? 0 : 5,
-          })}
-          sx={{
-            [`& .${gridClasses.row}`]: {
-              bgcolor: "white",
-            },
-            marginTop: 5,
-          }}
-          onCellEditCommit={(params) => setRowId(params.id)}
-          onCellClick={(params) => setRowId(params.id)}
-        />
-      ) : null}
-
+      <Grid container spacing={1}>
+        <Grid item xs={12} md={6} className="grid">
+          <TextField
+            margin="normal"
+            fullWidth
+            size="normal"
+            id="fullname"
+            label="Full Name"
+            name="fullname"
+            value={user?.result?.fullname}
+          />
+        </Grid>
+        <Grid item xs={12} md={6} className="grid">
+          <TextField
+            margin="normal"
+            fullWidth
+            size="normal"
+            id="username"
+            label="Username"
+            name="username"
+            value={user?.result?.username}
+          />
+        </Grid>
+      </Grid>
       <Tooltip
         onClick={(e) => {
           setOpen(true);
         }}
-        title="Create Category"
+        title="Change Password"
         placement="bottom"
         sx={{
           position: "fixed",
@@ -158,21 +141,34 @@ const Category = () => {
             variant="h4"
             textAlign="left"
           >
-            Create Category
+            Change Password
           </Typography>
 
           <TextField
             sx={{ width: "100%", marginBottom: "10px" }}
             required
             type="text"
-            id="cat_name"
-            name="cat_name"
-            label="Category"
-            value={cat_name || ""}
+            id="password"
+            name="passord"
+            label="Password"
+            value={password || ""}
             size="small"
             color="secondary"
             margin="dense"
             onChange={onInputChange}
+          />
+          <TextField
+            sx={{ width: "100%", marginBottom: "10px" }}
+            required
+            type="text"
+            id="cpassword"
+            name="cpassord"
+            label="Confirm Password"
+            value={cpassword || ""}
+            size="small"
+            color="secondary"
+            margin="dense"
+            onChange={onInputChangeC}
           />
 
           <ButtonGroup
@@ -180,7 +176,7 @@ const Category = () => {
             variant="contained"
             aria-label="outlined primary button group"
           >
-            <Button onClick={handleSubmit}>Add Category</Button>
+            <Button onClick={handleSubmit}>Change Password</Button>
             <Button
               color="secondary"
               sx={{ width: "100px" }}
@@ -195,4 +191,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default Profile;

@@ -18,20 +18,22 @@ export const login = createAsyncThunk(
     }
   );
   
-//   export const register = createAsyncThunk(
-//     "auth/register",
-//     async ({ formValue, navigate, toast }, { rejectWithValue }) => {
-//       try {
-//         const response = await api.register(formValue);
-//         toast.success("User Created Successfully");
-//         navigate("/");
-//         return response.data;
-//       } catch (err) {
-//         toast.error(err.response.data.message);
-//         return rejectWithValue(err.response.data);
-//       }
-//     }
-//   );
+  export const passwordChange = createAsyncThunk(
+    "auth/passwordChange",
+    async ({ formValue,  toast }, { rejectWithValue }) => {
+      try {
+        const response = await api.passwordChange(formValue);
+        if(response){
+          toast.success(response.data.message)
+        }
+        return response.data;
+      } catch (err) {
+        toast.error(err.response.data);
+        return rejectWithValue(err.response.data);
+      }
+    }
+  );
+  
 
 
 const authSlice = createSlice({
@@ -61,6 +63,17 @@ const authSlice = createSlice({
           state.user = action.payload;
         })
         .addCase(login.rejected, (state, action) => {
+          state.loadinglogin = false;
+          state.error = action.payload;
+        })
+        .addCase(passwordChange.pending, (state) => {
+          state.loadinglogin = true;
+        })
+        .addCase(passwordChange.fulfilled, (state, action) => {
+          state.loadinglogin = false;
+          state.user = action.payload;
+        })
+        .addCase(passwordChange.rejected, (state, action) => {
           state.loadinglogin = false;
           state.error = action.payload;
         })

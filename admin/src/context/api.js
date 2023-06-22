@@ -16,6 +16,7 @@ API.interceptors.request.use((req) => {
 
 /**AUTHENTICATION API */  
 export const login = (formData) => API.post("/api/v1/auth/adminlogin", formData); //sign in for all users
+export const passwordChange = (formValue) => API.post("/api/v1/auth/changepassword", formValue); //change user password
 
 /**DASHBOARD API */  
 export const allcountfordashboard = () => API.get(`/api/v1/user/allcountfordashboard/`); //all count for dashboard
@@ -48,3 +49,9 @@ export const getItemsByCategory = (newValue)=> API.get(`/api/v1/item/getitemsbys
 export const getItemsBySearch = (searchName) => API.get(`/api/v1/item/getitemsbysearch/${searchName}`); //Get items by search
 export const updateItem = (updatedValue) => API.put("/api/v1/item/updateitem", updatedValue); //update item
 export const updateSubCat = (updatedValue) => API.put("/api/v1/subcategory/updatesubcategory", updatedValue); //update subcategory
+export const updateCat = (updatedValue) => API.put("/api/v1/category/updatecategory", updatedValue); //update category
+export const createCategory = (formValue) => API.post(`/api/v1/category/createcategory`, formValue); //create a category
+export const createSubCategory = (formValue) => API.post(`/api/v1/subcategory/createsubcategory`, formValue); //create a category
+export const deleteCategory = (id) => API.delete(`/api/v1/category/deletecategory/${id}`); //delete one category
+export const deleteSubCategory = (id) => API.delete(`/api/v1/subcategory/deletesubcategory/${id}`); //delete one subcategory
+export const deleteItem = (id) => API.delete(`/api/v1/item/deleteitem/${id}`); //delete one item

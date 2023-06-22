@@ -19,7 +19,7 @@ router.get("/getcategory/:id", getcategory);
 router.get("/allcategories", allcategories);
 
 /**UPDATE A CATEGORY */
-router.put("/updatecategory/:id", updatecategory);
+router.put("/updatecategory", updatecategory);
 
 /**DELETE A CATEGORY */
 router.delete("/deletecategory/:id", deletecategory);

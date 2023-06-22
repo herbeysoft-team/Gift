@@ -307,3 +307,24 @@ exports.adminlogin = async (req, res) => {
     console.log(error);
   }
 };
+
+
+exports.changepassword = async (req, res) => {
+  const { id, cpassword } = req.body;
+  try {
+    const hashedPassword = await bcrypt.hash(cpassword, 12);
+
+    const updatePassword = await db.update(
+      "UPDATE adminprofile SET password = ? WHERE id = ?",
+      [hashedPassword, id]
+    );
+    if (updatePassword) {
+      return res
+        .status(201)
+        .json({ message: "Password Successsfully Changed" });
+    }
+  } catch (error) {
+    //res.status(500).json({message: "something went wrong"});
+    console.log(error);
+  }
+};

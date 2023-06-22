@@ -2,13 +2,13 @@ const db = require("../config/database");
 
 //create a subcategory
 exports.createsubcategory = async (req, res) => {
-  const { cat_id, sub_cat_name } = req.body;
+  const { category_id, subcategory } = req.body;
   try {
     const result = await db.insert(
       "INSERT INTO subcategory (cat_id, sub_cat_name) VALUES (?,?)",
-      [cat_id, sub_cat_name]
+      [category_id, subcategory]
     );
-    res.status(201).json({message:"Sub-Category Created Successfully", result});
+    res.status(201).json({message:"Created Successfully", result});
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);

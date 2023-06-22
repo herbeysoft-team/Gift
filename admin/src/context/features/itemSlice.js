@@ -27,6 +27,40 @@ export const getSubcategories = createAsyncThunk(
   }
 );
 
+export const createCategory = createAsyncThunk(
+  "item/createCategory",
+
+  async({formValue, toast}, {rejectWithValue})=>{
+
+      try{
+        const response = await api.createCategory(formValue);
+        if(response){
+          toast.success(response.data.message);
+        }
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
+export const createSubCategory = createAsyncThunk(
+  "item/createSubCategory",
+
+  async({formValue, toast}, {rejectWithValue})=>{
+
+      try{
+        const response = await api.createSubCategory(formValue);
+        if(response){
+          toast.success(response.data.message);
+        }
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
 export const createItem = createAsyncThunk(
   "item/createItem",
 
@@ -35,7 +69,7 @@ export const createItem = createAsyncThunk(
         const response = await api.createItem(formData);
         if(response){
           toast.success(response.data.message);
-          navigate("/home/shop");
+          navigate("/home/item");
         }
         return response.data;
       }catch(err){
@@ -104,6 +138,23 @@ export const updateSubCat= createAsyncThunk(
   }
 );
 
+export const updateCat= createAsyncThunk(
+  "item/updateCat",
+
+  async ({ updatedValue, toast }, { rejectWithValue }) => {
+    try {
+      const response = await api.updateCat(updatedValue);
+
+      if(response){
+        toast.success(response.data.message)
+      }
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const getItemsBySearch = createAsyncThunk(
   "item/getItemsBySearch",
 
@@ -117,6 +168,44 @@ export const getItemsBySearch = createAsyncThunk(
   }
 )
 
+export const deleteCategory = createAsyncThunk(
+  "item/deleteCategory",
+  async ({ id, toast }, { rejectWithValue }) => {
+    try {
+      const response = await api.deleteCategory(id);
+      toast.success("Deleted Successfully");
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const deleteSubCategory = createAsyncThunk(
+  "item/deleteSubCategory",
+  async ({ id, toast }, { rejectWithValue }) => {
+    try {
+      const response = await api.deleteSubCategory(id);
+      toast.success("Deleted Successfully");
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const deleteItem = createAsyncThunk(
+  "item/deleteItem",
+  async ({ id, toast }, { rejectWithValue }) => {
+    try {
+      const response = await api.deleteItem(id);
+      toast.success("Deleted Successfully");
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 
 const itemSlice = createSlice({
   name: "item",
@@ -132,6 +221,8 @@ const itemSlice = createSlice({
     successupdateitem: false,
     loadingupdatesubcat: false,
     successupdatesubcat: false,
+    loadingupdatecat: false,
+    successupdatecat: false,
   },
   reducers: {
     clearItems: (state) => {
@@ -144,6 +235,10 @@ const itemSlice = createSlice({
     setSuccessUpdateSubCat: (state, action) => {
       state.successupdatesubcat = false;
       state.loadingupdatesubcat = false;
+    },
+    setSuccessUpdateCat: (state, action) => {
+      state.successupdatecat = false;
+      state.loadingupdatecat = false;
     },
   },
   extraReducers: (builder) => {
@@ -255,8 +350,89 @@ const itemSlice = createSlice({
         state.error = action.payload;
         
       })
+      .addCase(updateCat.pending, (state) => {
+        state.loadingupdatecat = true;
+        state.successupdatecat = false;
+      })
+      .addCase(updateCat.fulfilled, (state, action) => {
+        state.loadingupdatecat = false;
+        const {
+          arg: { id },
+        } = action.meta;
+        if (id) {
+          state.item_categories = state.item_categories.map((item) =>
+            item.id === id ? action.payload : item
+          );
+        }
+        state.successupdatecat = true;
+      })
+      .addCase(updateCat.rejected, (state, action) => {
+        state.loadingupdatecat= false;
+        state.error = action.payload;
+        
+      })
+      .addCase(deleteCategory.pending, (state) => {
+        state.loadingupdatecat = true;
+        state.successupdatecat = false;
+      })
+      .addCase(deleteCategory.fulfilled, (state, action) => {
+        state.loadingupdatecat = false;
+        const {
+          arg: { id },
+        } = action.meta;
+        if (id) {
+          state.item_categories = state.item_categories.filter((item) => item.id !== id);
+          
+        }
+        state.successupdatecat = true;
+      })
+      .addCase(deleteCategory.rejected, (state, action) => {
+        state.loadingupdatesubcat= false;
+        state.error = action.payload;
+        
+      })
+      .addCase(deleteSubCategory.pending, (state) => {
+        state.loadingupdatesubcat = true;
+        state.successupdatesubcat = false;
+      })
+      .addCase(deleteSubCategory.fulfilled, (state, action) => {
+        state.loadingupdatesubcat = false;
+        const {
+          arg: { id },
+        } = action.meta;
+        if (id) {
+          state.item_subcategories = state.item_subcategories.filter((item) => item.id !== id);
+          
+        }
+        state.successupdatesubcat = true;
+      })
+      .addCase(deleteSubCategory.rejected, (state, action) => {
+        state.loadingupdatesubcat= false;
+        state.error = action.payload;
+        
+      })
+      .addCase(deleteItem.pending, (state) => {
+        state.loadingupdateitem = true;
+        state.successupdateitem = false;
+      })
+      .addCase(deleteItem.fulfilled, (state, action) => {
+        state.loadingupdateitem = false;
+        const {
+          arg: { id },
+        } = action.meta;
+        if (id) {
+          state.items = state.items.filter((item) => item.id !== id);
+          
+        }
+        state.successupdateitem = true;
+      })
+      .addCase(deleteItem.rejected, (state, action) => {
+        state.loadingupdateitem= false;
+        state.error = action.payload;
+        
+      })
       
   },
 });
-export const { setSuccessUpdateItem, setSuccessUpdateSubCat, clearItems } = itemSlice.actions;
+export const { setSuccessUpdateItem, setSuccessUpdateSubCat,setSuccessUpdateCat, clearItems } = itemSlice.actions;
 export default itemSlice.reducer;

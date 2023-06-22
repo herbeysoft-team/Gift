@@ -5,7 +5,7 @@ import { Check, Save } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setSuccessUpdateSubCat,
-  updateSubCat,
+  updateSubCat, deleteSubCategory
 } from "../context/features/itemSlice";
 import toast from "react-hot-toast";
 
@@ -44,28 +44,25 @@ const SubCatActions = ({ params, rowId, setRowId }) => {
   const handleDelete = async () => {
     if (params.id === rowId) {
       if (!loadingupdatesubcat) {
-        setLoading(true);
-        const { sender_id, trowbox_id, status, id } = params.row;
+        const {id } = params.row;
         try {
-        //   await dispatch(
-        //     updategiftbyadmin({
-        //       updatedValue: {
-        //         id,
-        //         sender_id,
-        //         trowbox_id,
-        //         status,
-        //       },
-        //     })
-        //   );
-          setSuccess(true);
+          await dispatch(
+            deleteSubCategory({
+                 id, toast    
+              }, 
+          ))
         } catch (error) {
-          console.error("Error updating trowbox:", error);
+          console.error("Error deleting SubCategory:", error);
         } finally {
           setLoading(false);
+          setSuccess(false);
+          dispatch(setSuccessUpdateSubCat())
+          
+
         }
       }
     }
-  };
+  }
 
 
   useEffect(() => {

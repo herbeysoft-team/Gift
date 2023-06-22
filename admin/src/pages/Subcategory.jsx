@@ -1,14 +1,27 @@
-import { Box, Typography, gridClasses } from "@mui/material";
+import { Box, Button, ButtonGroup, Fab, MenuItem, Modal, TextField, Tooltip, Typography, gridClasses } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
-import { getSubcategories} from "../context/features/itemSlice";
+import { getCategories, getSubcategories, createSubCategory} from "../context/features/itemSlice";
 import SubCatActions from "../component/SubCatActions";
+import AddIcon from "@mui/icons-material/Add";
+import styled from "@emotion/styled";
+import CloseIcon from "@mui/icons-material/Close";
+import toast from "react-hot-toast";
 
+
+const SytledModal = styled(Modal)({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+});
 
 const SubCategory = () => {
   const dispatch = useDispatch();
-  const { item_subcategories } = useSelector((state) => ({
+  const [open, setOpen] = useState(false)
+  const [sub_cat_name, setSub_cat_name] = useState("");
+  const [cat_name, set_cat_name] = useState(0);
+  const { item_subcategories, item_categories } = useSelector((state) => ({
     ...state.item,
   }));
   const [pageSize, setPageSize] = useState(10);
@@ -36,6 +49,34 @@ const SubCategory = () => {
       ],
       [rowId]
     );
+
+    const onInputChange = (e) => {
+      setSub_cat_name(e.target.value);
+    };
+
+    const onInputChangeCat = (e) => {
+      set_cat_name(e.target.value);
+    };
+  
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      if (sub_cat_name && cat_name) {
+        dispatch(
+          createSubCategory({
+            formValue: {
+              category_id: cat_name,
+              subcategory: sub_cat_name
+            },
+            toast,
+          })
+        );
+        dispatch(getSubcategories());
+        setOpen(false);
+        setSub_cat_name("");
+        set_cat_name("");
+      }
+    };
   return (
     <Box
       sx={{
@@ -77,6 +118,96 @@ const SubCategory = () => {
           onCellClick={(params) => setRowId(params.id)}
         />
       ) : null}
+
+    <Tooltip
+        onClick={(e) => {
+          setOpen(true);
+          dispatch(getCategories())
+        }}
+        title="Create SubCategory"
+        placement="bottom"
+        sx={{
+          position: "fixed",
+          bottom: 20,
+          left: { xs: "calc(50% - 25px)", md: "50%" },
+        }}
+      >
+        <Fab color="primary" aria-label="add">
+          <AddIcon />
+        </Fab>
+      </Tooltip>
+      <SytledModal
+        open={open}
+        onClose={(e) => setOpen(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box
+          width={400}
+          height={350}
+          component="form"
+          bgcolor={"background.default"}
+          color={"text.primary"}
+          p={3}
+          noValidate
+          autoComplete="off"
+        >
+          <Typography
+            style={{ marginBottom: "20px", fontFamily: "Poppins" }}
+            variant="h4"
+            textAlign="left"
+          >
+            Create  SubCategory
+          </Typography>
+
+          <TextField
+            sx={{ width: "100%", marginBottom: "10px" }}
+            required
+            type="text"
+            id="sub_cat_name"
+            name="sub_cat_name"
+            label="SubCategory"
+            value={sub_cat_name || ""}
+            size="small"
+            color="secondary"
+            margin="dense"
+            onChange={onInputChange}
+          />
+          <TextField
+              sx={{ width: "100%" }}
+              id="cat_name"
+              select
+              name="cat_name"
+              label="Category"
+              value={cat_name || ""}
+              size="small"
+              color="secondary"
+              margin="dense"
+              onChange={onInputChangeCat}
+            >
+              <MenuItem>Select Category</MenuItem>
+              {item_categories.map((item) => (
+                <MenuItem key={item.id} value={item.id}>
+                  {item.cat_name}
+                </MenuItem>
+              ))}
+            </TextField>
+          <ButtonGroup
+            fullWidth
+            variant="contained"
+            aria-label="outlined primary button group"
+          >
+            <Button onClick={handleSubmit}>Add SubCategory</Button>
+            <Button
+              color="secondary"
+              sx={{ width: "100px" }}
+              onClick={() => setOpen(false)}
+            >
+              <CloseIcon />
+            </Button>
+          </ButtonGroup>
+        </Box>
+      </SytledModal>
     </Box>
   );
 };

@@ -1,17 +1,17 @@
-import { Box, CircularProgress, Fab, } from "@mui/material";
+import { Box, CircularProgress, Fab } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useState } from "react";
 import { Check, Save } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setSuccessUpdateItem,
-  updateItem, deleteItem
+  setSuccessUpdateCat,
+  updateCat, deleteCategory
 } from "../context/features/itemSlice";
 import toast from "react-hot-toast";
 
-const ItemActions = ({ params, rowId, setRowId }) => {
+const CatActions = ({ params, rowId, setRowId }) => {
   const dispatch = useDispatch();
-  const { successupdateitem, loadingupdateitem } = useSelector(
+  const { successupdatecat, loadingupdatecat } = useSelector(
     (state) => state.item
   );
   const [loading, setLoading] = useState(false);
@@ -19,24 +19,20 @@ const ItemActions = ({ params, rowId, setRowId }) => {
 
   const handleSubmit = async () => {
     if (params.id === rowId) {
-      if (!loadingupdateitem) {
+      if (!loadingupdatecat) {
         setLoading(true);
-        const { item_name, item_description, item_subcategory, id } = params.row;
+        const { cat_name, id } = params.row;
         
         try {
           await dispatch(
-            updateItem({
+            updateCat({
               updatedValue: {
                 id,
-                item_name,
-                item_description,
-                item_subcategory,
-              }, toast
-            })
-          );
+                cat_name,
+              }, toast}));
           setSuccess(true);
         } catch (error) {
-          console.error("Error updating Item:", error);
+          console.error("Error updating category:", error);
         } finally {
           setLoading(false);
         }
@@ -46,33 +42,33 @@ const ItemActions = ({ params, rowId, setRowId }) => {
 
   const handleDelete = async () => {
     if (params.id === rowId) {
-      if (!loadingupdateitem) {
+      if (!loadingupdatecat) {
         const {id } = params.row;
         try {
           await dispatch(
-            deleteItem({
+            deleteCategory({
                  id, toast    
               }, 
           ))
         } catch (error) {
-          console.error("Error deleting Item:", error);
+          console.error("Error deleting Category:", error);
         } finally {
           setLoading(false);
           setSuccess(false);
-          dispatch(setSuccessUpdateItem())
+          dispatch(setSuccessUpdateCat())
           
 
         }
       }
     }
-  }
+  };
 
 
   useEffect(() => {
     if (rowId === params.id && success) {
       setTimeout(() => {
         setSuccess(false);
-        dispatch(setSuccessUpdateItem());
+        dispatch(setSuccessUpdateCat());
       }, 2000);
     }
   }, [rowId, success, params.id, dispatch]);
@@ -85,7 +81,7 @@ const ItemActions = ({ params, rowId, setRowId }) => {
         position: "relative",
       }}
     >
-      {success || successupdateitem ? (
+      {success || successupdatecat ? (
         <Fab
           color="primary"
           sx={{
@@ -142,4 +138,4 @@ const ItemActions = ({ params, rowId, setRowId }) => {
   );
 };
 
-export default ItemActions;
+export default CatActions;

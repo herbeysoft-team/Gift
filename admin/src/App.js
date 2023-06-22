@@ -16,6 +16,9 @@ import Upvote from "./pages/Upvote";
 import Category from "./pages/Category";
 import SubCategory from "./pages/Subcategory";
 import Item from "./pages/Item";
+import AddItem from "./pages/AddItem";
+import Profile from "./pages/Profile";
+import Message from "./pages/Message";
 
 
 
@@ -61,7 +64,18 @@ const router = createBrowserRouter([
         path: "/home/item",
         element: <Item/>,
       },
-    
+      {
+        path: "/home/additem",
+        element: <AddItem/>,
+      },
+      {
+        path: "/home/profile",
+        element: <Profile/>,
+      },
+      {
+        path: "/home/message",
+        element: <Message/>,
+      },
     
     ],
   },

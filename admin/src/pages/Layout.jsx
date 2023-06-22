@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -17,9 +17,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Link, Outlet } from "react-router-dom";
-import {  Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GroupIcon from "@mui/icons-material/Group";
 import RedeemIcon from '@mui/icons-material/Redeem';
@@ -29,7 +27,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import CategoryIcon from '@mui/icons-material/Category';
 import SubjectIcon from '@mui/icons-material/Subject';
 import Logo from "../assets/logo.png";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import EmailIcon from '@mui/icons-material/Email';
 import IronIcon from '@mui/icons-material/Iron';
+import LogoutIcon from '@mui/icons-material/Logout';
 const drawerWidth = 240;
 
 const links = [
@@ -69,27 +70,41 @@ const links = [
     path: "/home/upvote",
     icon: <FavoriteIcon />,
   },
+  {
+    id: 7,
+    name: "Message",
+    path: "/home/message",
+    icon: <EmailIcon />,
+  },
 ];
 
 const links2 = [
   {
-    id: 7,
+    id: 8,
     name: "Category",
     path: "/home/category",
     icon: <CategoryIcon />,
   },
   {
-    id: 8,
+    id: 9,
     name: "SubCategory",
     path: "/home/subcategory",
     icon: <SubjectIcon />,
   },
   {
-    id: 9,
+    id: 10,
     name: "Item",
     path: "/home/item",
     icon: <IronIcon />,
   },
+  {
+    id: 11,
+    name: "Profile",
+    path: "/home/profile",
+    icon: <AccountCircleIcon />,
+  },
+  
+  
 ];
 
 const openedMixin = (theme) => ({
@@ -169,7 +184,6 @@ const Icons = styled(Box)(({ theme }) => ({
 const Layout = () => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  const [openOption, setOpenOption] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const navigate = useNavigate();
@@ -246,31 +260,13 @@ const Layout = () => {
             <IconButton
               aria-label="options"
               color="primary"
-              onClick={(e) => setOpenOption(true)}
-              sx={{width:64, height:64}}
+              onClick={handleLogout}
+              sx={{width:40, height:40}}
             >
-              <MoreVertIcon />
-            </IconButton>
+              <LogoutIcon  sx={{width:40, height:40}}/>
+            </IconButton> 
           </Icons>
-          <Menu
-            id="demo-positioned-menu"
-            aria-labelledby="demo-positioned-button"
-            open={openOption}
-            onClose={(e) => setOpenOption(false)}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-          >
-            {/* <MenuItem onClick={() => navigate(`/a_edit/${userId}`)}>
-              Profile
-            </MenuItem> */}
-            <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
-          </Menu>
+          
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
