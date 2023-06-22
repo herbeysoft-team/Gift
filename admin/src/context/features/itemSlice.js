@@ -1,6 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../api";
 
+export const getCategories = createAsyncThunk(
+  "item/getCategories",
+
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.getCategories();
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const getSubcategories = createAsyncThunk(
   "item/getSubcategories",
 
@@ -57,6 +70,40 @@ export const getItemsByCategory = createAsyncThunk(
   }
 )
 
+export const updateItem= createAsyncThunk(
+  "item/updateItem",
+
+  async ({ updatedValue, toast }, { rejectWithValue }) => {
+    try {
+      const response = await api.updateItem(updatedValue);
+
+      if(response){
+        toast.success(response.data.message)
+      }
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const updateSubCat= createAsyncThunk(
+  "item/updateSubCat",
+
+  async ({ updatedValue, toast }, { rejectWithValue }) => {
+    try {
+      const response = await api.updateSubCat(updatedValue);
+
+      if(response){
+        toast.success(response.data.message)
+      }
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const getItemsBySearch = createAsyncThunk(
   "item/getItemsBySearch",
 
@@ -74,18 +121,44 @@ export const getItemsBySearch = createAsyncThunk(
 const itemSlice = createSlice({
   name: "item",
   initialState: {
+    item_categories: [],
     item_subcategories: [],
     items: [],
     error: "",
-    loading: false,
+    loadingitems: false,
+    loadingcategories: false,
+    loadingsubcategories: false,
+    loadingupdateitem: false,
+    successupdateitem: false,
+    loadingupdatesubcat: false,
+    successupdatesubcat: false,
   },
   reducers: {
     clearItems: (state) => {
       state.items = [];
     },
+    setSuccessUpdateItem: (state, action) => {
+      state.successupdateitem = false;
+      state.loadingupdateitem = false;
+    },
+    setSuccessUpdateSubCat: (state, action) => {
+      state.successupdatesubcat = false;
+      state.loadingupdatesubcat = false;
+    },
   },
   extraReducers: (builder) => {
     builder
+    .addCase(getCategories.pending, (state) => {
+      state.loadingcategories = true;
+    })
+    .addCase(getCategories.fulfilled, (state, action) => {
+      state.loadingcategories = false;
+      state.item_categories = action.payload;
+    })
+    .addCase(getCategories.rejected, (state, action) => {
+      state.loadingcategories = false;
+      state.error = action.payload;
+    })
       .addCase(getSubcategories.pending, (state) => {
         state.loading = true;
       })
@@ -139,9 +212,51 @@ const itemSlice = createSlice({
       .addCase(getItemsBySearch.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(updateItem.pending, (state) => {
+        state.loadingupdateitem = true;
+        state.successupdateitem = false;
+      })
+      .addCase(updateItem.fulfilled, (state, action) => {
+        state.loadingupdateitem = false;
+        const {
+          arg: { id },
+        } = action.meta;
+        if (id) {
+          state.items = state.items.map((item) =>
+            item.id === id ? action.payload : item
+          );
+        }
+        state.successupdateitem = true;
+      })
+      .addCase(updateItem.rejected, (state, action) => {
+        state.loadingupdateitem= false;
+        state.error = action.payload;
+        
+      })
+      .addCase(updateSubCat.pending, (state) => {
+        state.loadingupdatesubcat = true;
+        state.successupdatesubcat = false;
+      })
+      .addCase(updateSubCat.fulfilled, (state, action) => {
+        state.loadingupdatesubcat = false;
+        const {
+          arg: { id },
+        } = action.meta;
+        if (id) {
+          state.item_subcategories = state.item_subcategories.map((item) =>
+            item.id === id ? action.payload : item
+          );
+        }
+        state.successupdatesubcat = true;
+      })
+      .addCase(updateSubCat.rejected, (state, action) => {
+        state.loadingupdatesubcat= false;
+        state.error = action.payload;
+        
+      })
       
   },
 });
-
+export const { setSuccessUpdateItem, setSuccessUpdateSubCat, clearItems } = itemSlice.actions;
 export default itemSlice.reducer;

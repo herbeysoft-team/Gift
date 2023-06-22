@@ -2,31 +2,30 @@ import { Avatar, Box, Typography, gridClasses } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
-import { allupvote } from "../context/features/likeSlice";
+import { getCategories} from "../context/features/itemSlice";
 
 
 const Category = () => {
   const dispatch = useDispatch();
-  const { allVote } = useSelector((state) => ({
-    ...state.like,
+  const { item_categories } = useSelector((state) => ({
+    ...state.item,
   }));
   const [pageSize, setPageSize] = useState(10);
   //const [rowId, setRowId] = useState(null);
-  const memoizedCategory = useMemo(() => allVote, [allVote]);
+  const memoizedCategory = useMemo(() => item_categories, [item_categories]);
 
-//   useEffect(() => {
-//     dispatch(allupvote());
-//   }, [dispatch]);
-
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
   
-    // const columns = useMemo(
-    //   () => [
-    //     { field: "post_id", headerName: "Post ID", width: 500 },
-    //     { field: "like_count", headerName: "Total Upvote", width: 500 },
+    const columns = useMemo(
+      () => [
+        { field: "id", headerName: "Category ID", width: 500 },
+        { field: "cat_name", headerName: "Category Name", width: 500 },
         
-    //   ],
-    //   []
-    // );
+      ],
+      []
+    );
   return (
     <Box
       sx={{
@@ -45,12 +44,12 @@ const Category = () => {
       >
         Manage Item Category
       </Typography>
-{/* 
-      {memoizedVote ? (
+
+      {memoizedCategory ? (
         <DataGrid
           columns={columns}
-          rows={memoizedVote}
-          getRowId={(row) => row.post_id}
+          rows={memoizedCategory}
+          getRowId={(row) => row.id}
           rowsPerPageOptions={[10, 20, 30]}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
@@ -67,7 +66,7 @@ const Category = () => {
         //   onCellEditCommit={(params) => setRowId(params.id)}
         //   onCellClick={(params) => setRowId(params.id)}
         />
-      ) : null} */}
+      ) : null}
     </Box>
   );
 };

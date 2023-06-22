@@ -1,39 +1,65 @@
-import { Box, CircularProgress, Fab } from "@mui/material";
+import { Box, CircularProgress, Fab, } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useState } from "react";
 import { Check, Save } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setSuccessUpdateTrow, 
-  updatetrowboxbyadmin,
-} from "../context/features/trowSlice";
+  setSuccessUpdateItem,
+  updateItem,
+} from "../context/features/itemSlice";
 import toast from "react-hot-toast";
 
-const TrowActions = ({ params, rowId, setRowId }) => {
+const ItemActions = ({ params, rowId, setRowId }) => {
   const dispatch = useDispatch();
-  const { successupdatetrow, loadingupdatetrow } = useSelector(
-    (state) => state.trow
+  const { successupdateitem, loadingupdateitem } = useSelector(
+    (state) => state.item
   );
-
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const handleSubmit = async () => {
     if (params.id === rowId) {
-      if (!loadingupdatetrow) {
+      if (!loadingupdateitem) {
         setLoading(true);
-        const { wishlist_sent, gift_sent, post, event_name, id } = params.row;
+        const { item_name, item_description, item_subcategory, id } = params.row;
+        
         try {
           await dispatch(
-            updatetrowboxbyadmin({
+            updateItem({
               updatedValue: {
                 id,
-                wishlist_sent,
-                gift_sent,
-                post,
-                event_name, 
+                item_name,
+                item_description,
+                item_subcategory,
               }, toast
             })
           );
+          setSuccess(true);
+        } catch (error) {
+          console.error("Error updating Item:", error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    }
+  };
+
+  const handleDelete = async () => {
+    if (params.id === rowId) {
+      if (!loadingupdateitem) {
+        setLoading(true);
+        const { sender_id, trowbox_id, status, id } = params.row;
+        try {
+        //   await dispatch(
+        //     updategiftbyadmin({
+        //       updatedValue: {
+        //         id,
+        //         sender_id,
+        //         trowbox_id,
+        //         status,
+        //       },
+        //     })
+        //   );
           setSuccess(true);
         } catch (error) {
           console.error("Error updating trowbox:", error);
@@ -44,23 +70,25 @@ const TrowActions = ({ params, rowId, setRowId }) => {
     }
   };
 
+
   useEffect(() => {
     if (rowId === params.id && success) {
       setTimeout(() => {
         setSuccess(false);
-        dispatch(setSuccessUpdateTrow());
+        dispatch(setSuccessUpdateItem());
       }, 2000);
     }
   }, [rowId, success, params.id, dispatch]);
 
   return (
+    <Box flexDirection="row" display="flex" >
     <Box
       sx={{
         m: 1,
         position: "relative",
       }}
     >
-      {success || successupdatetrow ? (
+      {success || successupdateitem ? (
         <Fab
           color="primary"
           sx={{
@@ -98,7 +126,23 @@ const TrowActions = ({ params, rowId, setRowId }) => {
         />
       )}
     </Box>
+   
+    <Fab
+          color="primary"
+          sx={{
+            width: 40,
+            height: 40,
+            alignSelf:"center"
+          }}
+          disabled={params.id !== rowId || loading}
+          onClick={handleDelete}
+        >
+        
+          <DeleteIcon />
+        </Fab>
+    
+    </Box>
   );
 };
 
-export default TrowActions;
+export default ItemActions;

@@ -19,7 +19,7 @@ router.get("/getsubcategory/:id", getsubcategory);
 router.get("/allsubcategories", allsubcategories);
 
 /**UPDATE A SUBCATEGORY */
-router.put("/updatesubcategory/:id", updatesubcategory);
+router.put("/updatesubcategory", updatesubcategory);
 
 /**DELETE A SUBCATEGORY */
 router.delete("/deletesubcategory/:id", deletesubcategory);

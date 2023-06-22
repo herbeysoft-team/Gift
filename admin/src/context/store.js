@@ -5,6 +5,7 @@ import GiftReducer from "./features/giftSlice";
 import TrowReducer from "./features/trowSlice";
 import PostReducer from "./features/postSlice";
 import LikeReducer from "./features/likeSlice";
+import ItemReducer from "./features/itemSlice";
 
 export default configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export default configureStore({
       trow: TrowReducer,
       post: PostReducer,
       like: LikeReducer,
+      item: ItemReducer,
     }
   });
   

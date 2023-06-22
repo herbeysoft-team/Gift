@@ -14,7 +14,7 @@ import Gift from "./pages/Gift";
 import Post from "./pages/Post";
 import Upvote from "./pages/Upvote";
 import Category from "./pages/Category";
-import Subcategory from "./pages/Subcategory";
+import SubCategory from "./pages/Subcategory";
 import Item from "./pages/Item";
 
 
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/home/subcategory",
-        element: <Subcategory/>,
+        element: <SubCategory/>,
       },
       {
         path: "/home/item",

@@ -41,7 +41,10 @@ export const allupvote = () => API.get('/api/v1/like/allupvote/'); // all upvote
 
 /**ITEM API */
 export const getSubcategories = () => API.get(`/api/v1/subcategory/allsubcategories/`); //Get all Subcategories
+export const getCategories = () => API.get(`/api/v1/category/allcategories/`); //Get all Categories
 export const createItem = (formData) => API.post(`/api/v1/item/createitem`,formData); //create an item
 export const getItems = () => API.get(`/api/v1/item/allitems/`); //Get all items
 export const getItemsByCategory = (newValue)=> API.get(`/api/v1/item/getitemsbysubcategory/${newValue}`); //Get items by category
 export const getItemsBySearch = (searchName) => API.get(`/api/v1/item/getitemsbysearch/${searchName}`); //Get items by search
+export const updateItem = (updatedValue) => API.put("/api/v1/item/updateitem", updatedValue); //update item
+export const updateSubCat = (updatedValue) => API.put("/api/v1/subcategory/updatesubcategory", updatedValue); //update subcategory

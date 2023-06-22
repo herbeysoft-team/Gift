@@ -47,15 +47,14 @@ exports.allsubcategories = async (req, res) => {
 
 //update one subcategory
 exports.updatesubcategory = async (req, res) => {
-  const { id } = req.params;
-  const { cat_id, sub_cat_name } = req.body;
+  const { cat_id, sub_cat_name, id } = req.body;
   try {
     const result = await db.update(
       "UPDATE subcategory SET cat_id = ?, sub_cat_name = ? WHERE id = ?",
       [cat_id, sub_cat_name, id]
     );
     if (result) {
-      res.status(201).json({message: "SubCategory Updated Successfully", result});
+      res.status(201).json({message: "Updated Successfully", result});
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });

@@ -454,8 +454,7 @@ exports.allgift= async (req, res) => {
 
 //Update user profile
 exports.updategiftbyadmin = async (req, res) => {
-  const { sender_id, trowbox_id, status,  id } = req.body;
-  console.log(req.body)
+  const { status, id } = req.body;
   try {
     const UpdateGift = await db.update(
       "UPDATE trowbox_gift SET status = ? WHERE id = ?",

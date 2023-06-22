@@ -29,7 +29,7 @@ router.get("/getitemsbysearch/:searchName", getitemsbysearch);
 router.get("/allitems", allitems);
 
 /**UPDATE A ITEM */
-router.put("/updateitem/:id", updateitem);
+router.put("/updateitem", updateitem);
 
 /**DELETE A ITEM */
 router.delete("/deleteitem/:id", deleteitem);

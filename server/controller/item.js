@@ -79,12 +79,11 @@ exports.allitems = async (req, res) => {
 
 //update an item
 exports.updateitem = async (req, res) => {
-  const { id } = req.params;
-  const { item_name, item_description, item_pics, item_subcategory } = req.body;
+  const { item_name, item_description, item_subcategory, id } = req.body;
   try {
     const result = await db.update(
-      "UPDATE items SET item_name = ?, item_description = ?, item_pics = ?, item_subcategory = ? WHERE id = ?",
-      [item_name, item_description, item_pics, item_subcategory, id]
+      "UPDATE items SET item_name = ?, item_description = ?, item_subcategory = ? WHERE id = ?",
+      [item_name, item_description, item_subcategory, id]
     );
     if (result) {
       res.status(201).json({ message: "Item Updated Successfully", result });

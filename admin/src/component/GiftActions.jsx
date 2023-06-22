@@ -6,6 +6,7 @@ import {
   setSuccessUpdateGift,
   updategiftbyadmin,
 } from "../context/features/giftSlice";
+import toast from "react-hot-toast"
 
 const GiftActions = ({ params, rowId, setRowId }) => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const GiftActions = ({ params, rowId, setRowId }) => {
                 sender_id,
                 trowbox_id,
                 status,
-              },
+              }, toast
             })
           );
           setSuccess(true);

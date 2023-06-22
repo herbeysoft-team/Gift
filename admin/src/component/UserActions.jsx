@@ -6,6 +6,7 @@ import {
   updateuserprofilebyadmin,
   setSuccessUpdateUser,
 } from "../context/features/userSlice";
+import toast from 'react-hot-toast'
 
 const UsersActions = ({ params, rowId, setRowId }) => {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const UsersActions = ({ params, rowId, setRowId }) => {
                 id,
                 verified,
                 city,
-              },
+              }, toast
             })
           );
           setSuccess(true);
