@@ -36,9 +36,10 @@ export const uploadProfilePic = (formData) => API.put("/api/v1/user/updateuserpr
 export const addRelationship = (userId) => API.post(`/api/v1/relationship/addrelationship/${userId}`); //follow a user
 export const deleteRelationship = (userId) => API.post(`/api/v1/relationship/deleterelationship/${userId}`); //unfollow a user
 export const countRelationship = (userId) => API.get(`/api/v1/relationship/countrelationship/${userId}`); //count follower and following
-export const checkRelationship = (userId) => API.get(`/api/v1/relationship/checkrelationship/${userId}`); //count follower and following
-
+export const checkRelationship = (userId) => API.get(`/api/v1/relationship/checkrelationship/${userId}`); //check follower and following
+export const checkMutualRelationship = (userId) => API.get(`/api/v1/relationship/checkmutualrelationship/${userId}`); //check follower and following
 /**ITEM API */
+
 export const getSubcategories = () => API.get(`/api/v1/subcategory/allsubcategories/`); //Get all Subcategories
 export const createItem = (formData) => API.post(`/api/v1/item/createitem`,formData); //create an item
 export const getItems = () => API.get(`/api/v1/item/allitems/`); //Get all items
@@ -50,6 +51,7 @@ export const createTrow = (formData) => API.post(`/api/v1/trow/createtrow`,formD
 export const createReTrow = (formData) => API.post(`/api/v1/trow/createretrow`,formData); //create a retrowbox
 export const createEvent = (formData) => API.post(`/api/v1/trow/createevent`,formData); //create an event
 export const getTrow = (id) => API.get(`/api/v1/trow/gettrow/${id}`); //get a trowbox
+export const getUserSentGift= (id) => API.get(`/api/v1/trow/getusersentgift/${id}`); //get user sent gift
 export const getEvent = (id) => API.get(`/api/v1/trow/getevent/${id}`); //get an eventbox
 export const getAllEvent = () => API.get(`/api/v1/trow/getallevent`); //get all events 
 export const getMyTrowBox = () => API.get(`/api/v1/trow/getmytrowbox`); //get my current trowbox

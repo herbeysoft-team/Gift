@@ -72,11 +72,12 @@ const Feeds = () => {
         </>
       ) : (
         <Typography
-          variant="h5"
+          variant="h6"
           color="primary"
           fontFamily="Poppins"
           fontWeight="medium"
           textAlign="center"
+          marginTop="5"
         >
           No Post
         </Typography>

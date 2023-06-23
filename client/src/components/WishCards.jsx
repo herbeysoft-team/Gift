@@ -7,7 +7,7 @@ import { TablePagination } from "@mui/material";
 import toast from "react-hot-toast";
 import Stack from "@mui/material/Stack";
 
-const WishCards = ({ user_id, wishlist }) => {
+const WishCards = ({ user_id, wishlist, isMutual }) => {
   const uniqueId = useId;
   const dispatch = useDispatch();
   const { wishes } = useSelector((state) => ({ ...state.wishlist }));

@@ -15,7 +15,8 @@ const {
   alltrowbox,
   updatetrowboxbyadmin,
   allgift,
-  updategiftbyadmin
+  updategiftbyadmin,
+  getusersentgift
 } = require("../controller/trow");
 const { multerMiddleware } = require("../middleware/multerUtil");
 const verifyToken = require("../middleware/verifyToken");
@@ -50,6 +51,9 @@ router.post("/addtrowwishlist/:id", verifyToken, addtrowwishlist);
 
 /**ADD TROW GIFT*/
 router.post("/addtrowgift/:id", verifyToken, addtrowgift);
+
+/**GET USER SENT GIFT*/
+router.get("/getusersentgift/:id", verifyToken, getusersentgift);
 
 /**GET GIFT COUNT  */
 router.get("/allgiftcount", verifyAdmin, allgiftcount);

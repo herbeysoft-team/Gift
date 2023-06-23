@@ -249,6 +249,32 @@ exports.getevent = async (req, res) => {
   }
 };
 
+
+//get user recieved gift
+exports.getusersentgift = async (req, res) => {
+  const { id } = req.params;
+
+  try {   
+      const sendGift = await db.getall(
+        "SELECT DISTINCT i.id, i.item_name, i.item_description, i.item_pics, u.profilePic, u.id AS userId FROM items AS i, trowbox_gift AS t, userProfile AS u WHERE i.id = t.item_id AND t.sender_id = u.id AND t.status = 'redeemed' AND t.sender_id = ?",
+        [id]
+      );
+
+      const recieveGift = await db.getall(
+        "SELECT DISTINCT i.id, i.item_name, i.item_description, i.item_pics, u.profilePic, u.id AS userId FROM items AS i, trowbox_gift AS t, trowbox AS tb, userProfile AS u WHERE i.id = t.item_id AND tb.id = t.trowbox_id AND tb.recipient_no = u.phone_no AND t.status = 'redeemed' AND u.id = ?",
+        [id]
+      );
+      res.status(201).json({
+        sendGift,
+        recieveGift
+      });
+    
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
 //add a wishlist to a trowbox
 exports.addtrowwishlist = async (req, res) => {
   const { id } = req.params;

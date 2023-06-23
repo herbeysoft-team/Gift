@@ -19,11 +19,13 @@ import { useLocation, useNavigate} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../context/features/userSlice";
 import { getLikesCount } from "../context/features/likeSlice";
+import { getUserSentGift } from "../context/features/trowSlice";
 import {
   countRelationship,
   checkRelationship,
   addRelationship,
   deleteRelationship,
+  checkMutualRelationship,
 } from "../context/features/relationshipSlice";
 import URLBASE from '../constant/urlbase';
 import { setLogout } from "../context/features/authSlice";
@@ -49,10 +51,12 @@ const Profile = () => {
   const { user } = useSelector((state) => ({ ...state.auth }));
   const { userProfile } = useSelector((state) => ({ ...state.user }));
   const { upvoteCount } = useSelector((state) => ({ ...state.like }));
-  const { countFollow, checkFollow } = useSelector((state) => ({
+  const { countFollow, checkFollow, checkMutualFollow } = useSelector((state) => ({
     ...state.relationship,
   }));
+  const {userSentGift} = useSelector((state) => ({ ...state.trow }))
   const [isFollowing, setIsFollowing] = useState(false);
+  const [isMutual, setIsMutual] = useState(false)
   
 
   const userId = useLocation().pathname.split("/")[3];
@@ -62,7 +66,9 @@ const Profile = () => {
       dispatch(getUserProfile(userId));
       dispatch(countRelationship(userId));
       dispatch(checkRelationship(userId));
-      dispatch(getLikesCount(userId))
+      dispatch(getLikesCount(userId));
+      dispatch(getUserSentGift(userId));
+      dispatch(checkMutualRelationship(userId));
     }
   }, [userId, dispatch]);
 
@@ -71,6 +77,12 @@ const Profile = () => {
       setIsFollowing(checkFollow === 1);
     }
   }, [checkFollow]);
+
+  useEffect(() => {
+    if (checkMutualFollow) {
+      setIsMutual(checkMutualFollow === 1);
+    }
+  }, [checkMutualFollow]);
 
   const handleFollow = () => {
     if (isFollowing) {
@@ -98,7 +110,6 @@ const Profile = () => {
     dispatch(setLogout());
     navigate("/");
   };
-
   return (
     <Box flex={3}>
       <MobileNavBar logo={ProfilePic} title={"Profile"} />
@@ -247,7 +258,7 @@ const Profile = () => {
                 variant="body"
                 sx={{ color: "white", fontSize: 24, fontFamily: "Poppins" }}
               >
-                243
+                {userSentGift?.sendGift?.length > 0 ? userSentGift?.sendGift?.length : "0" }
               </Typography>
               <img src={Sent} alt="logo" />
             </Box>
@@ -268,7 +279,7 @@ const Profile = () => {
                 variant="body"
                 sx={{ color: "white", fontSize: 24, fontFamily: "Poppins" }}
               >
-                243
+                {userSentGift?.recieveGift?.length > 0 ? userSentGift?.recieveGift?.length : "0" }
               </Typography>
               <img src={Received} alt="logo" />
             </Box>
@@ -312,7 +323,7 @@ const Profile = () => {
       </Box>
 
       {/* Other part Start here */}
-      <ProfileNavTabs userId={userId}/>
+      <ProfileNavTabs userId={userId} gift={userSentGift} checkWishlist={user?.result?.id === userProfile?.id ? true : isMutual} isMutual={isMutual}/>
     </Box>
   );
 };

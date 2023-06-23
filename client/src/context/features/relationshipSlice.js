@@ -61,12 +61,27 @@ export const checkRelationship = createAsyncThunk(
     }
   }
 );
+
+export const checkMutualRelationship = createAsyncThunk(
+  "relationship/checkMutualRelationship",
+
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await api.checkMutualRelationship(userId);
+
+      return response.data.mutual_relationship;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 const relationshipSlice = createSlice({
   name: "relationship",
   initialState: {
     userProfile: null,
     countFollow: null,
     checkFollow: null,
+    checkMutualFollow: null,
     error: "",
     loading: false,
   },
@@ -116,7 +131,18 @@ const relationshipSlice = createSlice({
       .addCase(checkRelationship.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(checkMutualRelationship.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(checkMutualRelationship.fulfilled, (state, action) => {
+        state.loading = false;
+        state.checkMutualFollow = action.payload;
+      })
+      .addCase(checkMutualRelationship.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 

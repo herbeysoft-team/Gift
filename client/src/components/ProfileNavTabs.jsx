@@ -43,7 +43,7 @@ function a11yProps(index) {
   };
 }
 
-export default function ProfileNavTabs({userId}) {
+export default function ProfileNavTabs({userId, gift, checkWishlist, isMutual}) {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 
@@ -79,13 +79,13 @@ export default function ProfileNavTabs({userId}) {
         onChangeIndex={handleChangeIndex}
       > */}
         <TabPanel value={value} index={0} dir={theme.direction}>
-          <Recieved/>
+          <Recieved gift={gift?.recieveGift}/>
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-          <Sent/>
+          <Sent gift={gift?.sendGift}/>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          <Wishlist user_id ={userId} />
+          <Wishlist user_id ={userId} checkWishlist={checkWishlist} isMutual = {isMutual} />
         </TabPanel>
       {/* </SwipeableViews> */}
     </Box>

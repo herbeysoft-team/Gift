@@ -69,6 +69,18 @@ export const getTrow = createAsyncThunk(
   }
 )
 
+export const getUserSentGift = createAsyncThunk(
+  "trow/getUserSentGift",
+
+  async(id, {rejectWithValue})=>{
+      try{
+        const response = await api.getUserSentGift(id);
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
 export const getEvent = createAsyncThunk(
   "trow/getEvent",
 
@@ -169,6 +181,8 @@ const trowSlice = createSlice({
     scheduleTrowBox: [],
     eventDetails:[],
     allEvent:[],
+    userSentGift:[],
+    loadingusersentgift:false,
     error: "",
     loading: false,
   },
@@ -274,8 +288,18 @@ const trowSlice = createSlice({
       .addCase(getAllEvent.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
-      
+      })
+      .addCase(getUserSentGift.pending, (state) => {
+        state.loadingusersentgift = true;
+      })
+      .addCase(getUserSentGift.fulfilled, (state, action) => {
+        state.loadingusersentgift = false;
+        state.userSentGift = action.payload;
+      })
+      .addCase(getUserSentGift.rejected, (state, action) => {
+        state.loadingusersentgift = false;
+        state.error = action.payload;
+      })
       
    },
 });

@@ -112,3 +112,24 @@ exports.checkrelationship = async (req, res) => {
     console.log(error);
   }
 };
+
+
+/**
+ * GET - http://localhost:8000/api/v1/relationship/checkmutualrelationship
+ * id- User Id
+ *
+ */
+//Check Mutual Relationship
+exports.checkmutualrelationship = async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const checkmutualfollower = await db.getrow(
+      "SELECT COUNT(*) AS mutual_relationship FROM relationship r1 JOIN relationship r2 ON r1.follower_id = r2.following_id AND r1.following_id = r2.follower_id WHERE r1.follower_id = ? AND r1.following_id = ?;",
+      [req.user.userId, userId]
+    );
+    res.status(201).json(checkmutualfollower);
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
