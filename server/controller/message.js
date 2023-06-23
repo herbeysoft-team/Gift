@@ -1,5 +1,6 @@
 const db = require("../config/database");
 const moment = require("moment");
+const {sendSMS} = require("../utilities/sms");
 
 exports.getmessages = async (req, res) => {
   const { userId } = req.params;
@@ -135,6 +136,23 @@ exports.getshare = async (req, res) => {
     if (result) {
       res.status(201).json(result.map((share) => share.user_id));
     }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+
+exports.sendtextmessagetouser= async (req, res) => {
+  const { phone_no, message } = req.body;
+  console.log(req.body)
+  try {
+    const result = await sendSMS(message, phone_no)
+    if(result){
+      console.log({"REsult in the controller": result})
+      return res.status(200).json({ message: "Message Sent Successfully" });
+    } 
+    
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);

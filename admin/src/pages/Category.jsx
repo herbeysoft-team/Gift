@@ -18,6 +18,7 @@ import AddIcon from "@mui/icons-material/Add";
 import styled from "@emotion/styled";
 import CloseIcon from "@mui/icons-material/Close";
 import toast from "react-hot-toast";
+import SkeletonGrid from "../component/SkeletonGrid";
 
 const SytledModal = styled(Modal)({
   display: "flex",
@@ -29,7 +30,7 @@ const Category = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [cat_name, setCat_name] = useState("");
-  const { item_categories } = useSelector((state) => ({
+  const { item_categories, loadingcategories } = useSelector((state) => ({
     ...state.item,
   }));
   const [pageSize, setPageSize] = useState(10);
@@ -98,28 +99,34 @@ const Category = () => {
         Manage Item Category
       </Typography>
 
-      {memoizedCategory ? (
-        <DataGrid
-          columns={columns}
-          rows={memoizedCategory}
-          getRowId={(row) => row.id}
-          rowsPerPageOptions={[10, 20, 30]}
-          pageSize={pageSize}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          getRowSpacing={(params) => ({
-            top: params.isFirstVisible ? 0 : 5,
-            bottom: params.isLastVisible ? 0 : 5,
-          })}
-          sx={{
-            [`& .${gridClasses.row}`]: {
-              bgcolor: "white",
-            },
-            marginTop: 5,
-          }}
-          onCellEditCommit={(params) => setRowId(params.id)}
-          onCellClick={(params) => setRowId(params.id)}
-        />
-      ) : null}
+      {loadingcategories ? (
+        <SkeletonGrid />
+      ) : (
+        <>
+          {memoizedCategory ? (
+            <DataGrid
+              columns={columns}
+              rows={memoizedCategory}
+              getRowId={(row) => row.id}
+              rowsPerPageOptions={[10, 20, 30]}
+              pageSize={pageSize}
+              onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+              getRowSpacing={(params) => ({
+                top: params.isFirstVisible ? 0 : 5,
+                bottom: params.isLastVisible ? 0 : 5,
+              })}
+              sx={{
+                [`& .${gridClasses.row}`]: {
+                  bgcolor: "white",
+                },
+                marginTop: 5,
+              }}
+              onCellEditCommit={(params) => setRowId(params.id)}
+              onCellClick={(params) => setRowId(params.id)}
+            />
+          ) : null}
+        </>
+      )}
 
       <Tooltip
         onClick={(e) => {

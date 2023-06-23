@@ -37,6 +37,9 @@ exports.getmynotification = async (req, res) => {
                     } else if(notification.activity === 'retrow'){
                       notificationText = `Anonymous sent you a trowbox, Please send your wishlist`;
                     }
+                    else if(notification.activity === 'redeemed'){
+                      notificationText = `Hurray!!! You have redeemed a gift`;
+                    }
 
             }  else if (notification.content_type === 'share'){
               notificationText = `${notification.username} shared you a post`;     

@@ -1,13 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const {
- sendmessagetext, sendmessagemedia, getshare, getmessages, getmessagesusers
+ sendmessagetext, sendmessagemedia, getshare, getmessages, getmessagesusers, sendtextmessagetouser
 } = require("../controller/message");
 const verifyToken = require("../middleware/verifyToken");
+const verifyAdmin = require("../middleware/verifyAdmin");
 
 
 /**SEND MESSAGE TEXT */
 router.post("/sendmessagetext", verifyToken, sendmessagetext);
+
+/**SEND SMS TO USER*/
+router.post("/sendtextmessagetouser", verifyAdmin, sendtextmessagetouser);
 
 /**SEND MEDIA MESSAGE TEXT */
 router.post("/sendmessagemedia", verifyToken, sendmessagemedia);

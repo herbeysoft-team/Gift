@@ -452,18 +452,43 @@ exports.allgift= async (req, res) => {
   }
 };
 
-//Update user profile
+//Updaten gift by admin
 exports.updategiftbyadmin = async (req, res) => {
-  const { status, id } = req.body;
+  const { status, id, trowbox_id, sender_id } = req.body;
+  
   try {
-    const UpdateGift = await db.update(
-      "UPDATE trowbox_gift SET status = ? WHERE id = ?",
-      [status, id]
-    );
-    if (UpdateGift) {
-
-        res.status(201).json({ successgift: true, message:"Updated Successfully" }); 
+    if(status !== 'pending'){
+      const UpdateGift = await db.update(
+        "UPDATE trowbox_gift SET status = ? WHERE id = ?",
+        [status, id]
+        );
+        const contentOwner = await db.getval(
+          "SELECT recipient_no FROM trowbox WHERE id = ?",
+          [trowbox_id]
+          );
+          if(contentOwner){
+            const notification = await db.insert(
+              "INSERT INTO notification(userId, activity, content_id, content_owner_no, content_type, date) VALUES (?,?,?,?,?,?)",
+              [
+                sender_id,
+                "redeemed",
+                trowbox_id,
+                contentOwner,
+                "trowbox",
+                moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+              ]
+            );
+            }   
+          
+    }else{
+      const UpdateGift = await db.update(
+        "UPDATE trowbox_gift SET status = ? WHERE id = ?",
+        [status, id]
+        );
     }
+
+    res.status(201).json({ successgift: true, message:"Updated Successfully" }); 
+
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);

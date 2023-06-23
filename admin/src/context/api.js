@@ -55,3 +55,6 @@ export const createSubCategory = (formValue) => API.post(`/api/v1/subcategory/cr
 export const deleteCategory = (id) => API.delete(`/api/v1/category/deletecategory/${id}`); //delete one category
 export const deleteSubCategory = (id) => API.delete(`/api/v1/subcategory/deletesubcategory/${id}`); //delete one subcategory
 export const deleteItem = (id) => API.delete(`/api/v1/item/deleteitem/${id}`); //delete one item
+
+/**MEESAGE API */
+export const sendtextmessagetouser= (formValue) => API.post('/api/v1/message/sendtextmessagetouser', formValue); // admin sending text message to user

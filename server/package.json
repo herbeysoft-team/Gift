@@ -10,6 +10,7 @@
   "author": "Abiodun Adam",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.4.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -22,6 +23,7 @@
     "mysql2-async": "^1.1.4",
     "nodemon": "^2.0.20",
     "path": "^0.12.7",
+    "querystring": "^0.2.1",
     "twilio": "^4.7.2"
   }
 }

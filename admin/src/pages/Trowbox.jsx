@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { alltrowbox } from "../context/features/trowSlice";
 import URLBASE from "../constant/urlbase";
 import TrowActions from "../component/TrowActions";
+import SkeletonGrid from "../component/SkeletonGrid";
 
 const Trowbox = () => {
   const dispatch = useDispatch();
-  const { alltrow } = useSelector((state) => ({
+  const { alltrow, loadingalltrow } = useSelector((state) => ({
     ...state.trow,
   }));
   const [pageSize, setPageSize] = useState(10);
@@ -60,7 +61,12 @@ const Trowbox = () => {
         type: "boolean",
         editable: true,
       },
-      { field: "event_name", headerName: "Trowbox Purpose", width: 200, editable: true },
+      {
+        field: "event_name",
+        headerName: "Trowbox Purpose",
+        width: 200,
+        editable: true,
+      },
       {
         field: "event_date",
         headerName: "Date",
@@ -97,29 +103,34 @@ const Trowbox = () => {
       >
         Manage Trowbox
       </Typography>
-
-      {memoizedTrow ? (
-        <DataGrid
-          columns={columns}
-          rows={memoizedTrow}
-          getRowId={(row) => row.id}
-          rowsPerPageOptions={[10, 20, 30]}
-          pageSize={pageSize}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          getRowSpacing={(params) => ({
-            top: params.isFirstVisible ? 0 : 5,
-            bottom: params.isLastVisible ? 0 : 5,
-          })}
-          sx={{
-            [`& .${gridClasses.row}`]: {
-              bgcolor: "white",
-            },
-            marginTop: 5,
-          }}
-          onCellEditCommit={(params) => setRowId(params.id)}
-          onCellClick={(params) => setRowId(params.id)}
-        />
-      ) : null}
+      {loadingalltrow ? (
+        <SkeletonGrid />
+      ) : (
+        <>
+          {memoizedTrow ? (
+            <DataGrid
+              columns={columns}
+              rows={memoizedTrow}
+              getRowId={(row) => row.id}
+              rowsPerPageOptions={[10, 20, 30]}
+              pageSize={pageSize}
+              onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+              getRowSpacing={(params) => ({
+                top: params.isFirstVisible ? 0 : 5,
+                bottom: params.isLastVisible ? 0 : 5,
+              })}
+              sx={{
+                [`& .${gridClasses.row}`]: {
+                  bgcolor: "white",
+                },
+                marginTop: 5,
+              }}
+              onCellEditCommit={(params) => setRowId(params.id)}
+              onCellClick={(params) => setRowId(params.id)}
+            />
+          ) : null}
+        </>
+      )}
     </Box>
   );
 };

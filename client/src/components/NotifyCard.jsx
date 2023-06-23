@@ -40,7 +40,13 @@ const NotifyCard = ({ notification }) => {
       notification?.activity === "retrow"
     ) {
       navigate(`/home/trowboxprocess/${id}`);
-    } else if (notification?.content_type === "share") {
+    } else if (
+      notification?.content_type === "trowbox" &&
+      notification?.activity === "redeemed"
+    ) {
+      navigate(`/home/eventdetails/${id}`);
+    } 
+    else if (notification?.content_type === "share") {
       navigate(`/home/postdetails/${id}`);
     }
   };

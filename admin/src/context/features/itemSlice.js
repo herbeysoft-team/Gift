@@ -91,18 +91,6 @@ export const getItems = createAsyncThunk(
   }
 )
 
-export const getItemsByCategory = createAsyncThunk(
-  "item/getItemsByCategory",
-
-  async(newValue, {rejectWithValue})=>{
-      try{
-        const response = await api.getItemsByCategory(newValue);
-        return response.data;
-      }catch(err){
-        return rejectWithValue(err.response.data)
-      }
-  }
-)
 
 export const updateItem= createAsyncThunk(
   "item/updateItem",
@@ -155,18 +143,7 @@ export const updateCat= createAsyncThunk(
   }
 );
 
-export const getItemsBySearch = createAsyncThunk(
-  "item/getItemsBySearch",
 
-  async(searchName, {rejectWithValue})=>{
-      try{
-        const response = await api.getItemsBySearch(searchName);
-        return response.data;
-      }catch(err){
-        return rejectWithValue(err.response.data)
-      }
-  }
-)
 
 export const deleteCategory = createAsyncThunk(
   "item/deleteCategory",
@@ -255,14 +232,14 @@ const itemSlice = createSlice({
       state.error = action.payload;
     })
       .addCase(getSubcategories.pending, (state) => {
-        state.loading = true;
+        state.loadingsubcategories = true;
       })
       .addCase(getSubcategories.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingsubcategories = false;
         state.item_subcategories = action.payload;
       })
       .addCase(getSubcategories.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingsubcategories = false;
         state.error = action.payload;
       })
       .addCase(createItem.pending, (state) => {
@@ -276,36 +253,14 @@ const itemSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(getItems.pending, (state) => {
-        state.loading = true;
+        state.loadingitems = true;
       })
       .addCase(getItems.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingitems = false;
         state.items = action.payload;
       })
       .addCase(getItems.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(getItemsByCategory.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getItemsByCategory.fulfilled, (state, action) => {
-        state.loading = false;
-        state.items = action.payload;
-      })
-      .addCase(getItemsByCategory.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(getItemsBySearch.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getItemsBySearch.fulfilled, (state, action) => {
-        state.loading = false;
-        state.items = action.payload;
-      })
-      .addCase(getItemsBySearch.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingitems = false;
         state.error = action.payload;
       })
       .addCase(updateItem.pending, (state) => {
