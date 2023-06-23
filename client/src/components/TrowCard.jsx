@@ -1,11 +1,13 @@
 import { Box, CardMedia, Divider, Icon, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { CardGiftcard } from "@mui/icons-material";
 import URLBASE from "../constant/urlbase";
 import { useNavigate } from "react-router-dom";
-
+import { useSelector, useDispatch } from "react-redux";
+import { getLikesForTrowbox } from "../context/features/likeSlice";
 
 const TrowCard = ({ box }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleGoEvent = (id) => {
     if (id) {
@@ -13,11 +15,18 @@ const TrowCard = ({ box }) => {
     }
   };
 
+  // Filter the likes based on the post ID
+  const likestrowbox = useSelector((state) => state.like[box?.id] || []);
+
+  useEffect(() => {
+    if (box?.id) {
+      dispatch(getLikesForTrowbox(box?.id));
+    }
+  }, [box?.id, dispatch]);
 
   return (
     <Box>
       <Box sx={{ position: "relative" }}>
-        
         <CardMedia
           component="img"
           height="10%"
@@ -64,7 +73,9 @@ const TrowCard = ({ box }) => {
             </Typography>
             <Divider />
             <Typography variant="body" color="primary" fontFamily="Poppins">
-              10 New upvotes
+              {likestrowbox?.length > 0
+                ? `${likestrowbox?.length} New Upvotes `
+                : "No Upvote"}
             </Typography>
           </Box>
           <Box

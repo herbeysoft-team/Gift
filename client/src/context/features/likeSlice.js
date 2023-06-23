@@ -32,6 +32,19 @@ export const getLikes = createAsyncThunk(
   }
 )
 
+export const getLikesForTrowbox = createAsyncThunk(
+  "like/getLikesForTrowbox",
+  
+  async(id, {rejectWithValue})=>{
+      try{
+        const response = await api.getLikesForTrowbox(id);
+        return { id, likestrowbox: response.data };
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
 export const getLikesCount = createAsyncThunk(
   "like/getLikesCount",
   
@@ -79,6 +92,7 @@ const likeSlice = createSlice({
   name: "like",
   initialState: {
     likes: [],
+    likestrowbox:[],
     error: "",
     loading: false,
     likesforPost:[],
@@ -109,6 +123,18 @@ const likeSlice = createSlice({
         state[id] = likes;
       })
       .addCase(getLikes.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getLikesForTrowbox.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getLikesForTrowbox.fulfilled, (state, action) => {
+        state.loading = false;
+        const { id, likestrowbox } = action.payload;
+        state[id] = likestrowbox;
+      })
+      .addCase(getLikesForTrowbox.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

@@ -38,8 +38,8 @@ export const deleteRelationship = (userId) => API.post(`/api/v1/relationship/del
 export const countRelationship = (userId) => API.get(`/api/v1/relationship/countrelationship/${userId}`); //count follower and following
 export const checkRelationship = (userId) => API.get(`/api/v1/relationship/checkrelationship/${userId}`); //check follower and following
 export const checkMutualRelationship = (userId) => API.get(`/api/v1/relationship/checkmutualrelationship/${userId}`); //check follower and following
-/**ITEM API */
 
+/**ITEM API */
 export const getSubcategories = () => API.get(`/api/v1/subcategory/allsubcategories/`); //Get all Subcategories
 export const createItem = (formData) => API.post(`/api/v1/item/createitem`,formData); //create an item
 export const getItems = () => API.get(`/api/v1/item/allitems/`); //Get all items
@@ -80,6 +80,7 @@ export const getCommentsForPost= (id) => API.get(`/api/v1/comment/getcomments/${
 export const addLike = (formData) => API.post(`/api/v1/like/addlike`, formData); //like a post
 export const deleteLike= (id) => API.delete(`/api/v1/like/deletelike/${id}`); //dislike a post
 export const getLikes= (id) => API.get(`/api/v1/like/getlikes/${id}`); //Fetch all likes for a post
+export const getLikesForTrowbox= (id) => API.get(`/api/v1/like/getlikesfortrowbox/${id}`); //Fetch all likes for trowbox
 export const getLikesCount= (userId) => API.get(`/api/v1/like/getlikescount/${userId}`); //Get count of upvote of a particular user
 export const getLikesForPost= (id) => API.get(`/api/v1/like/getlikes/${id}`); //fetch all like for a partiular post 
 

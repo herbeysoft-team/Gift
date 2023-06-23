@@ -6,7 +6,7 @@ exports.getlikes = async (req, res) => {
 
   try {
     const result = await db.getall(
-      "SELECT user_id FROM upvote WHERE post_id = ?",
+      "SELECT DISTINCT user_id FROM upvote WHERE post_id = ?",
       [id]
     );
     if (result) {
@@ -17,6 +17,24 @@ exports.getlikes = async (req, res) => {
     console.log(error);
   }
 };
+
+exports.getlikesfortrowbox = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await db.getall(
+      "SELECT DISTINCT u.user_id FROM upvote AS u, post AS p, trowbox AS t WHERE u.post_id = p.id AND p.event_id = t.id AND t.id = ?",
+      [id]
+    );
+    if (result) {
+      res.status(201).json(result.map((like) => like.user_id));
+    }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+
 
 exports.getretrow = async (req, res) => {
   const { id } = req.params;

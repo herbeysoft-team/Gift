@@ -33,7 +33,7 @@ const CommentBox = ({postId}) => {
     <Paper
       component="form"
       sx={{
-        position: "stikcy",
+        position: "sticky",
         px: 1,
         py: 1,
         display: "flex",
@@ -44,7 +44,7 @@ const CommentBox = ({postId}) => {
         borderRadius: 20,
         marginBottom: 7,
         flexGrow: 1,
-        bottom: 20,
+        bottom: 0,
         right: 0,
         left: 0,
       }}

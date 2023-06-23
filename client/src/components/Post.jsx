@@ -80,7 +80,7 @@ const Post = ({ post }) => {
       dispatch(getLikes(post?.post_id));
     }
   };
-  //console.log(share)
+
   const handleGoPost = (id) => {
     if (id && post) {
       navigate(`/home/postdetails/${id}`);
