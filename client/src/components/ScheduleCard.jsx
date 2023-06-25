@@ -3,8 +3,16 @@ import React from "react";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import URLBASE from "../constant/urlbase";
+import { useNavigate } from "react-router-dom";
 
 const ScheduleCard = ({box}) => {
+
+  const navigate = useNavigate();
+  const handleGoEvent = (id) => {
+    if (id) {
+      navigate(`/home/eventdetails/${id}`);
+    }
+  };
   return (
     <Box
       sx={{
@@ -22,6 +30,7 @@ const ScheduleCard = ({box}) => {
           fit="cover"
           image={`${URLBASE.imageBaseUrl}${box?.event_pics}`}
           alt="Schedule Event"
+          onClick={() => handleGoEvent(box?.id)}
         />
         <Box
           sx={{

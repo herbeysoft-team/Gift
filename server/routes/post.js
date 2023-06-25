@@ -8,7 +8,7 @@ const verifyAdmin = require("../middleware/verifyAdmin");
 router.post("/createpost", verifyToken, createpost);
 
 /**GET ALL POSTS */
-router.get("/getposts", verifyToken, getposts);
+router.get("/getposts/:id", getposts);
 
 /**GET POSTS BY ADMIN*/
 router.get("/allpostbyadmin", verifyToken, allpostbyadmin);

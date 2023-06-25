@@ -1,4 +1,4 @@
-import { Box, Grid,  Typography } from "@mui/material";
+import { Box, CircularProgress, Grid,  Typography } from "@mui/material";
 import React, {useId, useEffect, useMemo, useState} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { TablePagination } from "@mui/material";
@@ -11,7 +11,7 @@ const TrowCards = () => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { currentTrowBox } = useSelector((state) => ({ ...state.trow }));
+  const { currentTrowBox, loadingmytrowbox} = useSelector((state) => ({ ...state.trow }));
 
   const memoizedItems = useMemo(() => currentTrowBox, [currentTrowBox]);
 
@@ -39,7 +39,7 @@ const TrowCards = () => {
       }}
     >
 
-
+  {!loadingmytrowbox?<>
       {memoizedItems.length > 0 ? (
         <>
           <Grid key={uniqueId} container rowSpacing={1} columnSpacing={1}>
@@ -80,7 +80,14 @@ const TrowCards = () => {
         textAlign="center">
           No TrowBox!!!
         </Typography>
-      )}
+      )}</> : (<Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        height="200px" /* Adjust the height as needed */
+      >
+        <CircularProgress size={52} color="secondary" />
+      </Box>)}
     </Box>
   );
 };

@@ -1,6 +1,7 @@
 const db = require("../config/database");
 const getCurrentDate = require("../utilities/currentDate");
 const moment = require("moment");
+const {sendSMSNow} = require("../utilities/sms");
 
 //create a trow box
 exports.createtrow = async (req, res) => {
@@ -30,6 +31,7 @@ exports.createtrow = async (req, res) => {
       ]
     );
     if (result) {
+      await sendSMSNow(`An anonymous sender has sent you a gift box. Please register/login at https://trowbox.com to claim it.`, phone_number ? phone_number : username)
       const notification = await db.insert(
         "INSERT INTO notification(userId, activity, content_id, content_owner_no, content_type, date) VALUES (?,?,?,?,?,?)",
         [
@@ -163,10 +165,11 @@ exports.createevent = async (req, res) => {
 //get all event of you, your followers and those you are following
 exports.getallevent = async (req, res) => {
   const userInfo = req.user;
+  const limit = 10;
   try {
     const result = await db.getall(
-      "SELECT DISTINCT tb.*, up.fullname, up.profilePic, up.id AS userId FROM trowbox tb, userprofile up WHERE tb.recipient_no = up.phone_no AND tb.gift_sent = ? AND tb.recipient_no <> ? ORDER BY tb.event_date ASC",
-      [1, userInfo?.phone_no]
+      "SELECT DISTINCT tb.*, up.fullname, up.profilePic, up.id AS userId FROM trowbox tb, userprofile up WHERE tb.recipient_no = up.phone_no AND tb.gift_sent = ? AND tb.recipient_no <> ? ORDER BY tb.event_date ASC LIMIT ?",
+      [1, userInfo?.phone_no, limit]
     );
     if (result) {
       res.status(201).json(result);

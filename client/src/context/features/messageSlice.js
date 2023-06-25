@@ -83,9 +83,10 @@ const messageSlice = createSlice({
     loading: false,
     share: [],
     messagesusers: [],
-
-    
+    loadingmessageusers: false,
+    loadingmessages: false,
   },
+
   reducers: {
     
   },
@@ -124,25 +125,25 @@ const messageSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(getMessages.pending, (state) => {
-        state.loading = true;
+        state.loadingmessages = true;
       })
       .addCase(getMessages.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingmessages = false;
         state.messages = action.payload;
       })
       .addCase(getMessages.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingmessages = false;
         state.error = action.payload;
       })
       .addCase(getMessagesUsers.pending, (state) => {
-        state.loading = true;
+        state.loadingmessageusers = true;
       })
       .addCase(getMessagesUsers.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingmessageusers = false;
         state.messagesusers = action.payload;
       })
       .addCase(getMessagesUsers.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingmessageusers = false;
         state.error = action.payload;
       })
    },

@@ -6,7 +6,7 @@ const Recieved = ({ gift }) => {
   const uniqueId = useId;
   const memoizedRecieve = useMemo(() => gift, [gift]);
   return (
-    <Box>
+    <Box mb={5}>
       <Grid key={uniqueId} container rowSpacing={1} columnSpacing={1}>
         {memoizedRecieve?.length > 0 ? (
           <>

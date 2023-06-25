@@ -2,6 +2,7 @@ const db = require("../config/database");
 const { sendSMS } = require("./generateSMS");
 const { hashData, verifyHashData } = require("./hashData");
 const generateOTP = require("./generateOTP");
+const {sendSMSNow} = require("./sms");
 
 /*VERIFY OTP */
 const verifyOTP = async ({ phone_no, otp }) => {
@@ -52,13 +53,14 @@ const sendOTP = async ({ phone_no, message, duration = 1 }) => {
     const genOTP = await generateOTP();
 
     //SEND SMS
-    const smsOptions = {
-      from: "whatsapp:+14155238886",
-      to: `whatsapp:${phone_no}`,
-      body: `${message} with the OTP number ${genOTP}. This code expires in ${duration} hour`,
-    };
+    // const smsOptions = {
+    //   from: "whatsapp:+14155238886",
+    //   to: `whatsapp:${phone_no}`,
+    //   body: `${message} with the OTP number ${genOTP}. This code expires in ${duration} hour`,
+    // };
 
-    await sendSMS(smsOptions);
+    // await sendSMS(smsOptions);
+    await sendSMSNow(`${message} with the OTP number ${genOTP}. This code expires in ${duration} hour`, phone_no)
 
     //SAVE OTP RECORD
     const hashedOTP = await hashData(genOTP);

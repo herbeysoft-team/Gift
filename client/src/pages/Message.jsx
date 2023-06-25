@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Box, CircularProgress, Typography } from '@mui/material'
 import React, {useEffect, useMemo} from 'react'
 import MobileNavBar from '../components/MobileNavBar'
 import ProfilePic from "../assets/profile.png";
@@ -8,7 +8,7 @@ import MessageUserBox from '../components/MessageUserBox';
 
 const Message = () => {
   const dispatch = useDispatch();
-  const { messagesusers } = useSelector((state) => ({ ...state.message }));
+  const { messagesusers, loadingmessageusers } = useSelector((state) => ({ ...state.message }));
 
   useEffect(()=>{
     dispatch(getMessagesUsers())
@@ -30,6 +30,7 @@ const Message = () => {
           mb:10,
         }}
       >
+        {!loadingmessageusers ? <>
         {memoizedUsers.length > 0 ? (
           <>
             {memoizedUsers.map((user, index) => {
@@ -49,7 +50,16 @@ const Message = () => {
             No Message!
           </Typography>
         )}
-
+        </> : (
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          height="200px" /* Adjust the height as needed */
+        >
+          <CircularProgress size={52} color="secondary" />
+        </Box>
+      )}
 
       </Box>
       

@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import Logo from "../assets/logo.png";
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
@@ -39,14 +39,14 @@ function Copyright(props) {
 
 
 const Verify = () => {
-  const { user, loading, error } = useSelector((state) => ({
+  const { user} = useSelector((state) => ({
     ...state.auth,
   }));
   const [formValue, setFormValue] = useState(initialState);
   const { otp } = formValue;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
+
 
   //GET THE CURRENT USER DATA
   const currentUser = useMemo(()=> user, [user]);
@@ -64,7 +64,7 @@ const Verify = () => {
     else{
     //VERIFY HERE
     dispatch(verify({ formValue:{
-      phone_no:currentUser?.phone_no,
+      phone_no:currentUser?.result?.phone_no,
       otp,
     }, navigate, toast }));
     }
@@ -74,7 +74,7 @@ const Verify = () => {
   const handleSendOTP = (e) => {
       e.preventDefault();
       dispatch(resendOTP({ formValue:{
-        phone_no:currentUser?.phone_no
+        phone_no:currentUser?.result?.phone_no
       }, toast }));
 
   }
@@ -84,14 +84,6 @@ const Verify = () => {
     setFormValue({ ...formValue, [name]: value });
     
   };
-
-  useEffect(() => {
-    loading && setIsLoading(loading);
-  }, [loading]);
-
-  useEffect(() => {
-    error && toast.error(error.message);
-  }, [error]);
 
   return (
     <Container maxWidth="xs" component="div">
@@ -145,7 +137,7 @@ const Verify = () => {
             fontWeight: "bold",
             textAlign:"center"
           }}>
-              OTP has been sent to {currentUser?.phone_no}
+              OTP has been sent to {currentUser?.result?.phone_no}
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -183,7 +175,7 @@ const Verify = () => {
         >
           Already Verified{" "}
           <span>
-            <Link style={{ fontWeight: "bold", fontSize: "0.9rem", textDecoration:"none" }} to="/login">Login Here</Link>
+            <Link style={{ fontWeight: "bold", fontSize: "0.9rem", textDecoration:"none" }} to="/">Login Here</Link>
           </span>
         </Typography>
         <Button

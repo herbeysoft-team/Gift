@@ -2,12 +2,9 @@ const db = require("../config/database");
 const getCurrentDate = require("../utilities/currentDate");
 const moment = require("moment");
 
-
-
 //create an event
 exports.createpost = async (req, res) => {
-  const { id, description } =
-    req.body;
+  const { id, description } = req.body;
   const userInfo = req.user;
   try {
     const result = await db.insert(
@@ -16,42 +13,52 @@ exports.createpost = async (req, res) => {
         description,
         moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
         userInfo?.userId,
-        id
+        id,
       ]
     );
-        const result2 = await db.update("UPDATE trowbox SET post = ? WHERE id = ?", [1, id]);
-        res.status(201).json({ message: "Post Created Successfully", result });
-    
+    const result2 = await db.update(
+      "UPDATE trowbox SET post = ? WHERE id = ?",
+      [1, id]
+    );
+    res.status(201).json({ message: "Post Created Successfully", result });
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);
   }
 };
-
-
 
 //get posts
 exports.getposts = async (req, res) => {
-  const userInfo = req.user;
+  const id = req.params.id
+  const limit = 10;
+
+
+ 
   try {
-    const posts = await db.getall(
-      "SELECT DISTINCT up.id AS user_id, up.profilePic, up.fullname, p.id AS post_id, p.description, p.createdAt, tb.* FROM userprofile up JOIN post p ON up.id = p.user_id JOIN trowbox tb ON tb.recipient_no = up.phone_no AND tb.id = p.event_id LEFT JOIN relationship AS r ON (p.user_id = r.following_id) WHERE r.follower_id = ? OR p.user_id =? ORDER BY p.createdAt DESC",
-      [
-        userInfo?.userId,
-        userInfo?.userId
-      ]
-    );   
-    if(posts){ 
-    res.status(201).json(posts);
+    if (id !== undefined) {
+      const posts = await db.getall(
+        "SELECT DISTINCT up.id AS user_id, up.profilePic, up.fullname, p.id AS post_id, p.description, p.createdAt, tb.* FROM userprofile up JOIN post p ON up.id = p.user_id JOIN trowbox tb ON tb.recipient_no = up.phone_no AND tb.id = p.event_id LEFT JOIN relationship AS r ON (p.user_id = r.following_id) WHERE r.follower_id = ? OR p.user_id =? ORDER BY p.createdAt DESC LIMIT ?",
+        [id, id, limit]
+      );
+      if (posts) {
+        res.status(201).json(posts);
+      }
+    } else {
+      const posts = await db.getall(
+        "SELECT DISTINCT up.id AS user_id, up.profilePic, up.fullname, p.id AS post_id, p.description, p.createdAt, tb.* FROM userprofile up JOIN post p ON up.id = p.user_id JOIN trowbox tb ON tb.recipient_no = up.phone_no AND tb.id = p.event_id  ORDER BY p.createdAt DESC LIMIT  ?",
+        [limit]
+      );
+      if (posts) {
+        res.status(201).json(posts);
+      }
+      
     }
-    
+   
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);
   }
 };
-
-
 
 //get a post
 exports.getpost = async (req, res) => {
@@ -86,13 +93,11 @@ exports.allpostbyadmin = async (req, res) => {
   try {
     const posts = await db.getall(
       "SELECT DISTINCT up.id AS user_id, up.profilePic, up.fullname, p.id AS post_id, p.description, p.createdAt, tb.* FROM userprofile up JOIN post p ON up.id = p.user_id JOIN trowbox tb ON tb.recipient_no = up.phone_no AND tb.id = p.event_id ORDER BY p.createdAt DESC",
-      [
-      ]
-    );   
-    if(posts){ 
-    res.status(201).json(posts);
+      []
+    );
+    if (posts) {
+      res.status(201).json(posts);
     }
-    
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
     console.log(error);

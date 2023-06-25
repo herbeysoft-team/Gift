@@ -5,6 +5,7 @@ import {
   Button,
   CardMedia,
   Checkbox,
+  CircularProgress,
   Divider,
   Icon,
   IconButton,
@@ -40,7 +41,7 @@ const PostDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const id = useLocation().pathname.split("/")[3];
-  const { post } = useSelector((state)=> ({...state.post}))
+  const { post, loadingpost } = useSelector((state)=> ({...state.post}))
   const { commentsforPost } = useSelector((state) => ({ ...state.comment }));
   const { likesforPost } = useSelector((state) => ({ ...state.like }));
   const { retrowforpost } = useSelector((state) => ({ ...state.retrow }));
@@ -112,6 +113,7 @@ const PostDetails = () => {
     <Box flex={3}>
       <MobileNavBar logo={Logo} title={"Post"} />
       {/* The Post Details Start Here  */}
+      {!loadingpost?<>
       <Box
         sx={{
           marginTop: 1,
@@ -400,6 +402,15 @@ const PostDetails = () => {
       >
         <CommentBox postId={id} />
       </Box>
+      </>:(<Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        height="200px" /* Adjust the height as needed */
+      >
+        <CircularProgress size={52} color="secondary" />
+      </Box>)
+      }
     </Box>
   );
 };

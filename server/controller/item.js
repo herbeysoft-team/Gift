@@ -66,8 +66,9 @@ exports.getitemsbysearch = async (req, res) => {
 
 //Get all items
 exports.allitems = async (req, res) => {
+  const limit = 10;
   try {
-    const result = await db.getall("SELECT * FROM items", []);
+    const result = await db.getall("SELECT * FROM items LIMIT ?", [limit]);
     if (result) {
       res.status(201).json(result);
     }

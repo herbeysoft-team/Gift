@@ -48,7 +48,7 @@ const MessageUserBox = ({ user }) => {
 
         <Typography
           variant="caption"
-          sx={{ fontFamily: "Poppins", color: "secondary", fontSize: "0.5rem" }}
+          sx={{ fontFamily: "Poppins", color: "secondary", fontSize: "0.7rem" }}
         >
           {`@${user?.username}`}
         </Typography>

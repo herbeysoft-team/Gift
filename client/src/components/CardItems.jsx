@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Box, CircularProgress, Grid } from "@mui/material";
 import React, { useState, useId, useEffect, useMemo } from "react";
 import CardItem from "./CardItem";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,14 +12,11 @@ import {
 } from "../context/features/wishlistSlice";
 import Stack from "@mui/material/Stack";
 
-
 const CardItems = ({ wishlist }) => {
   const uniqueId = useId;
   const dispatch = useDispatch();
-  const { items } = useSelector((state) => ({ ...state.item }));
+  const { items, loadingItems } = useSelector((state) => ({ ...state.item }));
   const { my_wishlist } = useSelector((state) => ({ ...state.wishlist }));
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [selectedItems, setSelectedItems] = useState([]);
   const memoizedItems = useMemo(() => items, [items]);
   const memoizedWishList = useMemo(() => my_wishlist, [my_wishlist]);
@@ -81,11 +78,11 @@ const CardItems = ({ wishlist }) => {
 
     if (isSelected) {
       // Item is already in the wishlist, remove it
-      dispatch(removeWishlist({item_id: itemId, toast}));
+      dispatch(removeWishlist({ item_id: itemId, toast }));
       dispatch(myWishlist());
     } else {
       // Item is not in the wishlist, add it
-      dispatch(addWishlist({item_id: itemId, toast}));
+      dispatch(addWishlist({ item_id: itemId, toast }));
       dispatch(myWishlist());
     }
   };
@@ -97,14 +94,6 @@ const CardItems = ({ wishlist }) => {
   if (!items.length) {
     return null;
   }
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
 
   return (
     <Box
@@ -116,42 +105,38 @@ const CardItems = ({ wishlist }) => {
         alignItems: "center",
       }}
     >
+      {!loadingItems ? (
+        <>
+          <Grid key={uniqueId} container rowSpacing={1} columnSpacing={1}>
+            {memoizedItems.map((gift, index) => {
+              return (
+                <Grid item xs={6} sm={6} md={6} lg={4} key={index}>
+                  <CardItem
+                    key={uniqueId}
+                    gift={gift}
+                    checked={
+                      wishlist
+                        ? () => handleAddToWishlist(gift.id)
+                        : () => handleCheckboxChange(gift.id)
+                    }
+                    selectedItems={wishlist ? my_wishlist : selectedItems}
+                  />
+                </Grid>
+              );
+            })}
+          </Grid>
+        </>
+      ) : (
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          height="200px" /* Adjust the height as needed */
+        >
+          <CircularProgress size={52} color="secondary" />
+        </Box>
+      )}
       
-      <Grid key={uniqueId} container rowSpacing={1} columnSpacing={1}>
-
-        {memoizedItems.map((gift, index) => {
-          return (
-            <Grid item xs={6} sm={6} md={6} lg={4} key={index}>
-              <CardItem
-                key={uniqueId}
-                gift={gift}
-                checked={
-                  wishlist
-                    ? () => handleAddToWishlist(gift.id)
-                    : () => handleCheckboxChange(gift.id)
-                }
-                selectedItems={wishlist ? my_wishlist : selectedItems }
-              />
-            </Grid>
-          );
-        })}
-      </Grid>
-      <Stack spacing={2} alignItems="center">
-        <TablePagination
-          count={items.length}
-          component="div"
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          // renderItem={(item) => (
-          //   <PaginationItem
-          //     icon={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
-          //     {...item}
-          //   />
-          // )}
-        />
-      </Stack>
     </Box>
   );
 };

@@ -70,6 +70,7 @@ const itemSlice = createSlice({
     my_wishlist: [],
     error: "",
     loading: false,
+    loadingwishes:false
   },
   reducers: {
     clearItems: (state) => {
@@ -110,14 +111,14 @@ const itemSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(wishlists.pending, (state) => {
-        state.loading = true;
+        state.loadingwishes = true;
       })
       .addCase(wishlists.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingwishes = false;
         state.wishes = action.payload;
       })
       .addCase(wishlists.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingwishes = false;
         state.error = action.payload;
       });
       

@@ -6,7 +6,7 @@ exports.getcomments = async (req, res) => {
 
   try {
     const result = await db.getall(
-      "SELECT c.*, u.id AS userId, u.fullname, u.profilePic FROM comment AS c JOIN userprofile AS u ON (u.id = c.user_id) WHERE c.post_id = ? ORDER BY c.createdAt DESC",
+      "SELECT c.*, u.id AS userId, u.username, u.profilePic FROM comment AS c JOIN userprofile AS u ON (u.id = c.user_id) WHERE c.post_id = ? ORDER BY c.createdAt DESC",
       [postId]
     );
 

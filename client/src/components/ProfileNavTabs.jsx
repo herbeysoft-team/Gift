@@ -85,7 +85,7 @@ export default function ProfileNavTabs({userId, gift, checkWishlist, isMutual}) 
           <Sent gift={gift?.sendGift}/>
         </TabPanel>
         <TabPanel value={value} index={2} dir={theme.direction}>
-          <Wishlist user_id ={userId} checkWishlist={checkWishlist} isMutual = {isMutual} />
+          <Wishlist user_id ={userId} checkWishlist={checkWishlist} />
         </TabPanel>
       {/* </SwipeableViews> */}
     </Box>

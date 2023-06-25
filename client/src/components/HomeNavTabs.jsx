@@ -5,7 +5,6 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Scheduled from "./Scheduled";
 import Feeds from "./Feeds";
 import Events from "./Events";
 
@@ -73,7 +72,7 @@ export default function HomeNavTabs() {
         }}
       >
         <Tab label="For You" {...a11yProps(0)} />
-        <Tab label="Events" {...a11yProps(1)} />
+        <Tab label="Ongoing" {...a11yProps(1)} />
       </Tabs>
       {/* <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}

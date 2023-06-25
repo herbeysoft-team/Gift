@@ -3,8 +3,16 @@ import React from "react";
 import { deepPurple } from "@mui/material/colors";
 import URLBASE from "../constant/urlbase";
 import moment from "moment"
+import { useNavigate } from "react-router-dom";
 
 const PostComment = ({box}) => {
+  const navigate = useNavigate()
+
+  const handleGoProfile = (id) => {
+    if(id){
+      navigate(`/home/profile/${id}`)
+    }
+  }
 
   return (
     <Box
@@ -15,7 +23,7 @@ const PostComment = ({box}) => {
       gap={1}
       mb={1}
     >
-      <Avatar alt="PP" src={`${URLBASE.imageBaseUrl}${box?.profilePic}`} sx={{ bgcolor: deepPurple[500] }} />
+      <Avatar alt="PP" src={`${URLBASE.imageBaseUrl}${box?.profilePic}`} sx={{ bgcolor: deepPurple[500] }} onClick={()=> handleGoProfile(box?.userId)} />
 
       <Box
         sx={{
@@ -42,7 +50,7 @@ const PostComment = ({box}) => {
               color="secondary"
               sx={{ fontFamily: "Poppins"}}
             >
-             {box?.fullname}
+             {`@${box?.username}`}
             </Typography>
           </Box>
           <Box>

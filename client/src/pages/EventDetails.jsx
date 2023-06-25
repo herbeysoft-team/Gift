@@ -5,6 +5,7 @@ import {
   Button,
   ButtonGroup,
   CardMedia,
+  CircularProgress,
   Divider,
   IconButton,
   Modal,
@@ -46,7 +47,7 @@ const EventDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const id = useLocation().pathname.split("/")[3];
-  const { eventDetails } = useSelector((state) => ({ ...state.trow }));
+  const { eventDetails, loadingevent} = useSelector((state) => ({ ...state.trow }));
   const { user } = useSelector((state) => ({ ...state.auth }));
 
   useEffect(() => {
@@ -98,6 +99,7 @@ const EventDetails = () => {
     <Box flex={3}>
       <MobileNavBar logo={Logo} title={"Event"} />
       {/* The Event Details Start Here  */}
+      {!loadingevent ? <>
       <Box
         position="sticky"
         sx={{
@@ -304,6 +306,14 @@ const EventDetails = () => {
           </Button>
         )}
       </Box>
+      </> :(<Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        height="200px" /* Adjust the height as needed */
+      >
+        <CircularProgress size={52} color="secondary" />
+      </Box>)}
       {/* for the modal */}
       <SytledModal
         open={open}

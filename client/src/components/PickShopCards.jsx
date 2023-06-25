@@ -1,20 +1,16 @@
-import { Box, Fab, Grid, PaginationItem, Tooltip } from "@mui/material";
+import { Box, CircularProgress, Fab, Grid, Tooltip } from "@mui/material";
 import React, { useState, useId, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getItems } from "../context/features/itemSlice";
 import { addTrowWishlist } from "../context/features/trowSlice";
-import { TablePagination } from "@mui/material";
 import toast from "react-hot-toast";
-import Stack from "@mui/material/Stack";
 import PickShopCard from "./PickShopCard";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
-const PickShopCards = ({id, navigate}) => {
+const PickShopCards = ({ id, navigate }) => {
   const uniqueId = useId;
   const dispatch = useDispatch();
-  const { items } = useSelector((state) => ({ ...state.item }));
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const { items, loadingItems } = useSelector((state) => ({ ...state.item }));
   const [selectedItems, setSelectedItems] = useState([]);
   const memoizedItems = useMemo(() => items, [items]);
 
@@ -81,25 +77,17 @@ const PickShopCards = ({id, navigate}) => {
   if (!items.length) {
     return null;
   }
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
 
   const handleAddWishList = (e) => {
-      e.preventDefault();
+    e.preventDefault();
     //Function to add wishlist to a particular trowbox
     const trowWishlistsString = localStorage.getItem("trowWishlist");
     if (trowWishlistsString) {
       const trowWishlist = JSON.parse(trowWishlistsString);
-      dispatch(addTrowWishlist({id, trowwishlist: trowWishlist, toast, navigate}));
-      
-    } 
-    
+      dispatch(
+        addTrowWishlist({ id, trowwishlist: trowWishlist, toast, navigate })
+      );
+    }
   };
 
   return (
@@ -127,37 +115,33 @@ const PickShopCards = ({id, navigate}) => {
           </Fab>
         </Tooltip>
       ) : null}
-
-      <Grid key={uniqueId} container rowSpacing={1} columnSpacing={1}>
-        {memoizedItems.map((gift, index) => {
-          return (
-            <Grid item xs={6} sm={6} md={6} lg={4} key={index}>
-              <PickShopCard
-                key={uniqueId}
-                gift={gift}
-                checked={() => handleCheckboxChange(gift.id)}
-                selectedItems={selectedItems}
-              />
-            </Grid>
-          );
-        })}
-      </Grid>
-      <Stack spacing={2} alignItems="center">
-        <TablePagination
-          count={items.length}
-          component="div"
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          // renderItem={(item) => (
-          //   <PaginationItem
-          //     icon={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
-          //     {...item}
-          //   />
-          // )}
-        />
-      </Stack>
+      {!loadingItems ? (
+        <>
+          <Grid key={uniqueId} container rowSpacing={1} columnSpacing={1}>
+            {memoizedItems.map((gift, index) => {
+              return (
+                <Grid item xs={6} sm={6} md={6} lg={4} key={index}>
+                  <PickShopCard
+                    key={uniqueId}
+                    gift={gift}
+                    checked={() => handleCheckboxChange(gift.id)}
+                    selectedItems={selectedItems}
+                  />
+                </Grid>
+              );
+            })}
+          </Grid>
+        </>
+      ) : (
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          height="200px" /* Adjust the height as needed */
+        >
+          <CircularProgress size={52} color="secondary" />
+        </Box>
+      )}
     </Box>
   );
 };

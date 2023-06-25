@@ -78,6 +78,7 @@ const itemSlice = createSlice({
     items: [],
     error: "",
     loading: false,
+    loadingItems:false,
   },
   reducers: {
     clearItems: (state) => {
@@ -108,14 +109,14 @@ const itemSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(getItems.pending, (state) => {
-        state.loading = true;
+        state.loadingItems = true;
       })
       .addCase(getItems.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingItems = false;
         state.items = action.payload;
       })
       .addCase(getItems.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingItems = false;
         state.error = action.payload;
       })
       .addCase(getItemsByCategory.pending, (state) => {

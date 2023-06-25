@@ -110,6 +110,7 @@ const Profile = () => {
     dispatch(setLogout());
     navigate("/");
   };
+
   return (
     <Box flex={3}>
       <MobileNavBar logo={ProfilePic} title={"Profile"} />
@@ -323,7 +324,7 @@ const Profile = () => {
       </Box>
 
       {/* Other part Start here */}
-      <ProfileNavTabs userId={userId} gift={userSentGift} checkWishlist={user?.result?.id === userProfile?.id ? true : isMutual} isMutual={isMutual}/>
+      <ProfileNavTabs userId={userId} gift={userSentGift} checkWishlist={user?.result?.id === userProfile?.id || isMutual} />
     </Box>
   );
 };

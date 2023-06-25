@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast'
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import {
   Box,
   Typography,
@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getUnfollowUsers } from "../context/features/userSlice";
 import { addRelationship} from "../context/features/relationshipSlice";
 import URLBASE from '../constant/urlbase';
+import { useNavigate } from "react-router-dom";
 
 
 const FollowButton = styled(Button)(({ theme }) => ({
@@ -30,9 +31,15 @@ const FollowButton = styled(Button)(({ theme }) => ({
 const Leftbar = () => {
   const dispatch = useDispatch();
   const { unfollowUsers } = useSelector((state) => ({ ...state.user }));
-  const { loading, error } = useSelector((state) => ({ ...state.relationship }));
+  const { loading } = useSelector((state) => ({ ...state.relationship }));
   const { user } = useSelector((state) => ({ ...state.auth }));
-  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate()
+
+  const handleGoProfile = (id) => {
+    if(id){
+      navigate(`/home/profile/${id}`)
+    }
+  }
 
   useEffect(() => {
     if(user){
@@ -40,13 +47,6 @@ const Leftbar = () => {
     }
   }, [dispatch, user]);
 
-  useEffect(() => {
-    loading && setIsLoading(loading);
-  }, [loading]);
-
-  useEffect(() => {
-    error && toast.error(error.message);
-  }, [error]);
 
   const handleFollow = (id) => {
     if(id){
@@ -54,12 +54,6 @@ const Leftbar = () => {
       dispatch(getUnfollowUsers(user?.result?.id));
     }
   }
-
-  // const handleUnFollow = (id) => {
-  //   if(id){
-  //     dispatch(deleteRelationship(id));
-  //   }
-  // }
 
   return (
     <Box
@@ -97,6 +91,7 @@ const Leftbar = () => {
                   alt="PP"
                   src={`${URLBASE.imageBaseUrl}${user?.profilePic}`}
                   sx={{ bgcolor: deepPurple[500] }}
+                  onClick={()=> handleGoProfile(user?.unfollowId)}
                 />
                 <Typography variant="body">{user?.fullname}</Typography>
               </Box>

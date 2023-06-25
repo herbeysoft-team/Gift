@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import React, { useEffect, useMemo } from "react";
 import MobileNavBar from "../components/MobileNavBar";
 import Notify from "../assets/Notify.png";
@@ -10,7 +10,9 @@ import { getMyNotification } from "../context/features/notificationSlice";
 
 const Notification = () => {
   const dispatch = useDispatch();
-  const { notifications } = useSelector((state) => ({ ...state.notification }));
+  const { notifications, loading } = useSelector((state) => ({
+    ...state.notification,
+  }));
 
   useEffect(() => {
     dispatch(getMyNotification());
@@ -31,27 +33,43 @@ const Notification = () => {
           width: "100%",
           px: 1,
           py: 0.5,
-          mb:10,
+          mb: 10,
         }}
       >
-        {memoizedNotification.length > 0 ? (
+        {!loading ? (
           <>
-            {memoizedNotification.map((notification, index) => {
-              return (
-                <NotifyCard key={notification.id} notification={notification} />
-              );
-            })}
+            {memoizedNotification.length > 0 ? (
+              <>
+                {memoizedNotification.map((notification, index) => {
+                  return (
+                    <NotifyCard
+                      key={notification.id}
+                      notification={notification}
+                    />
+                  );
+                })}
+              </>
+            ) : (
+              <Typography
+                variant="h5"
+                color="primary"
+                fontFamily="Poppins"
+                fontWeight="medium"
+                textAlign="center"
+              >
+                No Notification
+              </Typography>
+            )}
           </>
         ) : (
-          <Typography
-            variant="h5"
-            color="primary"
-            fontFamily="Poppins"
-            fontWeight="medium"
-            textAlign="center"
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            height="200px" /* Adjust the height as needed */
           >
-            No Notification
-          </Typography>
+            <CircularProgress size={52} color="secondary" />
+          </Box>
         )}
       </Box>
     </Box>

@@ -67,7 +67,7 @@ export const wishlists = (userId) => API.get(`/api/v1/wishlist/wishlists/${userI
 
 /**POST API */
 export const createPost = (formData) => API.post(`/api/v1/post/createpost`,formData); //create a post
-export const getPosts = () => API.get(`/api/v1/post/getposts/`); //get posts
+export const getPosts = (id) => API.get(`/api/v1/post/getposts/${id}`); //get posts
 export const getPost = (id) => API.get(`/api/v1/post/getpost/${id}`); //get a post
 
 /**ADD COMMENT API*/

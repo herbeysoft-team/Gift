@@ -41,7 +41,7 @@ function a11yProps(index) {
   };
 }
 
-export default function ProfileNavTabs() {
+export default function TrowboxNavTabs() {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
 

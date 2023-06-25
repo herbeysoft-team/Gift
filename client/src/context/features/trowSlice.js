@@ -184,7 +184,11 @@ const trowSlice = createSlice({
     userSentGift:[],
     loadingusersentgift:false,
     error: "",
+    loadingallevent:false,
     loading: false,
+    loadingevent:false,
+    loadingmytrowbox:false,
+    loadingmyschedulebox:false,
   },
   reducers: {
     
@@ -225,14 +229,14 @@ const trowSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(getEvent.pending, (state) => {
-        state.loading = true;
+        state.loadingevent = true;
       })
       .addCase(getEvent.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingevent = false;
         state.eventDetails = action.payload;
       })
       .addCase(getEvent.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingevent = false;
         state.error = action.payload;
       })
       .addCase(addTrowWishlist.pending, (state) => {
@@ -257,36 +261,36 @@ const trowSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(getMyTrowBox.pending, (state) => {
-        state.loading = true;
+        state.loadingmytrowbox = true;
       })
       .addCase(getMyTrowBox.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingmytrowbox = false;
         state.currentTrowBox = action.payload;
       })
       .addCase(getMyTrowBox.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingmytrowbox = false;
         state.error = action.payload;
       })
       .addCase(getMyScheduleTrowBox.pending, (state) => {
-        state.loading = true;
+        state.loadingmyschedulebox = true;
       })
       .addCase(getMyScheduleTrowBox.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingmyschedulebox = false;
         state.scheduleTrowBox = action.payload;
       })
       .addCase(getMyScheduleTrowBox.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingmyschedulebox = false;
         state.error = action.payload;
       })
       .addCase(getAllEvent.pending, (state) => {
-        state.loading = true;
+        state.loadingallevent = true;
       })
       .addCase(getAllEvent.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingallevent = false;
         state.allEvent = action.payload;
       })
       .addCase(getAllEvent.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingallevent = false;
         state.error = action.payload;
       })
       .addCase(getUserSentGift.pending, (state) => {

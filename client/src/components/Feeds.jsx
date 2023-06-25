@@ -1,5 +1,5 @@
-import { Box, Fab, Stack, TablePagination, Typography } from "@mui/material";
-import React, { useEffect, useState, useMemo } from "react";
+import { Box, CircularProgress, Fab,  Typography } from "@mui/material";
+import React, { useEffect, useMemo } from "react";
 import Post from "./Post";
 import { useNavigate } from "react-router-dom";
 import Gift from "../assets/gift.png";
@@ -9,25 +9,16 @@ import { useSelector, useDispatch } from "react-redux";
 const Feeds = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   const { user } = useSelector((state) => ({ ...state.auth }));
-  const { posts } = useSelector((state) => ({ ...state.post }));
+  const { posts, loading} = useSelector((state) => ({ ...state.post }));
 
   const memoizedPost = useMemo(() => posts, [posts]);
 
   useEffect(() => {
-    dispatch(getPosts());
-  }, [dispatch]);
+    dispatch(getPosts({id:user?.result?.id}));
+  }, [dispatch, user?.result?.id]);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  
   return (
     <Box mb={10}>
       {/* The Gift Box Button */}
@@ -54,21 +45,12 @@ const Feeds = () => {
         <Typography variant="body">Share the love!</Typography>
       </Box>
       {/* The Post Here */}
+      {!loading ? <>
       {memoizedPost.length > 0 ? (
         <>
           {memoizedPost.map((post) => {
-            return <Post key={post?.post_id} post={post} />;
+            return <Post key={post?.post_id} post={post} loading={loading} />;
           })}
-          <Stack spacing={2} alignItems="center">
-            <TablePagination
-              count={posts.length}
-              component="div"
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </Stack>
         </>
       ) : (
         <Typography
@@ -82,6 +64,14 @@ const Feeds = () => {
           No Post
         </Typography>
       )}
+      </> : (<Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          height="200px" /* Adjust the height as needed */
+        >
+          <CircularProgress size={52} color="secondary" />
+        </Box>)}
     </Box>
   );
 };

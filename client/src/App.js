@@ -35,6 +35,7 @@ import ReTrowBox from "./pages/ReTrowBox";
 import MessageDetails from "./pages/MessageDetails";
 import Share from "./pages/Share";
 import Message from "./pages/Message";
+import PrivateRoute from "./components/PrivateRoute";
 
 
 
@@ -42,7 +43,7 @@ import Message from "./pages/Message";
 const router = createBrowserRouter([
   {
     path: "/home",
-    element: <Layout />,
+    element: <PrivateRoute><Layout /></PrivateRoute>,
     children: [
       {
         path: "/home",
@@ -149,7 +150,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <PageNotFound></PageNotFound>,
+    element: <Login></Login>,
   },
 ]);
 

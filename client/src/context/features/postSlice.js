@@ -24,9 +24,11 @@ export const createPost = createAsyncThunk(
 export const getPosts = createAsyncThunk(
   "post/getPosts",
 
-  async(_, {rejectWithValue})=>{
+  async({id, page}, {rejectWithValue})=>{
+    
       try{
-        const response = await api.getPosts();
+        const response = await api.getPosts(id, page);
+        console.log(response.data)
         return response.data;
       }catch(err){
         return rejectWithValue(err.response.data)
@@ -57,9 +59,17 @@ const postSlice = createSlice({
     loading: false,
     posts: [],
     post:[],
+    loadingpost:false,
+
+
   },
   reducers: {
-    
+    // setCurrentPage: (state, action) =>{
+    //   state.currentPage = action.payload;
+    // },
+    // setPosts: (state, action) =>{
+    //   state.posts = action.payload;
+    // }
   },
   extraReducers: (builder) => {
     builder
@@ -85,17 +95,17 @@ const postSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(getPost.pending, (state) => {
-        state.loading = true;
+        state.loadingpost = true;
       })
       .addCase(getPost.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingpost = false;
         state.post = action.payload;
       })
       .addCase(getPost.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingpost = false;
         state.error = action.payload;
       }); 
    },
 });
-// export const { setUsername, setPhoneNo } = trowSlice.actions;
+//  export const { setCurrentPage, setPosts } = postSlice.actions;
 export default postSlice.reducer;

@@ -1,4 +1,4 @@
-import { Avatar, Box, Typography } from "@mui/material";
+import { Avatar, Box, CircularProgress, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import MobileNavBar from "../components/MobileNavBar";
 import ProfilePic from "../assets/profile.png";
@@ -14,7 +14,9 @@ import MessageList from "../components/MessageList";
 const MessageDetails = () => {
   const dispatch = useDispatch();
   const { userProfile } = useSelector((state) => ({ ...state.user }));
-  const { messages } = useSelector((state) => ({ ...state.message }));
+  const { messages, loadingmessages } = useSelector((state) => ({
+    ...state.message,
+  }));
 
   const id = useLocation().pathname.split("/")[3];
 
@@ -42,7 +44,7 @@ const MessageDetails = () => {
           marginTop: 1,
           marginRight: 1,
           marginLeft: 1,
-          marginBottom: 3,
+          marginBottom: 5,
           borderRadius: "5",
           minHeight: "80vh",
           paddingBottom: "100px",
@@ -87,7 +89,20 @@ const MessageDetails = () => {
             {`@${userProfile?.username}`}
           </Typography>
         </Box>
-        <MessageList messages={messages} currentUser={userProfile?.id} />
+        {!loadingmessages ? (
+          <>
+            <MessageList messages={messages} currentUser={userProfile?.id} />
+          </>
+        ) : (
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            height="200px" /* Adjust the height as needed */
+          >
+            <CircularProgress size={52} color="secondary" />
+          </Box>
+        )}
       </Box>
       <Box
         sx={{

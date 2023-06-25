@@ -14,6 +14,8 @@ const {
   resetUserPassword,
 } = require("../utilities/sendOTP");
 
+
+
 /**
  * POST - http://localhost:8000/api/v1/auth/signup
  * fullname - Get firstname lastname

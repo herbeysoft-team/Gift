@@ -1,5 +1,5 @@
-import { Box, Fab, Stack, TablePagination, Typography } from "@mui/material";
-import React, { useEffect, useMemo, useState } from "react";
+import { Box, CircularProgress, Fab, Typography } from "@mui/material";
+import React, { useEffect, useMemo} from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllEvent } from "../context/features/trowSlice";
@@ -10,9 +10,7 @@ import Event from "./Event";
 const Events = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { allEvent } = useSelector((state) => ({ ...state.trow }));
+  const { allEvent, loadingallevent } = useSelector((state) => ({ ...state.trow }));
 
   const memoizedEvent = useMemo(() => allEvent, [allEvent]);
 
@@ -20,14 +18,6 @@ const Events = () => {
     dispatch(getAllEvent());
   }, [dispatch]);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
 
   return (
     <Box mb={10}>
@@ -56,21 +46,12 @@ const Events = () => {
       </Box>
 
       {/* The Post Here */}
+      {!loadingallevent ? <>
       {memoizedEvent.length > 0 ? (
         <>
           {memoizedEvent.map((box, index) => {
             return <Event key={box.id} box={box} />;
           })}
-          <Stack spacing={2} alignItems="center">
-            <TablePagination
-              count={allEvent.length}
-              component="div"
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </Stack>
         </>
       ) : (
         <Typography
@@ -82,7 +63,14 @@ const Events = () => {
         >
           No Event
         </Typography>
-      )}
+      )}</> : (<Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        height="200px" /* Adjust the height as needed */
+      >
+        <CircularProgress size={52} color="secondary" />
+      </Box>)}
     </Box>
   );
 };
