@@ -54,7 +54,7 @@ const Recieved = ({ gift }) => {
               fontFamily="Poppins"
               fontWeight="medium"
               textAlign="center"
-              marginTop="10"
+              marginTop="5"
             >
               Nothing Yet!
             </Typography>

@@ -6,6 +6,7 @@ import {
   styled,
   Button,
   ToggleButton,
+  Container,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import MobileNavBar from "../components/MobileNavBar";
@@ -112,8 +113,8 @@ const Profile = () => {
   };
 
   return (
-    <Box flex={3}>
-      <MobileNavBar logo={ProfilePic} title={"Profile"} />
+    <Box mt={{sm:"none", xs:"none", md:7, lg:7}}>
+      {/* <MobileNavBar logo={ProfilePic} title={"Profile"} /> */}
       {/* Profile Section */}
       <Box
         p={2}
@@ -325,7 +326,9 @@ const Profile = () => {
 
       {/* Other part Start here */}
       <ProfileNavTabs userId={userId} gift={userSentGift} checkWishlist={user?.result?.id === userProfile?.id || isMutual} />
+
     </Box>
+    
   );
 };
 

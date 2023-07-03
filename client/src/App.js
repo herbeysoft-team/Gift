@@ -11,7 +11,6 @@ import Register from "./components/Register";
 import Verify from "./components/Verify";
 import Reset from "./components/Reset";
 import ChangePassowrd from "./components/ChangePassowrd";
-import PageNotFound from "./components/PageNotFound";
 import Layout from "./components/Layout";
 import MobileSearch from "./components/MobileSearch";
 

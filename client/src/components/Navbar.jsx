@@ -13,7 +13,7 @@ const Navbar = () => {
   const { user } = useSelector((state) => ({ ...state.auth }));
   const navigate = useNavigate();
   return (
-    <AppBar position="sticky" elevation={1}>
+    <AppBar position="fixed" elevation={1}>
       <Toolbar
         sx={{
           display: { xs: "none", md: "flex" },

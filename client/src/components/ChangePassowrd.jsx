@@ -2,6 +2,7 @@ import toast from 'react-hot-toast'
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   Paper,
   TextField,
@@ -45,7 +46,6 @@ const ChangePasswrd = () => {
   const { phoneno, otp, newpassword } = formValue;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
   const { loading, error } = useSelector((state) => ({
     ...state.auth,
   }));
@@ -92,9 +92,6 @@ const ChangePasswrd = () => {
     
   };
 
-  useEffect(() => {
-    loading && setIsLoading(loading);
-  }, [loading]);
 
   useEffect(() => {
     error && toast.error(error.message);
@@ -140,6 +137,18 @@ const ChangePasswrd = () => {
           paddingY: 5,
         }}
       >
+        {loading && (
+          <>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              height="30px" /* Adjust the height as needed */
+            >
+              <CircularProgress size={24} color="secondary" />
+            </Box>
+          </>
+        )}
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"

@@ -19,9 +19,11 @@ const ButtomNav = () => {
         left: 0,
         right: 0,
         paddingY: 0.5,
-        display: { lg: "none" },
+        display: { md:"none", lg: "none" },
+        zIndex:2,
       }}
       elevation={3}
+      
     >
       <BottomNavigation
         value={value}

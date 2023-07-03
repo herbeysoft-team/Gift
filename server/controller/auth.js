@@ -1,7 +1,6 @@
 const { hashData, verifyHashData } = require("../utilities/hashData");
 const createToken = require("../utilities/createToken");
 const jwt = require("jsonwebtoken");
-const { TOKEN_KEY, TOKEN_EXPIRY } = process.env;
 var bcrypt = require("bcryptjs");
 const db = require("../config/database");
 const generateSMS = require("../utilities/generateSMS");
@@ -13,6 +12,7 @@ const {
   sendPasswordResetOTPPhone,
   resetUserPassword,
 } = require("../utilities/sendOTP");
+const moment = require("moment");
 
 
 
@@ -44,14 +44,14 @@ exports.signup = async (req, res) => {
     const hashedPassword = await hashData(password);
     //CREATE A NEW USER
     const result = await db.insert(
-      "INSERT INTO userProfile (fullname, username, phone_no, city, password, gender) VALUES (?,?,?,?,?,?)",
-      [fullname, username, phone_no, city, hashedPassword, gender]
+      "INSERT INTO userProfile (fullname, username, phone_no, city, password, gender, verified, date_joined) VALUES (?,?,?,?,?,?,?,?)",
+      [fullname, username, phone_no, city, hashedPassword, gender, 0, moment(Date.now()).format("YYYY-MM-DD HH:mm:ss") ]
     );
     if (result) {
       const otp = await sendVerificationOTPPhone(phone_no);
       res
         .status(201)
-        .json({ result, message: "User has been created Successfully", otp });
+        .json({ result, message: "User has been created Successfully", otp});
     }
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
@@ -326,7 +326,7 @@ exports.changepassword = async (req, res) => {
         .json({ message: "Password Successsfully Changed" });
     }
   } catch (error) {
-    //res.status(500).json({message: "something went wrong"});
+    res.status(500).json({message: "something went wrong"});
     console.log(error);
   }
 };

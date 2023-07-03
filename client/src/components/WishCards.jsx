@@ -86,13 +86,14 @@ const WishCards = ({ user_id, wishlist }) => {
             </>
           ) : (
             <Typography
-              variant="h5"
+              variant="h6"
               color="primary"
               fontFamily="Poppins"
               fontWeight="medium"
               textAlign="center"
+              marginTop="5"
             >
-              No Wishlist!!!
+              No Wishlist!
             </Typography>
           )}
         </>

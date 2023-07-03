@@ -1,16 +1,14 @@
-import { Box, CircularProgress, Grid } from "@mui/material";
+import { Box, CircularProgress, Container, Grid } from "@mui/material";
 import React, { useState, useId, useEffect, useMemo } from "react";
 import CardItem from "./CardItem";
 import { useSelector, useDispatch } from "react-redux";
 import { getItems } from "../context/features/itemSlice";
-import { TablePagination } from "@mui/material";
 import toast from "react-hot-toast";
 import {
   addWishlist,
   removeWishlist,
   myWishlist,
 } from "../context/features/wishlistSlice";
-import Stack from "@mui/material/Stack";
 
 const CardItems = ({ wishlist }) => {
   const uniqueId = useId;
@@ -138,6 +136,7 @@ const CardItems = ({ wishlist }) => {
       )}
       
     </Box>
+
   );
 };
 

@@ -2,6 +2,7 @@ import toast from 'react-hot-toast'
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   MenuItem,
   Paper,
@@ -50,7 +51,7 @@ const Register = () => {
   const { phoneno, password, fullname, city, gender, username } = formValue;
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
+  const { loading } = useSelector((state) => ({ ...state.auth }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -134,6 +135,18 @@ const Register = () => {
           paddingY: 2,
         }}
       >
+        {loading && (
+          <>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              height="30px" /* Adjust the height as needed */
+            >
+              <CircularProgress size={24} color="secondary" />
+            </Box>
+          </>
+        )}
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="dense"

@@ -33,7 +33,7 @@ router.get("/getsearchusers/:searchname",verifyToken, getsearchusers);
 router.get("/getuserstogift/", verifyToken, getuserstogift);
 
 /**GET USER INFORMATION */
-router.post("/getuserprofile/:userId", verifyToken, getuserprofile);
+router.get("/getuserprofile/:userId", verifyToken, getuserprofile);
 
 /**GET UNFOLLOW USERS */
 router.get("/getunfollowusers/:id", getunfollowusers);

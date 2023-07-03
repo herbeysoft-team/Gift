@@ -2,6 +2,7 @@ import axios from "axios";
 
 const API = axios.create({
   baseURL: "http://localhost:8000/",
+  // baseURL: "https://trowbox.com/",
 });
 
 API.interceptors.request.use((req) => {
@@ -25,7 +26,7 @@ export const resetPassword = (formData) => API.post("/api/v1/auth/reset", formDa
 
 
 /**USER API */
-export const getUserProfile = (userId) => API.post(`/api/v1/user/getuserprofile/${userId}`); //get user profile
+export const getUserProfile = (userId) => API.get(`/api/v1/user/getuserprofile/${userId}`); //get user profile
 export const getUnfollowUsers = (id) => API.get(`/api/v1/user/getunfollowusers/${id}`); //get unfollow users
 export const getSearchUsers= (searchname) => API.get(`/api/v1/user/getsearchusers/${searchname}`); //get search users
 export const getUsersToGift= () => API.get(`/api/v1/user/getuserstogift/`); //getusers to gift

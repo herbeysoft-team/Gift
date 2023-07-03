@@ -21,6 +21,7 @@ const FollowButton = styled(Button)(({ theme }) => ({
   paddingLeft: 20,
   paddingRight: 20,
   fontSize: 10,
+  marginRight:2,
   justifyContent: "flex-end",
   backgroundColor: theme.palette.secondary.main,
   "&:hover": {
@@ -57,10 +58,10 @@ const Leftbar = () => {
 
   return (
     <Box
-      flex={1.5}
+      mt={7}
       p={2}
       height="100vh"
-      sx={{ display: { xs: "none", sm: "none", md: "none", lg: "block" } }}
+      sx={{ display: { xs: "none", sm: "none", md: "block", lg: "block" } }}
     >
       <Box position="fixed">
         <Typography

@@ -1,7 +1,6 @@
 import React from "react";
 import FeedIcon from "@mui/icons-material/Feed";
 import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
-import EventIcon from "@mui/icons-material/Event";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MessageIcon from "@mui/icons-material/Message";
 import PersonIcon from "@mui/icons-material/Person";
@@ -23,20 +22,20 @@ import { setLogout } from "../context/features/authSlice";
 
 const RightNav = styled(List)({
   "& .MuiListItemButton-root": {
-    paddingLeft: 44,
-    paddingRight: 44,
+    paddingLeft: 22,
+    paddingRight: 22,
   },
   "& .MuiListItemText-primary": {
     fontSize: 16,
     fontWeight: "normal",
     fontFamily: "Poppins",
     minWidth: 0,
-    marginRight: 16,
+    marginRight: 4,
     color: "#ba68c8",
   },
   "& .MuiListItemIcon-root": {
     minWidth: 0,
-    marginRight: 16,
+    marginRight: 4,
     color: "#ba68c8",
   },
   "& .MuiSvgIcon-root": {
@@ -55,11 +54,11 @@ const Rightbar = () => {
   };
   return (
     <Box
-      flex={1}
+      mt={7}
       p={2}
       height="100vh"
     
-      sx={{ display: { xs: "none", sm: "none", md:"none", lg:"block"} }}
+      sx={{ display: { xs: "none", sm: "none", md:"block", lg:"block"} }}
     >
       <Box position="fixed">
         <RightNav>

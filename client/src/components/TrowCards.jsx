@@ -73,13 +73,16 @@ const TrowCards = () => {
           </Stack>
         </>
       ) : (
-        <Typography  variant="h5"
+        <Typography
+        variant="h6"
         color="primary"
         fontFamily="Poppins"
         fontWeight="medium"
-        textAlign="center">
-          No TrowBox!!!
-        </Typography>
+        textAlign="center"
+        marginTop="5"
+      >
+        No Trowbox !!!
+      </Typography>
       )}</> : (<Box
         display="flex"
         alignItems="center"

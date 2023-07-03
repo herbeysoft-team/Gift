@@ -1,8 +1,9 @@
 /* eslint-disable eqeqeq */
-import toast from 'react-hot-toast'
+import toast from "react-hot-toast";
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   Paper,
   TextField,
@@ -10,7 +11,7 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import Logo from "../assets/logo.png";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../context/features/authSlice";
 
@@ -29,35 +30,26 @@ function Copyright(props) {
       {...props}
     >
       {"© "}
-      <Link  style={{textDecoration:"none"}} href="#">
+      <Link style={{ textDecoration: "none" }} href="#">
         TROWBOX
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
-       All Right Reserved
+      All Right Reserved
     </Typography>
   );
 }
-
 
 const Login = () => {
   const [formValue, setFormValue] = useState(initialState);
   const { phone_no, password } = formValue;
   const { loading, error } = useSelector((state) => ({ ...state.auth }));
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  
-
-  useEffect(() => {
-    loading && setIsLoading(loading);
-  }, [loading]);
 
   useEffect(() => {
     error && toast.error(error.message);
   }, [error]);
-
- 
 
   /**Handle Submit Function */
   const handleSubmit = (e) => {
@@ -67,30 +59,28 @@ const Login = () => {
 
     if (!(phone_no && password)) {
       toast.error("Phone no & Password Required...!");
-    } else if(!phone_no){
+    } else if (!phone_no) {
       toast.error("Phone no Required...!");
-    }else if(!password){
+    } else if (!password) {
       toast.error("Password Required...!");
-    }else if(phone_no.includes(" ")){
+    } else if (phone_no.includes(" ")) {
       toast.error("Wrong Phone Number...!");
-    }else if(password.includes(" ")){
+    } else if (password.includes(" ")) {
       toast.error("Wrong Password...!");
-    }else if(password.length < 6){
+    } else if (password.length < 6) {
       toast.error("Password must be more than 6 charateers long");
-    }else if(!phoneRegex.test(phone_no)){
-      toast.error("Phone Number must be international format +23480XXX")
+    } else if (!phoneRegex.test(phone_no)) {
+      toast.error("Phone Number must be international format +23480XXX");
+    } else if (!passwordRegex.test(password)) {
+      toast.error("Password must be Alphanumeric");
+    } else {
+      dispatch(login({ formValue, navigate, toast }));
     }
-    else if(!passwordRegex.test(password)){
-      toast.error("Password must be Alphanumeric")
-    }else{
-     dispatch(login({ formValue, navigate, toast }));
-    }
-    }
+  };
 
   const onInputChange = (e) => {
     let { name, value } = e.target;
     setFormValue({ ...formValue, [name]: value });
-    
   };
 
   return (
@@ -105,6 +95,7 @@ const Login = () => {
           justifyContent: "center",
         }}
       >
+        
         <Typography
           variant="heading"
           fontFamily="Poppins"
@@ -134,6 +125,18 @@ const Login = () => {
           paddingY: 5,
         }}
       >
+        {loading && (
+          <>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              height="30px" /* Adjust the height as needed */
+            >
+              <CircularProgress size={24} color="secondary" />
+            </Box>
+          </>
+        )}
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
@@ -180,7 +183,16 @@ const Login = () => {
         >
           Don't have an account{" "}
           <span>
-            <Link style={{ fontWeight: "bold", fontSize: "0.9rem", textDecoration:"none" }} to="/register">Register Here</Link>
+            <Link
+              style={{
+                fontWeight: "bold",
+                fontSize: "0.9rem",
+                textDecoration: "none",
+              }}
+              to="/register"
+            >
+              Register Here
+            </Link>
           </span>
         </Typography>
         <Typography
@@ -195,8 +207,13 @@ const Login = () => {
             fontSize: "0.7rem",
           }}
         >
-          <Link to="/reset" style={{ fontSize: "0.7rem", textDecoration:"none" }}> Forget your passowrd</Link>
-          
+          <Link
+            to="/reset"
+            style={{ fontSize: "0.7rem", textDecoration: "none" }}
+          >
+            {" "}
+            Forget your passowrd
+          </Link>
         </Typography>
       </Box>
       <Copyright sx={{ mt: 1 }} />
