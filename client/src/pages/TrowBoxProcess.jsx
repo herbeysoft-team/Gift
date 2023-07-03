@@ -68,7 +68,7 @@ const TrowBoxProcess = () => {
     dispatch(addTrowGift({ id, trowgift: selectedItems, toast, navigate}));
   };
   return (
-    <Box flex={3}>
+    <Box mt={{sm:"none", xs:"none", md:7, lg:7}}>
       <MobileNavBar logo={Logo} title={"TrowBox"} />
 
       {/* Header section  */}

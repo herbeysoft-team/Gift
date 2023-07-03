@@ -80,7 +80,7 @@ const Share = () => {
 
 
   return (
-    <Box flex={3}>
+    <Box mt={{sm:"none", xs:"none", md:7, lg:7}}>
       <MobileNavBar logo={Logo} title={"Share"} />
 
       <MobileSearchBox />

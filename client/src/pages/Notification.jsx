@@ -21,7 +21,7 @@ const Notification = () => {
   const memoizedNotification = useMemo(() => notifications, [notifications]);
 
   return (
-    <Box flex={3}>
+    <Box mt={{sm:"none", xs:"none", md:7, lg:7}}>
       <MobileNavBar logo={Notify} title={"Notifications"} />
 
       {/* Header section  */}

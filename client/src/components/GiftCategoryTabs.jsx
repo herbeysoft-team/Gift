@@ -8,7 +8,6 @@ import {
   getItemsByCategory,
   clearItems,
 } from "../context/features/itemSlice";
-import { Container } from "@mui/material";
 
 export default function GiftCategoryTabs({ categories }) {
   const dispatch = useDispatch();

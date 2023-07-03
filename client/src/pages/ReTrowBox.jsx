@@ -58,7 +58,6 @@ const ReTrowBox = () => {
   };
 
   const handleRetrow = (e) => {
-    console.log(selectedUsers);
     e.preventDefault();
     //Function to retrow
     if (!event_date) {
@@ -82,7 +81,7 @@ const ReTrowBox = () => {
     }
   };
   return (
-    <Box flex={3}>
+    <Box mt={{sm:"none", xs:"none", md:7, lg:7}}>
       <MobileNavBar logo={Logo} title={"Retrow"} />
 
       <MobileSearchBox />

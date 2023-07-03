@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import MobileNavBar from "../components/MobileNavBar";
 import Logo from "../assets/logo.png";
 import HomeNavTabs from "../components/HomeNavTabs";
@@ -15,15 +15,12 @@ const Home = () => {
   //   dispatch(getPosts({id:user?.result?.id, page:1 }));
   // }, [dispatch, user?.result?.id]);
   return (
-    <Box flex={3}>
-      <MobileNavBar logo={Logo} title={"Home"} />
-       <Container maxWidth="md">
-      
+    <Box mt={{sm:"none", xs:"none", md:7, lg:7}}>
+      <MobileNavBar logo={Logo} title={"Home"} />  
 
       {/* Other Sections start here */}
 
       <HomeNavTabs />
-      </Container>
     </Box>
   );
 };

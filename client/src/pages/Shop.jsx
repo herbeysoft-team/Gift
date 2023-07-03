@@ -1,4 +1,4 @@
-import { Box, Container, Fab, Tooltip } from '@mui/material'
+import { Box, Fab, Tooltip } from '@mui/material'
 import React, {useEffect} from 'react'
 import MobileNavBar from '../components/MobileNavBar'
 import Store from "../assets/store.png";
@@ -21,8 +21,7 @@ const Shop = () => {
   }, [dispatch]);
 
   return (
-    <Container maxWidth="md">
-    <Box flex={3}>
+    <Box mt={{sm:"none", xs:"none", md:7, lg:7}}>
         {/* header */}
         
         <MobileNavBar logo={Store} title={"Gift Shop"} />
@@ -47,7 +46,6 @@ const Shop = () => {
             </Tooltip>
             
     </Box>
-    </Container>
   )
 }
 

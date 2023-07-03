@@ -131,7 +131,7 @@ const CreateEvent = () => {
   };
 
   return (
-    <Box flex={3}>
+    <Box mt={{sm:"none", xs:"none", md:7, lg:7}}>
       <MobileNavBar logo={Logo} title={"Create Event"} />
       {/* Header section  */}
       {/* <Header logo={TrowboxIcon} title={"Create Event/Trowbox"} /> */}

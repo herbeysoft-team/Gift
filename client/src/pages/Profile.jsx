@@ -6,7 +6,6 @@ import {
   styled,
   Button,
   ToggleButton,
-  Container,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import MobileNavBar from "../components/MobileNavBar";
@@ -114,7 +113,7 @@ const Profile = () => {
 
   return (
     <Box mt={{sm:"none", xs:"none", md:7, lg:7}}>
-      {/* <MobileNavBar logo={ProfilePic} title={"Profile"} /> */}
+      <MobileNavBar logo={ProfilePic} title={"Profile"} />
       {/* Profile Section */}
       <Box
         p={2}

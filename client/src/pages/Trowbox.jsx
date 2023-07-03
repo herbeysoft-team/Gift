@@ -11,7 +11,7 @@ import { useNavigate} from "react-router-dom";
 const Trowbox = () => {
   const navigate = useNavigate();
   return (
-    <Box flex={3}>
+    <Box mt={{sm:"none", xs:"none", md:7, lg:7}}>
       <MobileNavBar logo={Logo} title={"Trowbox"} />
       {/* Header section  */}
       <Header logo={TrowboxIcon} title={"My Trowbox"}/>
