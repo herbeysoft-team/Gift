@@ -30,7 +30,9 @@ const CardItem = ({ gift, checked, selectedItems}) => {
         }}
       >
         <Typography variant="body" sx={{ fontSize: "12px" }}>
-          {gift?.item_name}
+          {gift?.item_name.length > 14
+                ? `${gift?.item_name.substring(0, 14)}...`
+                : gift?.item_name}
         </Typography>
         <IconButton aria-label="wishlist" size="large">
           <Checkbox

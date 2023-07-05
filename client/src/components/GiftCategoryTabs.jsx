@@ -21,7 +21,7 @@ export default function GiftCategoryTabs({ categories }) {
       dispatch(getItems());
     } else {
       dispatch(clearItems());
-      dispatch(getItemsByCategory(newValue));
+      dispatch(getItemsByCategory(categories[newValue - 1].id));
     }
   };
   return (
