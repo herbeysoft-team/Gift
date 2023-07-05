@@ -35,6 +35,7 @@ import MessageDetails from "./pages/MessageDetails";
 import Share from "./pages/Share";
 import Message from "./pages/Message";
 import PrivateRoute from "./components/PrivateRoute";
+import Upvote from "./pages/Upvote";
 
 
 
@@ -123,6 +124,10 @@ const router = createBrowserRouter([
       {
         path: "/home/search",
         element: <MobileSearch/>,
+      },
+      {
+        path: "/home/upvote/:id",
+        element: <Upvote />,
       },
     ],
   },

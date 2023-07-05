@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Fab,  Typography } from "@mui/material";
+import { Box, CircularProgress, Fab, Typography } from "@mui/material";
 import React, { useEffect, useMemo } from "react";
 import Post from "./Post";
 import { useNavigate } from "react-router-dom";
@@ -10,19 +10,19 @@ const Feeds = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => ({ ...state.auth }));
-  const { posts, loading} = useSelector((state) => ({ ...state.post }));
+  const { posts, loading } = useSelector((state) => ({ ...state.post }));
 
   const memoizedPost = useMemo(() => posts, [posts]);
 
   useEffect(() => {
-    dispatch(getPosts({id:user?.result?.id}));
+    dispatch(getPosts({ id: user?.result?.id }));
   }, [dispatch, user?.result?.id]);
 
-  
   return (
     <Box mb={10}>
       {/* The Gift Box Button */}
       <Box
+        onClick={() => navigate("/home/trow")}
         p={2}
         sx={{
           elevation: 2,
@@ -45,33 +45,39 @@ const Feeds = () => {
         <Typography variant="body">Share the love!</Typography>
       </Box>
       {/* The Post Here */}
-      {!loading ? <>
-      {memoizedPost.length > 0 ? (
+      {!loading ? (
         <>
-          {memoizedPost.map((post) => {
-            return <Post key={post?.post_id} post={post} loading={loading} />;
-          })}
+          {memoizedPost.length > 0 ? (
+            <>
+              {memoizedPost.map((post) => {
+                return (
+                  <Post key={post?.post_id} post={post} loading={loading} />
+                );
+              })}
+            </>
+          ) : (
+            <Typography
+              variant="h6"
+              color="primary"
+              fontFamily="Poppins"
+              fontWeight="medium"
+              textAlign="center"
+              marginTop="5"
+            >
+              No Post
+            </Typography>
+          )}
         </>
       ) : (
-        <Typography
-          variant="h6"
-          color="primary"
-          fontFamily="Poppins"
-          fontWeight="medium"
-          textAlign="center"
-          marginTop="5"
-        >
-          No Post
-        </Typography>
-      )}
-      </> : (<Box
+        <Box
           display="flex"
           alignItems="center"
           justifyContent="center"
           height="200px" /* Adjust the height as needed */
         >
           <CircularProgress size={52} color="secondary" />
-        </Box>)}
+        </Box>
+      )}
     </Box>
   );
 };

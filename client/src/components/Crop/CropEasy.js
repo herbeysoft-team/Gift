@@ -34,7 +34,7 @@ const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile, aspectRatio }) 
 
   };
   return (
-    <>
+    <Box mt={{sm:"none", xs:"none", md:7, lg:7}}>
       <DialogContent
         dividers
         sx={{
@@ -42,7 +42,8 @@ const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile, aspectRatio }) 
           position: "relative",
           height: 400,
           width: "auto",
-          minWidth: { sm: 500 },
+          minWidth: { sm: 300 },
+          overflow: "auto", // Add overflow property for scrollability
         }}
       >
         <Cropper
@@ -57,7 +58,7 @@ const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile, aspectRatio }) 
           onCropComplete={cropComplete}
         />
       </DialogContent>
-      <DialogActions sx={{ flexDirection: "column", mx: 3, my: 2 }}>
+      <DialogActions sx={{ flexDirection: "column", mx: 3, mb:10, overflow:"scrol"}}>
         <Box sx={{ width: "100%", mb: 1}}>
           <Box>
             <Typography>Zoom: {zoomPercent(zoom)}</Typography>
@@ -105,7 +106,7 @@ const CropEasy = ({ photoURL, setOpenCrop, setPhotoURL, setFile, aspectRatio }) 
           </Button>
         </Box>
       </DialogActions>
-    </>
+    </Box>
   );
 };
 

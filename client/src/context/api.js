@@ -84,6 +84,7 @@ export const getLikes= (id) => API.get(`/api/v1/like/getlikes/${id}`); //Fetch a
 export const getLikesForTrowbox= (id) => API.get(`/api/v1/like/getlikesfortrowbox/${id}`); //Fetch all likes for trowbox
 export const getLikesCount= (userId) => API.get(`/api/v1/like/getlikescount/${userId}`); //Get count of upvote of a particular user
 export const getLikesForPost= (id) => API.get(`/api/v1/like/getlikes/${id}`); //fetch all like for a partiular post 
+export const getPostUserUpvote= (userId) => API.get(`/api/v1/like/getpostuserupvote/${userId}`); //get all post user upvote 
 
 /**NOTIFICATION API */
 export const getMyNotification = () => API.get(`/api/v1/notification/getmynotification`); //Fetch all my notification

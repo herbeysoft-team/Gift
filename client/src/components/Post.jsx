@@ -5,7 +5,6 @@ import {
   CardGiftcard,
   DoneAll,
   Send,
-  MoreVert,
 } from "@mui/icons-material";
 import {
   Avatar,
@@ -18,8 +17,7 @@ import {
   Box,
   AvatarGroup,
   Icon,
-  Menu,
-  MenuItem,
+  Skeleton,
 } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
 import URLBASE from "../constant/urlbase";
@@ -31,22 +29,14 @@ import { getLikes, addLike } from "../context/features/likeSlice";
 import { getRetrow } from "../context/features/retrowSlice";
 import { getShare } from "../context/features/shareSlice";
 import toast from "react-hot-toast";
-import IosShareIcon from '@mui/icons-material/IosShare';
-import RedoIcon from '@mui/icons-material/Redo';
 
 const Post = ({ post }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [lastTapTime, setLastTapTime] = useState(0);
   const { user } = useSelector((state) => ({ ...state.auth }));
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const [imageLoaded, setImageLoaded] = useState(false);
+
 
   // Filter the comments based on the post ID
   const comments = useSelector((state) => state.comment[post?.post_id] || []);
@@ -59,7 +49,6 @@ const Post = ({ post }) => {
 
   // Filter the share based on the post ID
   const share = useSelector((state) => state.share[post?.post_id] || []);
-
 
   const handleToggleLike = (id) => {
     const isSelected = likes.includes(user?.result?.id);
@@ -130,16 +119,24 @@ const Post = ({ post }) => {
   };
 
   const handleRetrow = () => {
-    navigate('/home/retrowbox/', {state: post});
+    navigate("/home/retrowbox/", { state: post });
   };
 
   const handleShare = () => {
-    navigate('/home/share/', {state: post});
+    navigate("/home/share/", { state: post });
+  };
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
   };
 
   return (
     <Box sx={{ marginTop: 1, mx: 0.5, marginBottom: 3, boxShadow: "2" }}>
       <Box sx={{ position: "relative" }}>
+        {!imageLoaded && (
+          <Skeleton variant="rectangular" animation="wave" width="100%" height={200} />
+        )}
+
         <CardMedia
           component="img"
           height="auto"
@@ -147,7 +144,10 @@ const Post = ({ post }) => {
           image={`${URLBASE.imageBaseUrl}${post?.event_pics}`}
           alt="Post Image"
           onClick={handleDoubleTap}
+          onLoad={handleImageLoad}
+          sx={{ display: imageLoaded ? "block" : "none" }}
         />
+
         <IconButton
           aria-label="upvote"
           size="large"
@@ -191,19 +191,7 @@ const Post = ({ post }) => {
       </Box>
 
       <CardHeader
-        // onClick={() => handleGoPost(post?.post_id)}
-        action={
-          <IconButton
-            aria-label="settings"
-            // onid="demo-positioned-button"
-            aria-controls={open ? "demo-positioned-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}
-          >
-            <MoreVert sx={{ color: "purple", fontSize: 32 }} />
-          </IconButton>
-        }
+        onClick={() => handleGoPost(post?.post_id)}
         titleTypographyProps={{
           variant: "h6",
           sx: { fontFamily: "Poppins", color: "purple" },
@@ -226,7 +214,7 @@ const Post = ({ post }) => {
           width="100%"
           pl={{ xs: 0, md: 1 }}
           pr={{ xs: 0, md: 1 }}
-          onClick={() => handleGoPost(post?.post_id)}
+          //onClick={() => handleGoPost(post?.post_id)}
         >
           <Box
             display="flex"
@@ -260,9 +248,9 @@ const Post = ({ post }) => {
             </AvatarGroup>
           </Box>
           <Box display="flex" flexDirection="row" gap={1}>
-            <Box display="flex" flexDirection="column" alignItems="center">
+            <Box display="flex" flexDirection="column" alignItems="center" onClick={handleRetrow}>
               <Typography variant="caption" color="secondary">
-              {retrow?.length > 0 ? retrow?.length : "0"}
+                {retrow?.length > 0 ? retrow?.length : "0"}
               </Typography>
               <Icon>
                 <CardGiftcard color="secondary" />
@@ -275,7 +263,7 @@ const Post = ({ post }) => {
                 Retrow
               </Typography>
             </Box>
-            <Box display="flex" flexDirection="column" alignItems="center">
+            <Box display="flex" flexDirection="column" alignItems="center" onClick={() => handleToggleLike(post?.post_id)}>
               <Typography variant="caption" color="secondary">
                 {likes?.length > 0 ? likes?.length : "0"}
               </Typography>
@@ -291,9 +279,9 @@ const Post = ({ post }) => {
               </Typography>
             </Box>
 
-            <Box display="flex" flexDirection="column" alignItems="center">
+            <Box display="flex" flexDirection="column" alignItems="center" onClick={handleShare}>
               <Typography variant="caption" color="secondary">
-              {share?.length > 0 ? share?.length : "0"}
+                {share?.length > 0 ? share?.length : "0"}
               </Typography>
               <Icon>
                 <Send color="secondary" />
@@ -309,31 +297,7 @@ const Post = ({ post }) => {
           </Box>
         </Box>
       </CardActions>
-      <Menu
-        id="demo-positioned-menu"
-        aria-labelledby="demo-positioned-button"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-      >
-        <MenuItem onClick={handleRetrow} sx={{ fontFamily: "Poppins" }}>
-          <RedoIcon  color="secondary" />
-            {" Retrow"}
-        </MenuItem>
-        <MenuItem onClick={handleShare} sx={{ fontFamily: "Poppins" }}>
-          <IosShareIcon  color="secondary" />
-            {" Share"}
-        </MenuItem>
-      </Menu>
-
+      
     </Box>
   );
 };

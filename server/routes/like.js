@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {
-  addlike, getretrow, getlikes, deletelike, getlikescount, allupvote, getlikesfortrowbox
+  addlike, getretrow, getlikes, deletelike, getlikescount, allupvote, getlikesfortrowbox, getpostuserupvote
 } = require("../controller/like");
 const verifyToken = require("../middleware/verifyToken");
 const verifyAdmin = require("../middleware/verifyAdmin");
@@ -15,6 +15,9 @@ router.get("/getlikes/:id", getlikes);
 
 /**GET LIKE FOR A TROWBOX*/
 router.get("/getlikesfortrowbox/:id", getlikesfortrowbox);
+
+/**GET POST USER UPVOTE*/
+router.get("/getpostuserupvote/:userId", getpostuserupvote);
 
 /**GET ALL LIKES BY ADMIN*/
 router.get("/allupvote", allupvote);

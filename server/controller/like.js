@@ -122,6 +122,19 @@ exports.deletelike = async (req, res) => {
   }
 };
 
+exports.getpostuserupvote = async (req, res) => {
+  const { userId } = req.params;
+    try {
+      const result = await db.getall(
+        "SELECT DISTINCT p.id, p.description, up.fullname, up.username FROM post AS p JOIN upvote AS u ON p.id = u.post_id JOIN userprofile AS up ON u.user_id = up.id WHERE u.user_id = ? LIMIT 20",
+        [userId]
+      );
+      res.status(201).json(result);
+    } catch (error) {
+      
+    }
+}
+
 
 // ADMIN SPECIAL API////////////////////////////////////////////////////////////
 exports.allupvote = async (req, res) => {

@@ -169,6 +169,7 @@ const Profile = () => {
           }}
         >
           <Box
+            onClick = { ()=> {navigate(`/home/upvote/${userId}`);}}
             sx={{
               alignItems: "center",
               justifyContent: "center",

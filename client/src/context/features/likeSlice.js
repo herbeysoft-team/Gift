@@ -58,6 +58,19 @@ export const getLikesCount = createAsyncThunk(
   }
 )
 
+export const getPostUserUpvote= createAsyncThunk(
+  "like/getPostUserUpvote",
+  
+  async(userId, {rejectWithValue})=>{
+      try{
+        const response = await api.getPostUserUpvote(userId);
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
 export const getLikesForPost = createAsyncThunk(
   "like/getLikesForPost",
   
@@ -97,6 +110,8 @@ const likeSlice = createSlice({
     loading: false,
     likesforPost:[],
     upvoteCount:"",
+    loadingpostupvote:false,
+    userupvotepost:[],
     
   },
   reducers: {
@@ -147,6 +162,17 @@ const likeSlice = createSlice({
       })
       .addCase(getLikesForPost.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getPostUserUpvote.pending, (state) => {
+        state.loadingpostupvote = true;
+      })
+      .addCase(getPostUserUpvote.fulfilled, (state, action) => {
+        state.loadingpostupvote = false;
+        state.userupvotepost = action.payload;
+      })
+      .addCase(getPostUserUpvote.rejected, (state, action) => {
+        state.loadingpostupvote = false;
         state.error = action.payload;
       })
       .addCase(getLikesCount.pending, (state) => {
