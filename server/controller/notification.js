@@ -49,6 +49,15 @@ exports.getmynotification = async (req, res) => {
               notificationText
             };
           });
+
+          // Update the status of notifications to "read"
+          const notificationIds = preparedNotifications.map(notification => notification.id);
+          if(notificationIds.length > 0){
+          await db.update(
+            "UPDATE notification SET status = 1 WHERE id IN (?)",
+            [notificationIds]
+          );
+          }
           
           res.status(201).json(preparedNotifications);
       
@@ -60,3 +69,18 @@ exports.getmynotification = async (req, res) => {
   }
 };
 
+exports.hasUnreadNotification = async (req, res) => {
+  const userId = req.user;
+  try {
+    const unreadNotifications = await db.getrow(
+      "SELECT COUNT(*) AS unread_count FROM notification WHERE status = 0 AND (content_owner = ? OR content_owner_no = ?) ",
+      [userId?.userId, userId?.phone_no]
+    );
+    const hasUnreadNotification = parseInt(unreadNotifications?.unread_count) > 0;
+
+    res.status(200).json(hasUnreadNotification);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+    console.log(error);
+  }
+};

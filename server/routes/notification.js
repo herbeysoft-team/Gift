@@ -1,15 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getmynotification
+  getmynotification,
+  hasUnreadNotification
 } = require("../controller/notification");
 const verifyToken = require("../middleware/verifyToken");
 
 
-/**ADD COMMENT */
+/**GET USER NOTIFICATION */
 router.get("/getmynotification", verifyToken, getmynotification);
 
-
+/**CHECK IF USER HAS NOTIFICATION */
+router.get("/hasunreadnotification", verifyToken, hasUnreadNotification);
 
 
 

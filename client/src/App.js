@@ -36,6 +36,9 @@ import Share from "./pages/Share";
 import Message from "./pages/Message";
 import PrivateRoute from "./components/PrivateRoute";
 import Upvote from "./pages/Upvote";
+import Item from "./pages/Item";
+import Folower from "./pages/Folower";
+import Folowing from "./pages/Following";
 
 
 
@@ -48,6 +51,14 @@ const router = createBrowserRouter([
       {
         path: "/home",
         element: <Home />,
+      },
+      {
+        path: "/home/follower/:id",
+        element: <Folower />,
+      },
+      {
+        path: "/home/following/:id",
+        element: <Folowing />,
       },
       {
         path: "/home/profile/:id",
@@ -76,6 +87,10 @@ const router = createBrowserRouter([
       {
         path: "/home/shop/add",
         element: <AddItem />,
+      },
+      {
+        path: "/home/item/:id",
+        element: <Item />,
       },
       {
         path: "/home/trowbox",

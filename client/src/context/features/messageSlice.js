@@ -62,6 +62,19 @@ export const getMessages = createAsyncThunk(
   }
 )
 
+export const hasNoUnreadMessages = createAsyncThunk(
+  "message/hasNoUnreadMessages",
+  
+  async(_, {rejectWithValue})=>{
+      try{
+        const response = await api.hasNoUnreadMessages();
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
 export const getMessagesUsers = createAsyncThunk(
   "message/getMessagesUsers",
   
@@ -85,6 +98,7 @@ const messageSlice = createSlice({
     messagesusers: [],
     loadingmessageusers: false,
     loadingmessages: false,
+    hasnounreadmessages: false,
   },
 
   reducers: {
@@ -146,6 +160,18 @@ const messageSlice = createSlice({
         state.loadingmessageusers = false;
         state.error = action.payload;
       })
+      .addCase(hasNoUnreadMessages.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(hasNoUnreadMessages.fulfilled, (state, action) => {
+        state.loading = false;
+        state.hasnounreadmessages = action.payload;
+      })
+      .addCase(hasNoUnreadMessages.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      
    },
 });
 // export const { setUsername, setPhoneNo } = trowSlice.actions;

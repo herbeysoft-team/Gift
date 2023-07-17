@@ -94,6 +94,48 @@ exports.countrelationship = async (req, res) => {
 
 
 /**
+ * GET - http://localhost:8000/api/v1/relationship/getfollower
+ * id- User Id
+ *
+ */
+//Get followers
+exports.getfollowers = async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const getfollowers = await db.getall(
+      "SELECT u.id, u.fullname, u.username, u.profilePic FROM userprofile u, relationship r WHERE r.follower_id = u.id AND r.following_id = ?",
+      [userId]
+    );
+    res.status(201).json(getfollowers);
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+/**
+ * GET - http://localhost:8000/api/v1/relationship/getfollowing
+ * id- User Id
+ *
+ */
+//Get followers
+exports.getfollowings = async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const getfollowings = await db.getall(
+      "SELECT u.id, u.fullname, u.username, u.profilePic FROM userprofile u, relationship r WHERE r.following_id = u.id AND r.follower_id = ?",
+      [userId]
+    );
+    res.status(201).json(getfollowings);
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+
+
+/**
  * GET - http://localhost:8000/api/v1/relationship/checkrelationship
  * id- User Id
  *

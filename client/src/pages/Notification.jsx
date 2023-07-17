@@ -6,7 +6,7 @@ import NotifyHeader from "../assets/NotifyHeader.png";
 import Header from "../components/Header";
 import NotifyCard from "../components/NotifyCard";
 import { useSelector, useDispatch } from "react-redux";
-import { getMyNotification } from "../context/features/notificationSlice";
+import { getMyNotification, hasUnreadNotification } from "../context/features/notificationSlice";
 
 const Notification = () => {
   const dispatch = useDispatch();
@@ -16,6 +16,8 @@ const Notification = () => {
 
   useEffect(() => {
     dispatch(getMyNotification());
+    dispatch(hasUnreadNotification());
+
   }, [dispatch]);
 
   const memoizedNotification = useMemo(() => notifications, [notifications]);

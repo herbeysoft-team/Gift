@@ -4,14 +4,20 @@ import Logo from "../assets/logo.png";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import EmailIcon from "@mui/icons-material/Email";
 import { deepPurple } from "@mui/material/colors";
-import {  useSelector } from "react-redux";
+import {  useSelector} from "react-redux";
 import SearchCard from "./SearchCard";
 import { useNavigate} from "react-router-dom";
 import URLBASE from '../constant/urlbase';
 
+
 const Navbar = () => {
   const { user } = useSelector((state) => ({ ...state.auth }));
+  const { hasunreadnotification } = useSelector((state) => ({ ...state.notification }));
+  const { hasnounreadmessages } = useSelector((state) => ({ ...state.message }));
   const navigate = useNavigate();
+
+ 
+
   return (
     <AppBar position="fixed" elevation={1}>
       <Toolbar
@@ -56,10 +62,10 @@ const Navbar = () => {
             gap: 2,
           }}
         >
-          <Badge badgeContent={1} color="error" variant="dot" onClick={(e)=>navigate("/home/notification")}>
+          <Badge badgeContent={1} color="error" variant="dot" invisible={!hasunreadnotification} onClick={(e)=>navigate("/home/notification")}>
             <NotificationsIcon htmlColor="#642c8e" />
           </Badge>
-          <Badge badgeContent={1} color="error" variant="dot" invisible={false} onClick={(e)=>navigate("/home/message")}>
+          <Badge badgeContent={1} color="error" variant="dot" invisible={hasnounreadmessages} onClick={(e)=>navigate("/home/message")}>
             <EmailIcon color="inherit" htmlColor="#642c8e" />
           </Badge>
           <Avatar

@@ -9,11 +9,15 @@ import {
   import React from "react";
   import { Favorite } from "@mui/icons-material";
   import URLBASE from "../constant/urlbase";
+  import { useNavigate} from "react-router-dom";
   
   const WishCard = ({ gift, checked}) => {
+    const navigate = useNavigate();
+
     return (
       <Box sx={{ boxShadow: "2" }}>
         <CardMedia
+          onClick={()=> navigate(`/home/item/${gift?.id}`)}
           component="img"
           fit="cover"
           image={`${URLBASE.imageBaseUrl}${gift?.item_pics}`}

@@ -15,6 +15,19 @@ export const getMyNotification = createAsyncThunk(
   }
 )
 
+export const hasUnreadNotification = createAsyncThunk(
+  "notification/hasUnreadNotification",
+
+  async(_, {rejectWithValue})=>{
+      try{
+        const response = await api.hasUnreadNotification();
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
 
 
 const notificationSlice = createSlice({
@@ -23,6 +36,7 @@ const notificationSlice = createSlice({
     error: "",
     loading: false,
     notifications: [],
+    hasunreadnotification:false,
 
   },
   reducers: {
@@ -38,6 +52,17 @@ const notificationSlice = createSlice({
         state.notifications= action.payload;
       })
       .addCase(getMyNotification.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(hasUnreadNotification.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(hasUnreadNotification.fulfilled, (state, action) => {
+        state.loading = false;
+        state.hasunreadnotification = action.payload;
+      })
+      .addCase(hasUnreadNotification.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

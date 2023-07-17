@@ -7,13 +7,16 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import { useNavigate} from "react-router-dom";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import URLBASE from "../constant/urlbase";
 
 const CardItem = ({ gift, checked, selectedItems}) => {
+  const navigate = useNavigate();
   return (
     <Box sx={{ boxShadow: "2" }}>
       <CardMedia
+        onClick={()=> navigate(`/home/item/${gift?.id}`)}
         component="img"
         fit="cover"
         image={`${URLBASE.imageBaseUrl}${gift?.item_pics}`}

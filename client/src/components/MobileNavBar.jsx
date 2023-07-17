@@ -3,10 +3,15 @@ import { Box,Typography, AppBar, Badge} from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import EmailIcon from "@mui/icons-material/Email";
 import SearchIcon from '@mui/icons-material/Search';
+import { useSelector} from "react-redux";
 import { useNavigate} from "react-router-dom";
 
 const MobileNavBar = ({logo, title}) => {
   const navigate = useNavigate();
+  const { hasunreadnotification } = useSelector((state) => ({ ...state.notification }));
+  const { hasnounreadmessages } = useSelector((state) => ({ ...state.message }));
+
+
   return (
     <AppBar
         position="sticky"
@@ -32,10 +37,10 @@ const MobileNavBar = ({logo, title}) => {
         <Badge badgeContent={1} color="error" variant="dot" invisible={true} onClick={(e)=>navigate("/home/search")}>
          <SearchIcon  htmlColor="#642c8e" sx={{ fontSize: 32 }} />
         </Badge>
-        <Badge badgeContent={1} color="error" variant="dot" invisible={false} onClick={(e)=>navigate("/home/message")}>
+        <Badge badgeContent={1} color="error" variant="dot" invisible={hasnounreadmessages} onClick={(e)=>navigate("/home/message")}>
           <EmailIcon color="inherit" htmlColor="#642c8e" sx={{ fontSize: 32 }}/>
         </Badge>
-        <Badge badgeContent={1} color="error" variant="dot" invisible={false} onClick={(e)=>navigate("/home/notification")}>
+        <Badge badgeContent={1} color="error" variant="dot" invisible={!hasunreadnotification} onClick={(e)=>navigate("/home/notification")}>
           <NotificationsIcon htmlColor="#642c8e" sx={{ fontSize: 32 }}/>
         </Badge>
         

@@ -10,11 +10,41 @@ exports.getmessages = async (req, res) => {
       "SELECT * FROM messaging WHERE (senderId = ? AND receiverId = ?) OR (senderId = ? AND receiverId = ?) ORDER BY timestamp ASC",
       [userInfo?.userId, userId, userId, userInfo?.userId]
     );
-    if(result){
-    return res.status(201).json(result);
-    }
+
+      const result2 = await db.getall(
+        "SELECT * FROM messaging WHERE senderId = ? AND receiverId = ? ORDER BY timestamp ASC",
+        [userId, userInfo?.userId]
+      );
+      
+          // Update the status of messages to "read"
+      const messageIds = result2.map(message => message.id);
+      if(messageIds.length > 0){
+      await db.update(
+        "UPDATE messaging SET status = 1 WHERE id IN (?)",
+        [messageIds]
+      );
+      }
+      
+      return res.status(201).json(result);
+    
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+exports.hasNoUnreadMessages = async (req, res) => {
+  const userInfo = req.user;
+
+  try {
+    const unreadMessages = await db.getrow(
+      "SELECT COUNT(*) AS unread_count FROM messaging WHERE receiverId = ? AND status = 0 ",
+      [userInfo?.userId]
+    );
+    const hasNoUnreadMessages = parseInt(unreadMessages.unread_count) === 0;
+    res.status(200).json(hasNoUnreadMessages);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
     console.log(error);
   }
 };

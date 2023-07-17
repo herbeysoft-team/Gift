@@ -18,6 +18,7 @@ const initialState = {
   phoneno: "",
   otp: "",
   newpassword: "",
+  confirmpassword: ""
 };
 
 /**FOOTER */
@@ -43,7 +44,7 @@ function Copyright(props) {
 
 const ChangePasswrd = () => {
   const [formValue, setFormValue] = useState(initialState);
-  const { phoneno, otp, newpassword } = formValue;
+  const { phoneno, otp, newpassword, confirmpassword } = formValue;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => ({
@@ -76,7 +77,10 @@ const ChangePasswrd = () => {
     }
     else if(!passwordRegex.test(newpassword)){
       toast.error("Password must be Alphanumeric")
+    }else if(newpassword !== confirmpassword){
+      toast.error("Password did not match")
     }else{
+      //console.log({phoneno, otp, newpassword, confirmpassword})
       //CHANGE YOUR PASSWORD
       dispatch(resetPassword({ formValue:{
         phone_no:phoneno,
@@ -179,6 +183,18 @@ const ChangePasswrd = () => {
             label="New Password"
             type="password"
             id="newpassword"
+            onChange={onInputChange}
+            autoFocus
+          />
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="confirmpassword"
+            label="Confirm New Password"
+            type="password"
+            id="confirmpassword"
             onChange={onInputChange}
             autoFocus
           />

@@ -39,11 +39,14 @@ export const deleteRelationship = (userId) => API.post(`/api/v1/relationship/del
 export const countRelationship = (userId) => API.get(`/api/v1/relationship/countrelationship/${userId}`); //count follower and following
 export const checkRelationship = (userId) => API.get(`/api/v1/relationship/checkrelationship/${userId}`); //check follower and following
 export const checkMutualRelationship = (userId) => API.get(`/api/v1/relationship/checkmutualrelationship/${userId}`); //check follower and following
+export const getFollowers = (userId) => API.get(`/api/v1/relationship/getfollowers/${userId}`); //get all user followers
+export const getFollowings = (userId) => API.get(`/api/v1/relationship/getfollowings/${userId}`); //get all user followings
 
 /**ITEM API */
 export const getSubcategories = () => API.get(`/api/v1/subcategory/allsubcategories/`); //Get all Subcategories
 export const createItem = (formData) => API.post(`/api/v1/item/createitem`,formData); //create an item
 export const getItems = () => API.get(`/api/v1/item/allitems/`); //Get all items
+export const getItem = (id) => API.get(`/api/v1/item/getitem/${id}`); //Get an item
 export const getItemsByCategory = (newValue)=> API.get(`/api/v1/item/getitemsbysubcategory/${newValue}`); //Get items by category
 export const getItemsBySearch = (searchName) => API.get(`/api/v1/item/getitemsbysearch/${searchName}`); //Get items by search
 
@@ -88,6 +91,8 @@ export const getPostUserUpvote= (userId) => API.get(`/api/v1/like/getpostuserupv
 
 /**NOTIFICATION API */
 export const getMyNotification = () => API.get(`/api/v1/notification/getmynotification`); //Fetch all my notification
+export const hasUnreadNotification = () => API.get(`/api/v1/notification/hasunreadnotification`); //Check if user has unread notification
+
 
 /**RETROW API */
 export const getRetrow= (id) => API.get(`/api/v1/like/getretrow/${id}`); //Fetch all retrow for the trowbox
@@ -99,4 +104,5 @@ export const sendMessageMedia = (formData) => API.post(`/api/v1/message/sendmess
 export const getShare = (id) => API.get(`/api/v1/message/getshare/${id}`); //Fetch all share
 export const getShareForPost = (id) => API.get(`/api/v1/message/getshare/${id}`); //Fetch share for a post
 export const getMessages= (userId) => API.get(`/api/v1/message/getmessages/${userId}`); //Fetch all messages between users
+export const hasNoUnreadMessages= () => API.get(`/api/v1/message/hasnounreadmessages`); //check if user does not have unread message
 export const getMessagesUsers= () => API.get(`/api/v1/message/getmessagesusers`); //Fetch all users who you converse with

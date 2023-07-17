@@ -190,6 +190,7 @@ const Profile = () => {
             <Typography variant="subheading">Upvote</Typography>
           </Box>
           <Box
+          onClick = { ()=> {navigate(`/home/follower/${userId}`);}}
             sx={{
               alignItems: "center",
               justifyContent: "center",
@@ -210,6 +211,7 @@ const Profile = () => {
             <Typography variant="subheading">Follower</Typography>
           </Box>
           <Box
+            onClick = { ()=> {navigate(`/home/following/${userId}`);}}
             sx={{
               alignItems: "center",
               justifyContent: "center",

@@ -1,9 +1,11 @@
 import { Box, CardContent, CardMedia, Grid, Typography } from "@mui/material";
 import React, { useMemo, useId } from "react";
 import URLBASE from "../constant/urlbase";
+import { useNavigate} from "react-router-dom";
 
 const Sent = ({ gift }) => {
   const uniqueId = useId;
+  const navigate = useNavigate();
   const memoizedSend = useMemo(() => gift, [gift]);
   return (
     <Box mb={5}>
@@ -15,6 +17,7 @@ const Sent = ({ gift }) => {
                 <Grid item xs={6} sm={6} md={6} lg={4} key={index}>
                   <Box sx={{ boxShadow: "2" }}>
                     <CardMedia
+                      onClick={()=> navigate(`/home/item/${gift?.id}`)}
                       component="img"
                       fit="cover"
                       image={`${URLBASE.imageBaseUrl}${gift?.item_pics}`}

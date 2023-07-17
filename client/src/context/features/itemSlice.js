@@ -44,6 +44,19 @@ export const getItems = createAsyncThunk(
   }
 )
 
+export const getItem = createAsyncThunk(
+  "item/getItem",
+
+  async(id, {rejectWithValue})=>{
+      try{
+        const response = await api.getItem(id);
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
 export const getItemsByCategory = createAsyncThunk(
   "item/getItemsByCategory",
 
@@ -76,9 +89,11 @@ const itemSlice = createSlice({
   initialState: {
     item_subcategories: [],
     items: [],
+    item: null,
     error: "",
     loading: false,
     loadingItems:false,
+    loadingItem: false,
   },
   reducers: {
     clearItems: (state) => {
@@ -117,6 +132,17 @@ const itemSlice = createSlice({
       })
       .addCase(getItems.rejected, (state, action) => {
         state.loadingItems = false;
+        state.error = action.payload;
+      })
+      .addCase(getItem.pending, (state) => {
+        state.loadingItem = true;
+      })
+      .addCase(getItem.fulfilled, (state, action) => {
+        state.loadingItem = false;
+        state.item = action.payload;
+      })
+      .addCase(getItem.rejected, (state, action) => {
+        state.loadingItem = false;
         state.error = action.payload;
       })
       .addCase(getItemsByCategory.pending, (state) => {

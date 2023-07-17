@@ -48,6 +48,35 @@ export const countRelationship = createAsyncThunk(
   }
 );
 
+export const getFollowers = createAsyncThunk(
+  "relationship/getFollowers",
+
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await api.getFollowers(userId);
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const getFollowings = createAsyncThunk(
+  "relationship/getFollowings",
+
+  async (userId, { rejectWithValue }) => {
+    try {
+      const response = await api.getFollowings(userId);
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+
 export const checkRelationship = createAsyncThunk(
   "relationship/checkRelationship",
 
@@ -82,8 +111,12 @@ const relationshipSlice = createSlice({
     countFollow: null,
     checkFollow: null,
     checkMutualFollow: null,
+    followers:[],
+    followings:[],
     error: "",
     loading: false,
+    loadingfollowers: false,
+    loadingfollowings: false,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -130,6 +163,28 @@ const relationshipSlice = createSlice({
       })
       .addCase(checkRelationship.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getFollowers.pending, (state) => {
+        state.loadingfollowers = true;
+      })
+      .addCase(getFollowers.fulfilled, (state, action) => {
+        state.loadingfollowers = false;
+        state.followers = action.payload;
+      })
+      .addCase(getFollowers.rejected, (state, action) => {
+        state.loadingfollowers = false;
+        state.error = action.payload;
+      })
+      .addCase(getFollowings.pending, (state) => {
+        state.loadingfollowings = true;
+      })
+      .addCase(getFollowings.fulfilled, (state, action) => {
+        state.loadingfollowings = false;
+        state.followings = action.payload;
+      })
+      .addCase(getFollowings.rejected, (state, action) => {
+        state.loadingfollowings = false;
         state.error = action.payload;
       })
       .addCase(checkMutualRelationship.pending, (state) => {

@@ -7,7 +7,9 @@ const {
   deleterelationship,
   countrelationship,
   checkrelationship,
-  checkmutualrelationship
+  checkmutualrelationship,
+  getfollowers,
+  getfollowings
   
 } = require("../controller/relationship");
 
@@ -19,6 +21,12 @@ router.post("/deleterelationship/:userId", verifyToken, deleterelationship);
 
 /**COUNT RELATIONSHIP */
 router.get("/countrelationship/:userId", countrelationship);
+
+/**GET FOLLOWERS */
+router.get("/getfollowers/:userId", getfollowers);
+
+/**GET FOLLOWINGS */
+router.get("/getfollowings/:userId", getfollowings);
 
 /**CHECK RELATIONSHIP */
 router.get("/checkrelationship/:userId", verifyToken, checkrelationship);

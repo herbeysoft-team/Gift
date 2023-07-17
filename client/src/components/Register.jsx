@@ -22,6 +22,7 @@ const initialState = {
   phoneno: "",
   gender:"",
   password: "",
+  cpassword: "",
 
 };
 
@@ -48,7 +49,7 @@ function Copyright(props) {
 
 const Register = () => {
   const [formValue, setFormValue] = useState(initialState);
-  const { phoneno, password, fullname, city, gender, username } = formValue;
+  const { phoneno, password, cpassword, fullname, city, gender, username } = formValue;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => ({ ...state.auth }));
@@ -75,8 +76,12 @@ const Register = () => {
     }
     else if(!passwordRegex.test(password)){
       toast.error("Password must be Alphanumeric")
-    }else{
-      //REGISTER YOUR ACCOUNT
+    }else if(password !== cpassword){
+      toast.error("Password did not match")
+    }
+    else{
+      //console.log({fullname, username, phoneno, city, gender, password})
+      // REGISTER YOUR ACCOUNT
       dispatch(register({formValue:{
         fullname,
         username,
@@ -220,6 +225,17 @@ const Register = () => {
             label="Password"
             type="password"
             id="password"
+            onChange={onInputChange}
+            autoFocus
+          />
+          <TextField
+            margin="dense"
+            required
+            fullWidth
+            name="cpassword"
+            label="Confirm Password"
+            type="password"
+            id="cpassword"
             onChange={onInputChange}
             autoFocus
           />

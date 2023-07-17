@@ -6,7 +6,7 @@ import MessageBox from "../components/MessageBox";
 import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserProfile } from "../context/features/userSlice";
-import { getMessages } from "../context/features/messageSlice";
+import { getMessages, hasNoUnreadMessages } from "../context/features/messageSlice";
 import { deepPurple } from "@mui/material/colors";
 import URLBASE from "../constant/urlbase";
 import MessageList from "../components/MessageList";
@@ -29,6 +29,7 @@ const MessageDetails = () => {
   useEffect(() => {
     if (id) {
       dispatch(getMessages(id));
+      dispatch(hasNoUnreadMessages());
     }
   }, [id, dispatch]);
 
