@@ -26,7 +26,7 @@ const Folowing = () => {
 
   return (
     <Box mt={{sm:"none", xs:"none", md:7, lg:7}}>
-      <MobileNavBar logo={ProfilePic} title={"Follower"} />
+      <MobileNavBar logo={ProfilePic} title={"Following"} />
 
        {/* Other Sections start here */}
        <Box

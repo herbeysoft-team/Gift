@@ -10,7 +10,7 @@ const MobileSearchBox = () => {
   //function called when any input  value is changed
   const onSearchChange = (e) => {
     const searchName = e.target.value;
-    if (searchName.length > 3) {
+    if (searchName?.length > 3) {
       dispatch(getSearchUsers(searchName));
     } else {
     }

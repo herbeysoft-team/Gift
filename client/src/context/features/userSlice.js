@@ -93,6 +93,7 @@ const userSlice = createSlice({
     userProfile: null,
     unfollowUsers: [],
     searchUsers: [],
+    loadingusers: false,
     usersToGift: [],
     error: "",
     loading: false,
@@ -123,14 +124,14 @@ const userSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(getSearchUsers.pending, (state) => {
-        state.loading = true;
+        state.loadingusers = true;
       })
       .addCase(getSearchUsers.fulfilled, (state, action) => {
-        state.loading = false;
+        state.loadingusers = false;
         state.searchUsers = action.payload;
       })
       .addCase(getSearchUsers.rejected, (state, action) => {
-        state.loading = false;
+        state.loadingusers = false;
         state.error = action.payload;
       })
       .addCase(getUsersToGift.pending, (state) => {

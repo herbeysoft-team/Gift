@@ -80,28 +80,6 @@ exports.sendmessagetext = async (req, res) => {
       ]
     );
 
-    // //NOTICATION HERE
-    // if (result) {
-    //   const contentOwner = await db.getval(
-    //     "SELECT user_id FROM post WHERE id = ?",
-    //     [postId]
-    //   );
-    //   if (contentOwner) {
-    //     const notification = await db.insert(
-    //       "INSERT INTO notification(userId, activity, content_id, content_owner, content_type, date) VALUES (?,?,?,?,?,?)",
-    //       [
-    //         userInfo?.userId,
-    //         "comment",
-    //         postId,
-    //         contentOwner,
-    //         "comment",
-    //         moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
-    //       ]
-    //     );
-
-    //
-    //   }
-    // }
     return res.status(200).json({ message: "sent successfully." });
   } catch (error) {
     res.status(500).json({ message: "something went wrong" });

@@ -82,6 +82,8 @@ const AddItem = () => {
         component="form"
         noValidate
         sx={{
+          overflow:"scroll",
+          maxHeight:"80vh",
           my: 2,
           marginX: { xs: "0.5rem", md: "0.5rem", lg: "3rem" },
           p: 3,

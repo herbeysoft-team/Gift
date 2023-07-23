@@ -1,4 +1,4 @@
-import { Avatar, Box, Typography } from "@mui/material";
+import { Avatar, Box, CircularProgress, Typography } from "@mui/material";
 import React from "react";
 import MobileNavBar from "./MobileNavBar";
 import Logo from "../assets/logo.png";
@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import URLBASE from "../constant/urlbase";
 
 const MobileSearch = () => {
-  const { searchUsers } = useSelector((state) => ({ ...state.user }));
+  const { searchUsers, loadingusers } = useSelector((state) => ({ ...state.user }));
   const navigate = useNavigate();
   const handleProfile = (id) => {
     if (id) {
@@ -23,6 +23,7 @@ const MobileSearch = () => {
       <MobileNavBar logo={Logo} title={"Search"} />
       {/* Mobile search bar */}
       <MobileSearchBox />
+      {!loadingusers ? (
       <Box>
         <Box display="flex" flexDirection="column" py={2} px={1} gap={1} sx={{ justifyContent: "center" }}>
           {searchUsers.map((user, index) => {
@@ -51,6 +52,16 @@ const MobileSearch = () => {
           })}
         </Box>
       </Box>
+      ):(
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          height="200px" /* Adjust the height as needed */
+        >
+          <CircularProgress size={52} color="secondary" />
+        </Box>
+      )}
     </Box>
   );
 };
