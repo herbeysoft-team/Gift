@@ -51,6 +51,7 @@ exports.getitemsbycategory = async (req, res) => {
 //Get items by subcategory
 exports.getitemsbysubcategory = async (req, res) => {
   const { id } = req.params;
+  console.log(id)
   try {
     const result = await db.getall(
       "SELECT * FROM items WHERE item_subcategory = ? ",

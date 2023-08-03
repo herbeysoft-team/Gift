@@ -10,21 +10,24 @@ import {
   getItemsByCategory,
   getItemsBySubCategory,
   clearItems,
-  getSubcategories,
+  // getSubcategories,
 } from "../context/features/itemSlice";
-
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 export default function GiftCategoryTabs({ categories }) {
   const { item_subcategories } = useSelector((state) => ({
     ...state.item,
   }));
-  const memoizedSubCat = useMemo(() => item_subcategories, [item_subcategories]);
+  const memoizedSubCat = useMemo(
+    () => item_subcategories,
+    [item_subcategories]
+  );
   const dispatch = useDispatch();
   const uniqueId = useId;
   const [value, setValue] = React.useState(0);
   const [anchorEl, setAnchorEl] = React.useState(null); // State for the dropdown menu
+  const [subMenuAnchorEl, setSubMenuAnchorEl] = React.useState({}); // State for individual category submenu
   const open = Boolean(anchorEl);
- 
   const handleChange = (event, newValue) => {
     setValue(newValue);
     if (newValue === 0) {
@@ -35,23 +38,26 @@ export default function GiftCategoryTabs({ categories }) {
       dispatch(getItemsByCategory(categories[newValue - 1].id));
     }
   };
-  
-  const handleAllDropdownOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-    dispatch(getSubcategories())
-  }
 
   const handleAllDropdownClose = (event) => {
-    setAnchorEl(null)
-
-  }
+    setAnchorEl(null);
+  };
 
   const handleGetItemsBySubcategory = (id) => {
-    handleAllDropdownClose();
-    dispatch(clearItems)
+    setSubMenuAnchorEl(false);
+    dispatch(clearItems);
     dispatch(getItemsBySubCategory(id));
+  };
+  const handleCategoryDropdownOpen = (event, categoryId) => {
+    setSubMenuAnchorEl((prev) => ({
+      ...prev,
+      [categoryId]: event.currentTarget,
+    }));
+  };
 
-  }
+  const handleCategoryDropdownClose = (categoryId) => {
+    setSubMenuAnchorEl((prev) => ({ ...prev, [categoryId]: null }));
+  };
 
   return (
     <Box
@@ -73,18 +79,36 @@ export default function GiftCategoryTabs({ categories }) {
             fontFamily: "Poppins",
             fontStyle: "normal",
             fontWeight: "bold",
+            display: "flex", // Use flexbox to control the layout
+            flexDirection: "row",
+            justifyContent: "space-between", // Align content to the right
+            alignItems: "center", // Center items vertically
           },
         }}
       >
-        <Tab 
+        <Tab
           aria-controls="menu"
-          aria-haspopup="true" 
-          key={uniqueId} 
+          aria-haspopup="true"
+          key={uniqueId}
           label="All"
-          onClick={handleAllDropdownOpen}/>
+          onClick={() => {}}
+        />
 
         {categories.map((tab) => {
-          return <Tab key={tab.id} label={tab.cat_name} />;
+          return (
+            <Tab
+              key={tab.id}
+              label={
+                <>
+                  {tab.cat_name}
+                  <ArrowDropDownIcon />
+                </>
+              }
+              aria-controls={`submenu-${tab.id}`} // Unique ID for each submenu
+              aria-haspopup="true"
+              onClick={(event) => handleCategoryDropdownOpen(event, tab.id)}
+            />
+          );
         })}
       </Tabs>
       <Menu
@@ -98,11 +122,38 @@ export default function GiftCategoryTabs({ categories }) {
       >
         {/* Map through the subcategories and display them as MenuItem components */}
         {memoizedSubCat.map((subcat) => (
-          <MenuItem key={subcat.id} onClick={()=> handleGetItemsBySubcategory(subcat.id)}>
+          <MenuItem
+            key={subcat.id}
+            onClick={() => handleGetItemsBySubcategory(subcat.id)}
+          >
             {subcat.sub_cat_name}
           </MenuItem>
         ))}
       </Menu>
+      {/* Render submenus for individual categories */}
+      {categories.map((tab) => (
+        <Menu
+          key={`submenu-${tab.id}`}
+          id={`submenu-${tab.id}`}
+          anchorEl={subMenuAnchorEl[tab.id]}
+          open={Boolean(subMenuAnchorEl[tab.id])}
+          onClose={() => handleCategoryDropdownClose(tab.id)}
+          MenuListProps={{
+            "aria-labelledby": `submenu-${tab.id}`,
+          }}
+        >
+          {memoizedSubCat
+            .filter((subcat) => subcat.cat_id === tab.id)
+            .map((subcat) => (
+              <MenuItem
+                key={subcat.id}
+                onClick={() => handleGetItemsBySubcategory(subcat.id)}
+              >
+                {subcat.sub_cat_name}
+              </MenuItem>
+            ))}
+        </Menu>
+      ))}
     </Box>
   );
 }
