@@ -43,11 +43,13 @@ export const getFollowers = (userId) => API.get(`/api/v1/relationship/getfollowe
 export const getFollowings = (userId) => API.get(`/api/v1/relationship/getfollowings/${userId}`); //get all user followings
 
 /**ITEM API */
+export const getCategories = () => API.get(`/api/v1/category/allcategories/`); //Get all Categories
 export const getSubcategories = () => API.get(`/api/v1/subcategory/allsubcategories/`); //Get all Subcategories
 export const createItem = (formData) => API.post(`/api/v1/item/createitem`,formData); //create an item
 export const getItems = () => API.get(`/api/v1/item/allitems/`); //Get all items
 export const getItem = (id) => API.get(`/api/v1/item/getitem/${id}`); //Get an item
-export const getItemsByCategory = (newValue)=> API.get(`/api/v1/item/getitemsbysubcategory/${newValue}`); //Get items by category
+export const getItemsByCategory = (newValue)=> API.get(`/api/v1/item/getitemsbycategory/${newValue}`); //Get items by category
+export const getItemsBySubCategory = (newValue)=> API.get(`/api/v1/item/getitemsbysubcategory/${newValue}`); //Get items by category
 export const getItemsBySearch = (searchName) => API.get(`/api/v1/item/getitemsbysearch/${searchName}`); //Get items by search
 
 /**TROW API */

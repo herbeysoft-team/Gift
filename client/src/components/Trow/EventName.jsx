@@ -3,19 +3,19 @@ import React, { useState, useEffect } from "react";
 import Gift from "../../assets/gift.png";
 import Hero from "./Hero";
 import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
-import { getSubcategories} from "../../context/features/itemSlice";
+import { getCategories} from "../../context/features/itemSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 const EventName = () => {
   const dispatch = useDispatch()
   const [event_name, setEvent_name] = useState(null);
   const [category_name, setCategory_name] = useState('');
-  const { item_subcategories } = useSelector((state) => ({
+  const { item_categories } = useSelector((state) => ({
     ...state.item,
   }));
 
   useEffect(() => {
-    dispatch(getSubcategories());
+    dispatch(getCategories());
   }, [dispatch]);
 
   useEffect(() => {
@@ -122,9 +122,9 @@ const EventName = () => {
           onChange={handleEventCategoryChange}
         >
           {category_name? null : <MenuItem value="" disabled>Choose Category</MenuItem>}
-          {item_subcategories.map((item, index) => (
+          {item_categories.map((item, index) => (
                 <MenuItem value={item.id} key={index + 300}>
-                  {item.sub_cat_name}
+                  {item.cat_name}
                 </MenuItem>
               ))}
 

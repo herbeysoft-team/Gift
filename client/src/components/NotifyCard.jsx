@@ -115,7 +115,7 @@ const NotifyCard = ({ notification }) => {
           variant="caption"
           sx={{ fontFamily: "Poppins", color: "secondary", fontSize: "0.5rem" }}
         >
-          {moment(notification?.date).fromNow()}
+          {moment(notification?.date).add(5, "hours").fromNow()}
         </Typography>
       </Box>
     </Box>

@@ -6,7 +6,7 @@ import ShopSearch from '../components/ShopSearch';
 import GiftCategoryTabs from '../components/GiftCategoryTabs';
 import PickShopCards from '../components/PickShopCards';
 import { useNavigate, useLocation} from "react-router-dom";
-import { getSubcategories} from "../context/features/itemSlice";
+import { getSubcategories, getCategories} from "../context/features/itemSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 const PickShop = () => {
@@ -15,11 +15,12 @@ const PickShop = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[3];
 
-  const { item_subcategories } = useSelector((state) => ({
+  const { item_categories } = useSelector((state) => ({
     ...state.item,
   }));
   useEffect(() => {
     dispatch(getSubcategories());
+    dispatch(getCategories());
     
   }, [dispatch]);
   
@@ -30,7 +31,7 @@ const PickShop = () => {
         {/* Search item */}
         <ShopSearch/>
         {/* Gift Tab Categories  */}
-        <GiftCategoryTabs categories={item_subcategories}/>
+        <GiftCategoryTabs categories={item_categories}/>
         {/* display the items    */}
         <PickShopCards id={id} navigate={navigate}/>
 

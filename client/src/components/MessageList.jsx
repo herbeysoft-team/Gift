@@ -44,7 +44,7 @@ const MessageBubble = ({ message, isSender }) => {
           />
         )}
         <Typography variant="caption" sx={{ fontFamily: "Poppins", fontSize:"0.5rem", alignSelf:"flex-end" }}>
-          {moment(message?.timestamp).fromNow()}
+          {moment(message?.timestamp).add(5, "hours").fromNow()}
         </Typography>
       </Box>
     </Box>

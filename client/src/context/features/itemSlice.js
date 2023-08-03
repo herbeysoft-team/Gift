@@ -1,6 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../api";
 
+
+export const getCategories = createAsyncThunk(
+  "item/getCategories",
+
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.getCategories();
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const getSubcategories = createAsyncThunk(
   "item/getSubcategories",
 
@@ -70,6 +84,19 @@ export const getItemsByCategory = createAsyncThunk(
   }
 )
 
+export const getItemsBySubCategory = createAsyncThunk(
+  "item/getItemsBySubCategory",
+
+  async(newValue, {rejectWithValue})=>{
+      try{
+        const response = await api.getItemsBySubCategory(newValue);
+        return response.data;
+      }catch(err){
+        return rejectWithValue(err.response.data)
+      }
+  }
+)
+
 export const getItemsBySearch = createAsyncThunk(
   "item/getItemsBySearch",
 
@@ -88,6 +115,7 @@ const itemSlice = createSlice({
   name: "item",
   initialState: {
     item_subcategories: [],
+    item_categories: [],
     items: [],
     item: null,
     error: "",
@@ -102,6 +130,17 @@ const itemSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getCategories.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getCategories.fulfilled, (state, action) => {
+        state.loading = false;
+        state.item_categories = action.payload;
+      })
+      .addCase(getCategories.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       .addCase(getSubcategories.pending, (state) => {
         state.loading = true;
       })
@@ -153,6 +192,17 @@ const itemSlice = createSlice({
         state.items = action.payload;
       })
       .addCase(getItemsByCategory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getItemsBySubCategory.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getItemsBySubCategory.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = action.payload;
+      })
+      .addCase(getItemsBySubCategory.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

@@ -5,18 +5,20 @@ import GiftCategoryTabs from "../GiftCategoryTabs";
 import CardItems from "../CardItems";
 import Gift from "../../assets/gift.png";
 import Hero from "./Hero";
-import { getSubcategories} from "../../context/features/itemSlice";
+import { getSubcategories, getCategories} from "../../context/features/itemSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 
 const EventShop = () => {
   const dispatch = useDispatch();
-  const { item_subcategories } = useSelector((state) => ({
+  const { item_categories } = useSelector((state) => ({
     ...state.item,
   }));
   useEffect(() => {
+    dispatch(getCategories());
     dispatch(getSubcategories());
   }, [dispatch]);
+
   return (
     <Box
       sx={{ mx: 0.5, mb: 2, justifyContent: "center", alignItems: "center" }}
@@ -26,7 +28,7 @@ const EventShop = () => {
         {/* Search item */}
         <ShopSearch />
         {/* Gift Tab Categories  */}
-        <GiftCategoryTabs categories={item_subcategories} />
+        <GiftCategoryTabs categories={item_categories} />
          {/* display the items    */}
          <CardItems/>
 

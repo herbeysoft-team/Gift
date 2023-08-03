@@ -224,7 +224,7 @@ const Post = ({ post }) => {
             pr={{ xs: 0, md: 1 }}
           >
             <Typography variant="caption" sx={{ fontFamily: "Poppins" }}>
-              {moment(post?.createdAt).fromNow()}
+              {moment(post?.createdAt).add(5, "hours").fromNow()}
             </Typography>
             <Typography
               variant="caption"

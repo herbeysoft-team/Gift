@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   createitem,
   getitem,
+  getitemsbycategory,
   getitemsbysubcategory,
   getitemsbysearch,
   allitems,
@@ -17,6 +18,9 @@ router.post("/createitem", multerMiddleware, createitem);
 
 /**GET ONE ITEM */
 router.get("/getitem/:id", getitem);
+
+/**GET ITEMS BY CATEGORY */
+router.get("/getitemsbycategory/:id", getitemsbycategory);
 
 /**GET ITEMS BY SUBCATEGORY */
 router.get("/getitemsbysubcategory/:id", getitemsbysubcategory);

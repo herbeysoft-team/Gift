@@ -55,7 +55,7 @@ const PostComment = ({box}) => {
           </Box>
           <Box>
             <Typography variant="caption" color="secondary">
-              {moment(box?.createdAt).fromNow()}
+              {moment(box?.createdAt).add(5, "hours").fromNow()}
             </Typography>
           </Box>
         </Box>

@@ -30,7 +30,25 @@ exports.getitem = async (req, res) => {
   }
 };
 
+
 //Get items by category
+exports.getitemsbycategory = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await db.getall(
+      "SELECT i.id, i.item_name, i.item_description, i.item_pics FROM items AS i, subcategory AS s, category AS c WHERE c.id = ? AND s.cat_id = c.id AND s.id = i.item_subcategory ",
+      [id]
+    );
+    if (result) {
+      res.status(201).json(result);
+    }
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+    console.log(error);
+  }
+};
+
+//Get items by subcategory
 exports.getitemsbysubcategory = async (req, res) => {
   const { id } = req.params;
   try {

@@ -7,28 +7,29 @@ import GiftCategoryTabs from '../components/GiftCategoryTabs';
 import CardItems from '../components/CardItems';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate} from "react-router-dom";
-import { getSubcategories} from "../context/features/itemSlice";
+import { getCategories, getSubcategories} from "../context/features/itemSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 const Shop = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { item_subcategories } = useSelector((state) => ({
+  const { item_categories } = useSelector((state) => ({
     ...state.item,
   }));
   useEffect(() => {
     dispatch(getSubcategories());
+    dispatch(getCategories());
   }, [dispatch]);
+
 
   return (
     <Box mt={{sm:"none", xs:"none", md:7, lg:7}}>
         {/* header */}
-        
         <MobileNavBar logo={Store} title={"Gift Shop"} />
         {/* Search item */}
         <ShopSearch/>
         {/* Gift Tab Categories  */}
-        <GiftCategoryTabs categories={item_subcategories}/>
+        <GiftCategoryTabs categories={item_categories}/>
         {/* display the items    */}
         <CardItems wishlist={true}/>
         <Tooltip
